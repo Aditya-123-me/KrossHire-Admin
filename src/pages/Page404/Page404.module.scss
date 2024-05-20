@@ -1,0 +1,44 @@
+.Page404 {
+	width: 100%;
+	height: 100dvh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	background: #000000;
+	position: relative;
+	scrollbar-width: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    text-align: center;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	.container {
+		text-align: center;
+	}
+
+	h1 {
+		font-size: 10rem;
+		color: #333;
+		margin-bottom: 2rem;
+	}
+
+	p {
+		font-size: 2rem;
+		color: #666;
+		margin-bottom: 3rem;
+	}
+
+	a {
+		color: #d59f3b;
+		text-decoration: none;
+		font-weight: bold;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+}

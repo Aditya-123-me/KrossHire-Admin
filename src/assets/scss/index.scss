@@ -1,0 +1,156 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600;700&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100;9..40,200;9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&display=swap");
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+
+	font-family: "Poppins", sans-serif;
+	scroll-behavior: smooth;
+
+	&::selection {
+		background: #ff621f;
+		color: #ffffff;
+	}
+
+	@supports (-moz-appearance: none) {
+		scrollbar-width: thin;
+		scrollbar-color: var(--c1) transparent;
+	}
+
+	&::-webkit-scrollbar {
+		width: 0.3rem;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border-radius: 1rem;
+		background: var(--c1);
+	}
+}
+
+.Toastify {
+	position: absolute;
+	z-index: 99999;
+	font-size: 16px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+	filter: invert(1);
+	cursor: pointer;
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+	filter: invert(1);
+	cursor: pointer;
+}
+
+/* Firefox */
+input[type="number"] {
+	-moz-appearance: textfield;
+}
+
+:root {
+	--f1: "DM Sans", sans-serif;
+	--f2: "Josefin Sans", sans-serif;
+	--f3: "Poppins", sans-serif;
+	--f4: "Montserrat", sans-serif;
+	--f5: "Open Sans", sans-serif;
+	--f6: "Roboto", sans-serif;
+
+	--c1: #ff621f;
+	--c1v2: #ff621f42;
+	--c2: #fff;
+	--c3: #000;
+	--c4: #3B3C4A;
+
+	--b1: rgba(37, 46, 54, 0.50);
+
+	--lg1: linear-gradient(112deg, #ff621f 4.93%, #fff 256.79%);
+	--lg1v2: linear-gradient(226deg, #ff621f 4.93%, #fff 256.79%);
+
+	--Base_Font_Size: 100%;
+	font-size: var(--Base_Font_Size);
+}
+
+// 850px switch mobile view
+
+@media screen and (max-width: 1728px) {
+	:root {
+		--Base_Font_Size: 90%;
+	}
+}
+
+@media screen and (max-width: 1600px) {
+	:root {
+		--Base_Font_Size: 85%;
+	}
+}
+
+@media screen and (max-width: 1500px) {
+	:root {
+		--Base_Font_Size: 80%;
+	}
+}
+
+@media screen and (max-width: 1400px) {
+	:root {
+		--Base_Font_Size: 75%;
+	}
+}
+
+@media screen and (max-width: 1350px) {
+	:root {
+		--Base_Font_Size: 70%;
+	}
+}
+
+@media screen and (max-width: 1250px) {
+	:root {
+		--Base_Font_Size: 65%;
+	}
+}
+
+@media screen and (max-width: 1150px) {
+	:root {
+		--Base_Font_Size: 60%;
+	}
+}
+
+@media screen and (max-width: 1000px) {
+	:root {
+		--Base_Font_Size: 55%;
+	}
+}
+
+@media screen and (max-width: 410px) {
+	:root {
+		--Base_Font_Size: 50%;
+	}
+}
+
+@media screen and (max-width: 335px) {
+	:root {
+		--Base_Font_Size: 45%;
+	}
+}
+
+@media screen and (max-width: 300px) {
+	:root {
+		--Base_Font_Size: 30%;
+	}
+}

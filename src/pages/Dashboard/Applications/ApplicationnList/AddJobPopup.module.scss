@@ -1,0 +1,91 @@
+.addJobPopup {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.popupContent {
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 5px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+	max-width: 60vw;
+	width: 100%;
+}
+
+h2 {
+	font-size: 2rem;
+	margin: 0;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.formGroup {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 15px;
+
+	label {
+		font-weight: bold;
+		margin-bottom: 5px;
+		font-size: 1.5rem;
+	}
+
+	div {
+		display: flex;
+
+		img {
+			width: 15rem;
+			height: 10rem;
+			object-fit: contain;
+		}
+	}
+
+	input,
+	textarea,
+	select {
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		width: 100%;
+		font-size: 1.5rem;
+	}
+
+	textarea {
+		height: 100px;
+	}
+}
+
+.buttonGroup {
+	display: flex;
+	justify-content: space-between;
+
+	button {
+		padding: 10px 20px;
+		background-color: #007bff;
+		color: #fff;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-size: 2rem;
+
+		&:hover {
+			background-color: #0056b3;
+		}
+
+		&:nth-child(1) {
+			background-color: #ff0000;
+
+			&:hover {
+				background-color: #9b0000;
+			}
+		}
+	}
+}

@@ -1,0 +1,69 @@
+.privacyContainer{
+    height: 100%;
+    width: 100%;
+    padding: 0.5vh 1.3vw;
+    height: 93.33vh;
+	display: flex;
+	flex-direction: column;
+	gap: 3vh;
+	overflow-y: scroll;
+
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: rgb(31, 185, 65);
+		border-radius: 1rem;
+	}
+
+    h2{
+        text-decoration: underline;
+        margin-top: 2vh;
+        font-size: 1.6vw;
+    }
+
+    .mainItems{
+        background-color: rgba(0, 255, 34, 0.253);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1vh;
+        padding-bottom: 2vh;
+        box-shadow: 5px 5px 5px 5px rgba(0, 255, 34, 0.253);
+        p{
+            padding: 0.2vh 0.5vw;
+            font-size: 0.9vw;
+            text-align: center;
+        }
+
+        textarea{
+            width: 100%;
+            text-align: center;
+            padding: 0.2vh 0.5vw;
+            min-height: 14vh;
+            font-size: 0.9vw;
+            background-color: transparent;
+            outline: none;
+        }
+
+        .actions{
+            display: flex;
+            gap: 0.5vw;
+        }
+
+        button{
+            background-color: rgb(46, 145, 43);
+            border: none;
+            padding: 0.4vh 0.9vw;
+            border-radius: 0.3vw;
+            transition: all ease 0.3s;
+            &:hover{
+                background-color: rgb(96, 167, 39);
+                color: rgb(53, 49, 49);
+                transform: scale(1.02);
+            }
+        }
+    }
+}

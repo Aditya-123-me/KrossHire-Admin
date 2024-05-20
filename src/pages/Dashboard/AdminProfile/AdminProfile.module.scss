@@ -1,0 +1,275 @@
+.AdminProfile {
+	height: 100%;
+	width: 100%;
+	background: #f5f6f7;
+	background-color: #197194;
+	display: flex;
+	flex-direction: column;
+	gap: 1vh;
+	h1 {
+		color: #191b1c;
+		font-family: Public Sans;
+		font-size: 1.25vw;
+		font-style: normal;
+		font-weight: 600;
+		line-height: 95.833%;
+	}
+
+	.bannerSection {
+		align-self: center;
+		width: 81.25vw;
+		height: 27.71vh;
+		flex-shrink: 0;
+		background: #fff;
+		display: flex;
+		flex-direction: column;
+		.banner {
+			width: 100%;
+			height: 17.32vh;
+			flex-shrink: 0;
+			img {
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
+			}
+		}
+		.profilePic {
+			flex: 1;
+			display: flex;
+			gap: 1vw;
+			align-items: flex-end;
+			position: relative;
+			background-color: #fff;
+			img {
+				left: 2vw;
+				bottom: 0;
+				position: absolute;
+				width: 10.42vw;
+				aspect-ratio: 1/1;
+				flex-shrink: 0;
+				border-radius: 5.21vw;
+				border: 8px solid #fff;
+			}
+
+			.nameDetails {
+				margin-left: calc(2vw + 10.42vw);
+				margin-bottom: 0.5vh;
+				h2 {
+					color: #191b1c;
+					font-family: Public Sans;
+					font-size: 1.25vw;
+					font-style: normal;
+					font-weight: 600;
+					line-height: 133.333%;
+				}
+				p {
+					color: #626c70;
+					font-family: Public Sans;
+					font-size: 0.83vw;
+					font-style: normal;
+					font-weight: 400;
+					line-height: 150%;
+				}
+			}
+		}
+	}
+
+	.basicDetailSection {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1.2vw;
+
+		.profilePhoto {
+			width: 19.38vw;
+			height: 32.13vh;
+			flex-shrink: 0;
+			background: #fff;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			justify-content: space-around;
+			img {
+				width: 7.92vw;
+				aspect-ratio: 1/1;
+				border-radius: 50%;
+			}
+
+			.upload {
+				display: flex;
+				width: 15.21vw;
+				padding: 0px 1.25vw;
+				justify-content: center;
+				align-items: center;
+				gap: 0.42vw;
+				border-radius: 8.33vw;
+				border: 0.08vw solid #2254e1;
+				background: #fff;
+
+				img {
+					width: 1.04vw;
+					aspect-ratio: 1/1;
+					flex-shrink: 0;
+				}
+
+				p {
+					color: #2254e1;
+					font-family: Public Sans;
+					font-size: 0.73vw;
+					font-style: normal;
+					font-weight: 600;
+					line-height: 3.46vh; /* 285.714% */
+					text-transform: capitalize;
+				}
+			}
+
+			.warn {
+				width: 15.21vw;
+				p {
+					color: #626c70;
+					font-family: Public Sans;
+					font-size: 0.73vw;
+					font-style: normal;
+					font-weight: 400;
+					line-height: 1.73vh;
+					span {
+						color: #191b1c;
+						font-family: Public Sans;
+						font-size: 0.73vw;
+						font-style: normal;
+						font-weight: 500;
+						line-height: 1.73vh; /* 142.857% */
+					}
+				}
+			}
+		}
+		.banner {
+			width: 19.38vw;
+			height: 32.13vh;
+			flex-shrink: 0;
+			background: #fff;
+			display: flex;
+			flex-direction: column;
+
+			.poster {
+				width: 100%;
+				height: 12.14vh;
+				flex-shrink: 0;
+				img {
+					height: 100%;
+					width: 100%;
+					object-fit: cover;
+				}
+			}
+			.details {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 1.4vh;
+
+				.removeBanner {
+					display: flex;
+					width: 15.21vw;
+					padding: 0px 1.25vw;
+					justify-content: center;
+					align-items: center;
+					gap: 0.42vw;
+					border-radius: 8.33vw;
+					background: #fdeded;
+					p {
+						color: #e84646;
+						font-family: Public Sans;
+						font-size: 0.73vw;
+						font-style: normal;
+						font-weight: 600;
+						line-height: 3.46vh;
+						text-transform: capitalize;
+					}
+				}
+				.upload {
+					display: flex;
+					width: 15.21vw;
+					padding: 0px 1.25vw;
+					justify-content: center;
+					align-items: center;
+					gap: 0.42vw;
+					border-radius: 8.33vw;
+					border: 0.08vw solid #2254e1;
+					background: #fff;
+
+					img {
+						width: 1.04vw;
+						aspect-ratio: 1/1;
+						flex-shrink: 0;
+					}
+
+					p {
+						color: #2254e1;
+						font-family: Public Sans;
+						font-size: 0.73vw;
+						font-style: normal;
+						font-weight: 600;
+						line-height: 3.46vh; /* 285.714% */
+						text-transform: capitalize;
+					}
+				}
+
+				.warn {
+					width: 15.21vw;
+					p {
+						color: #626c70;
+						font-family: Public Sans;
+						font-size: 0.73vw;
+						font-style: normal;
+						font-weight: 400;
+						line-height: 1.73vh;
+						span {
+							color: #191b1c;
+							font-family: Public Sans;
+							font-size: 0.73vw;
+							font-style: normal;
+							font-weight: 500;
+							line-height: 1.73vh; /* 142.857% */
+						}
+					}
+				}
+			}
+		}
+
+		.basicInfo {
+			width: 40vw;
+			height: 32.13vh;
+			// height: 32.13vh;
+			flex-shrink: 0;
+			background: #fff;
+			background-color: #9fa6b996;
+
+			.info {
+				p {
+				}
+			}
+			.nameUsername {
+				.name {
+					label {
+					}
+					input {
+					}
+				}
+				.userName {
+					label {
+					}
+					input {
+					}
+				}
+			}
+			.biography {
+				label {
+				}
+				input {
+				}
+			}
+		}
+	}
+}

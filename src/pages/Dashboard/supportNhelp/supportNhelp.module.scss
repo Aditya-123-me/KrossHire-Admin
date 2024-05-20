@@ -1,0 +1,281 @@
+.supportSection {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+
+	h1 {
+		padding: 2vh 0;
+		align-self: start;
+		margin-left: 2.3vw;
+		color: #191b1c;
+		font-family: Public Sans;
+		font-size: 1.25vw;
+		font-style: normal;
+		font-weight: 600;
+		line-height: 2.13vh; /* 95.833% */
+	}
+	h4 {
+		padding-bottom: 1vh;
+		align-self: start;
+		margin-left: 2.3vw;
+		color: #999;
+		font-family: Public Sans;
+		font-size: 0.63vw;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 1.85vh; /* 166.667% */
+	}
+
+	.paymentHistory {
+		width: 81.25vw;
+		height: 70.65vh;
+		border-radius: 0.42vw 0.42vw 0px 0px;
+
+		.heading {
+			display: flex;
+			width: 100%;
+			padding: 1.11vh 1.25vw;
+			justify-content: space-between;
+			align-items: center;
+			h2 {
+				color: #191b1c;
+				font-family: Public Sans;
+				font-size: 0.83vw;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 2.22vh; /* 150% */
+			}
+		}
+		.subHeading {
+			width: 100%;
+			height: 3.33vh;
+			flex-shrink: 0;
+			opacity: 0.7;
+			background: #f5f6f7;
+			display: flex;
+			align-items: center;
+
+			.userId {
+				flex: 1;
+			}
+			.emailAddress {
+				flex: 1.5;
+			}
+			.reportDate {
+				flex: 1;
+			}
+			.ticketRise {
+				flex: 1;
+			}
+			.newTickets {
+				flex: 1.3;
+			}
+			.ticketId {
+				flex: 1.3;
+			}
+
+			.action {
+				flex: 2;
+			}
+
+			.userId,
+			.emailAddress,
+			.reportDate,
+			.ticketRise,
+			.newTickets,
+			.ticketId,
+			.action {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				color: #4a5154;
+				font-family: Public Sans;
+				font-size: 0.63vw;
+				font-style: normal;
+				font-weight: 500;
+				line-height: 100%; /* 12px */
+				text-transform: uppercase;
+			}
+		}
+
+		.supportCards {
+			display: inline-flex;
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.pagination {
+			display: flex;
+			width: 100%;
+			height: 8.1481vh;
+			padding: 24px;
+			justify-content: space-between;
+			align-items: center;
+			border-radius: 0px 0px 0.42vw 0.42vw;
+			background: #fff;
+			.records {
+			}
+			.pageButtons {
+				display: flex;
+
+				.leftArrow,
+				.rightArrow {
+					width: 2.08vw;
+					aspect-ratio: 1/1;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+
+					img {
+						height: 100%;
+						width: 100%;
+					}
+				}
+				.pages {
+					display: flex;
+					padding: 0 1vw;
+					gap: 0.5vw;
+					.buttons {
+						width: 2.08vw;
+						aspect-ratio: 1/1;
+						border-radius: 50%;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						// padding: 10px 0px;
+						color: #626c70;
+						text-align: center;
+						font-family: Public Sans;
+						font-size: 0.73vw;
+						font-style: normal;
+						font-weight: 600;
+						line-height: 1.85vh; /* 142.857% */
+					}
+					.active {
+						background-color: #005ce8;
+						color: #fff;
+					}
+				}
+			}
+		}
+	}
+
+	.spopup {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		right: 0;
+		background-color: transparent;
+	}
+}
+
+.supportCard {
+	width: 81.25vw;
+	height: 6.11vh;
+	display: flex;
+	align-items: center;
+	border-bottom: 0.0926vh solid #e5e7e8;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	cursor: pointer;
+
+	.userId {
+		flex: 1;
+		img {
+			width: 1.52vw;
+			aspect-ratio: 1/1;
+			border-radius: 50%;
+		}
+	}
+	.emailAddress {
+		flex: 1.5;
+	}
+	.reportedDate {
+		flex: 1;
+	}
+	.ticketsRise {
+		flex: 1;
+	}
+	.newTickets {
+		flex: 1.3;
+	}
+	.ticketId {
+		flex: 1.3;
+	}
+
+	.actions {
+		flex: 2;
+		display: flex;
+		justify-content: space-around;
+
+		.resolved,
+		.unresolved {
+			display: flex;
+			width: 5.89vw;
+			height: 3.1481vh;
+			padding: 0.52vw;
+			justify-content: center;
+			align-items: center;
+			flex-shrink: 0;
+			color: #818688;
+			text-align: center;
+			font-family: Public Sans;
+			font-size: 0.73vw;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+			border-radius: 0.26vw;
+			border: none;
+			
+		}
+
+		.unresolved.active {
+			color: #e93131;
+			text-align: center;
+			font-family: Public Sans;
+			font-size: 0.73vw;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+			background: rgba(255, 3, 3, 0.08);
+		}
+
+		.resolved.active {
+			background: #c2ffb3;
+			color: #2dc108;
+			text-align: center;
+			font-family: Public Sans;
+			font-size: 0.73vw;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+		}
+	}
+
+	.userId,
+	.emailAddress,
+	.reportedDate,
+	.ticketsRise,
+	.newTickets,
+	.ticketId {
+		display: flex;
+		align-items: center;
+		gap: 0.4vw;
+		justify-content: center;
+
+		p {
+			color: #4a5154;
+			font-family: Public Sans;
+			font-size: 0.73vw;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 1.85vh; /* 142.857% */
+			white-space: nowrap;
+		}
+	}
+}

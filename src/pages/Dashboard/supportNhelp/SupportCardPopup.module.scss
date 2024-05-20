@@ -1,0 +1,418 @@
+.supportPopup {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.3);
+
+	.main {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		width: 39.06vw;
+		height: 85.09vh;
+		flex-shrink: 0;
+		border-radius: 1.04vw 0px 0px 1.04vw;
+		background: #fff;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 2vh;
+		justify-content: center;
+
+		.lessThan {
+			cursor: pointer;
+			position: absolute;
+			right: 2vw;
+			top: 4vh;
+			display: inline-flex;
+			padding: 0.74vh 0.47vw 0.74vh 0.36vw;
+			justify-content: center;
+			align-items: center;
+			border-radius: 4.06vw;
+			background: rgba(0, 92, 232, 0.05);
+			img {
+				width: 1.25vw;
+				aspect-ratio: 1/1;
+			}
+		}
+
+		.profile {
+			width: 20.33vw;
+			height: 6.67vh;
+			flex-shrink: 0;
+			display: flex;
+			padding: 0 1vw;
+			margin-bottom: 2vh;
+
+			.profilePic {
+				width: 3.75vw;
+				aspect-ratio: 1/1;
+				border-radius: 50%;
+				img {
+					height: 100%;
+					width: 100%;
+					object-fit: cover;
+				}
+			}
+			.nameEmail {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: -0.37vw;
+
+				h2 {
+					color: #191b1c;
+					font-family: Public Sans;
+					font-size: 1.36vw;
+					font-style: normal;
+					font-weight: 500;
+					line-height: 4.17vh;
+				}
+				p {
+					color: #999;
+					font-family: Public Sans;
+					font-size: 0.77vw;
+					font-style: normal;
+					font-weight: 400;
+					line-height: 1.95vh; /* 142.857% */
+				}
+			}
+		}
+
+		.ticketRise {
+			padding: 0 2vw;
+			color: #191b1c;
+			text-align: center;
+			font-family: Poppins;
+			font-size: 26.082px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+		}
+
+		.queryContainer {
+			align-self: center;
+			width: 34.375vw;
+			height: 55.93vh;
+			// background-color: yellowgreen;
+			display: inline-flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.74vh;
+		}
+	}
+}
+
+.ticketCardContainer {
+	cursor: pointer;
+	width: 34.375vw;
+	height: 8.7037vh;
+	border-radius: 0.42vw;
+	background: #f4f7ff;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 2vw 0 1.4vw;
+
+	.ticketDetails {
+		display: flex;
+		flex-direction: column;
+		align-items: start;
+		gap: 0.2vh;
+		.ticketNo {
+			display: flex;
+			align-items: center;
+			gap: 0.4vw;
+			img {
+				width: 0.84vw;
+				aspect-ratio: 1/1;
+				flex-shrink: 0;
+			}
+			p {
+				color: #4a5154;
+				text-align: center;
+				font-family: Public Sans;
+				font-size: 0.58vw;
+				font-style: normal;
+				font-weight: 400;
+				line-height: normal;
+			}
+		}
+		.ticketTitle {
+			color: #191b1c;
+			text-align: center;
+			font-family: Public Sans;
+			font-size: 1.04vw;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+		}
+		.raisedDate {
+			color: #aeaeae;
+			text-align: center;
+			font-family: Public Sans;
+			font-size: 0.58vw;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+		}
+	}
+
+	.status {
+		.active {
+			color: #2254e1;
+			text-align: center;
+			font-family: Public Sans;
+			font-size: 0.57vw;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+		}
+
+		.closed {
+			color: #aeaeae;
+			text-align: center;
+			font-family: Public Sans;
+			font-size: 0.57vw;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+		}
+	}
+}
+
+.rpopup {
+	position: absolute;
+	width: calc(100vw - 14.64vw);
+	height: calc(100vh - 6.67vh);
+	bottom: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.3);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1vh;
+
+	.reasonPopupCon {
+		width: 33.13vw;
+		height: 45.93vh;
+		flex-shrink: 0;
+		border-radius: 0.42vw;
+		background: #fff;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5vh;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+		.lessThan {
+			cursor: pointer;
+			position: absolute;
+			right: 2vw;
+			top: 4vh;
+			display: inline-flex;
+			padding: 0.74vh 0.47vw 0.74vh 0.36vw;
+			justify-content: center;
+			align-items: center;
+			border-radius: 4.06vw;
+			background: rgba(0, 92, 232, 0.05);
+			img {
+				width: 1.25vw;
+				aspect-ratio: 1/1;
+			}
+		}
+
+		h3 {
+			color: #000;
+			text-align: center;
+			font-family: Public Sans;
+			font-size: 1.25vw;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+			padding: 0 4vw;
+			margin-bottom: 2.5vh;
+		}
+		.profile {
+			width: 20.33vw;
+			height: 6.67vh;
+			flex-shrink: 0;
+			display: flex;
+			padding: 0 3vw;
+
+			.profilePic {
+				width: 3.75vw;
+				aspect-ratio: 1/1;
+				border-radius: 50%;
+				img {
+					height: 100%;
+					width: 100%;
+					object-fit: cover;
+				}
+			}
+			.nameEmail {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: -0.37vw;
+
+				h2 {
+					color: #191b1c;
+					font-family: Public Sans;
+					font-size: 1.36vw;
+					font-style: normal;
+					font-weight: 500;
+					line-height: 4.17vh;
+				}
+				p {
+					color: #999;
+					font-family: Public Sans;
+					font-size: 0.77vw;
+					font-style: normal;
+					font-weight: 400;
+					line-height: 1.95vh; /* 142.857% */
+				}
+			}
+		}
+
+		.details {
+			align-self: center;
+			display: flex;
+			flex-direction: column;
+			gap: 1vh;
+			.upperSection {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				.left {
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					gap: 0.2vh;
+					.ticketNo {
+						display: flex;
+						align-items: center;
+
+						img {
+							width: 0.972vw;
+							aspect-ratio: 1/1;
+							flex-shrink: 0;
+						}
+						p {
+							color: #4a5154;
+							text-align: center;
+							font-family: Public Sans;
+							font-size: 0.671vw;
+							font-style: normal;
+							font-weight: 400;
+							line-height: normal;
+						}
+					}
+					.ticketTitle {
+						color: #191b1c;
+						text-align: center;
+						font-family: Public Sans;
+						font-size: 1.2vw;
+						font-style: normal;
+						font-weight: 400;
+						line-height: normal;
+					}
+				}
+				.status {
+					display: flex;
+					width: 3.7vw;
+					padding: 0.575vw;
+					justify-content: center;
+					align-items: center;
+					gap: 11.045px;
+					color: #2254e1;
+					text-align: center;
+					font-family: Public Sans;
+					font-size: 0.575vw;
+					font-style: normal;
+					font-weight: 400;
+					line-height: normal;
+				}
+			}
+			.detailDesc {
+				width: 24.895vw;
+				height: 15vh;
+				flex-shrink: 0;
+				color: #818688;
+				font-family: Public Sans;
+				font-size: 0.729vw;
+				font-style: normal;
+				font-weight: 400;
+				line-height: normal;
+				letter-spacing: 0.035px;
+				overflow: hidden;
+			}
+			.buttons {
+				align-self: flex-end;
+				display: flex;
+				gap: 2vw;
+
+				.chat,
+				.goback {
+					display: flex;
+					width: 5.729vw;
+					height: 3.15vh;
+					padding: 0.5208vw;
+					justify-content: center;
+					align-items: center;
+					gap: 0.5208vw;
+					flex-shrink: 0;
+					cursor: pointer;
+				}
+
+				.goback {
+					color: #999;
+					text-align: center;
+					font-family: Poppins;
+					font-size: 0.72vw;
+					font-style: normal;
+					font-weight: 400;
+					line-height: normal;
+					border-radius: 0.2604vw;
+					border: 1px solid #999;
+				}
+				.chat {
+					color: #fff;
+					text-align: center;
+					font-family: Poppins;
+					font-size: 0.72vw;
+					font-style: normal;
+					font-weight: 400;
+					line-height: normal;
+					border-radius: 0.2604vw;
+					background: #2254e1;
+				}
+			}
+		}
+	}
+}
+
+.cpopup {
+	position: absolute;
+	width: calc(100vw - 14.64vw);
+	height: calc(100vh - 6.67vh);
+	bottom: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.3);
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 1vh;
+
+	.chatPopupCon {
+		width: 28.24vw;
+		height: 85vh;
+		flex-shrink: 0;
+		border-radius: 1.04vw 0px 0px 0px;
+		background: #fff;
+	}
+}

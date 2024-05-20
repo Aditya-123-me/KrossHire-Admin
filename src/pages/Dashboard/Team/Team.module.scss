@@ -1,0 +1,161 @@
+.teamContainer {
+	width: 85.36vw;
+	height: 93.33vh;
+	display: flex;
+	flex-direction: column;
+	gap: 8vh;
+	padding: 1vh 2vw;
+	position: relative;
+	overflow-y: scroll;
+	&::-webkit-scrollbar {
+		display: none;
+	}
+
+	.popupCon {
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0, 0, 0, 0.3);
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.addMemberCon {
+			background-color: #fff;
+			width: 50%;
+			height: 50%;
+			display: flex;
+			flex-direction: column;
+			gap: 2vh;
+			padding: 2vh 2vw;
+			position: relative;
+			border-radius: 0.7vw;
+
+			label {
+				font-size: 1vw;
+				font-weight: 500;
+				font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+				width: max-content;
+			}
+
+			.back {
+				position: absolute;
+				right: 2vw;
+				top: 2vh;
+			}
+
+			.name{
+				display: flex;
+				align-items: center;
+				gap: 1vw;
+
+				input{
+					outline: none;
+					background: transparent;
+					border: none;
+					border-bottom: 1px solid grey;
+				}
+			}
+
+			.imagePreviewCon {
+				height: 30vh;
+				width: 30vw;
+				border: 1px solid grey;
+			}
+			.imagePreview {
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				img {
+					height: 30vh;
+					width: 30vw;
+				}
+			}
+
+			.buttons {
+				display: flex;
+				gap: 1vw;
+				button {
+					width: max-content;
+					padding: 0.6vh 1vw;
+					background-color: rgb(36, 53, 206);
+					color: #fff;
+					cursor: pointer;
+					border: none;
+					border-radius: 0.3vw;
+					&:hover {
+						background-color: rgb(74, 86, 192);
+						transform: scale(1.02);
+					}
+				}
+			}
+		}
+	}
+
+	.teamCard {
+		display: flex;
+		flex-direction: column;
+		gap: 1vh;
+		padding: 1vh 2vw;
+		border: 1px solid grey;
+		button {
+			align-self: flex-end;
+			width: max-content;
+			padding: 0.6vh 1vw;
+			background-color: rgb(36, 53, 206);
+			color: #fff;
+			cursor: pointer;
+			border: none;
+			border-radius: 0.3vw;
+		}
+
+		.title {
+			align-self: center;
+			font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+			font-weight: 600;
+			font-size: 1.2vw;
+			text-decoration: underline;
+		}
+
+		.teamMembers {
+			display: flex;
+			flex-direction: column;
+			align-items: start;
+			justify-content: center;
+			gap: 2vh;
+
+			.member {
+				display: flex;
+				align-items: center;
+				justify-content: start;
+				border-bottom: 1px solid grey;
+				border-top: 1px solid grey;
+				padding: 1vh 1vw;
+				gap: 3vw;
+				width: 100%;
+				button {
+					align-self: center;
+					&:hover {
+						background-color: rgb(74, 86, 192);
+						transform: scale(1.02);
+					}
+				}
+
+				h2 {
+					font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+					font-weight: 600;
+					font-size: 1vw;
+				}
+
+				input {
+					border: none;
+					outline: none;
+					border-bottom: 1px solid grey;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,94 @@
+.blogContainer {
+	height: 100%;
+	width: 100%;
+	background-color: #1b1b1b;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 2rem;
+	gap: 2rem;
+
+	h1 {
+		width: 100%;
+		font-family: Montserrat;
+		font-size: 40px;
+		font-weight: 500;
+		line-height: 49px;
+		letter-spacing: 0em;
+		color: #fff;
+	}
+
+	.BlogForm {
+		width: 920px;
+		height: auto;
+		top: 281px;
+		left: 180px;
+		border-radius: 10px;
+		border: 1px;
+		background-color: #666666;
+		display: flex;
+		flex-direction: column;
+		gap: 3rem;
+		padding: 5rem 3rem 8rem 3rem;
+
+		.InputWrapper {
+			display: flex;
+			flex-direction: column;
+			gap: 0.2rem;
+
+			label {
+				font-family: Montserrat;
+				font-size: 24px;
+				font-weight: 500;
+				line-height: 29px;
+				letter-spacing: 0em;
+				text-align: left;
+				color: #fff;
+			}
+			input,
+			textarea {
+				background: transparent;
+				border: none;
+				border-bottom: 1px solid #b4a5a5;
+				outline: none;
+				font-family: Montserrat;
+				font-size: 24px;
+				font-weight: 500;
+				line-height: 29px;
+				letter-spacing: 0em;
+				text-align: left;
+				color: #999999;
+				padding: 1rem;
+			}
+			textarea {
+				border: 1px solid #b4a5a5;
+				height: auto;
+				resize: none;
+				&::-webkit-scrollbar {
+					display: none;
+				}
+			}
+		}
+
+		button {
+			align-self: flex-end;
+			width: 261px;
+			height: 48px;
+			padding: 10px;
+			border-radius: 5px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #d59f3b;
+			border: none;
+			cursor: pointer;
+			font-family: Poppins;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 21px;
+			letter-spacing: 0em;
+			text-align: left;
+			color: #fff;
+		}
+	}
+}

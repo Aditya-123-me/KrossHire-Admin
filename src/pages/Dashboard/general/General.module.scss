@@ -1,0 +1,96 @@
+.generalContainer {
+	width: 100%;
+	padding: 0.5vh 1.3vw;
+	height: 93.33vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 3vh;
+	overflow-y: scroll;
+
+	&::-webkit-scrollbar {
+		width: 6px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: rgb(31, 185, 65);
+		border-radius: 1rem;
+	}
+
+	h2 {
+		text-decoration: underline;
+		font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+		font-size: 1.2vw;
+		color: rgb(18, 207, 65);
+	}
+    .save{
+        align-self: flex-end;
+        padding: 0.3vh 0.9vw;
+    }
+
+	.heroSection,
+	.welcomeSection,
+	.chooseusSection,
+	.footerSection,
+	.socials {
+		border: 1px solid grey;
+		width: 100%;
+		h2 {
+			text-decoration: none;
+			font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+			font-size: 1vw;
+			color: #000;
+		}
+        p{
+            font-size: 0.7vw;
+            padding: 0 0.5vw;
+        }
+		input {
+			width: 100%;
+			border: none;
+			outline: none;
+			padding: 0.6vh 0.4vw;
+			text-align: center;
+			font-size: 0.6vw;
+		}
+		textarea {
+			width: 100%;
+			border: none;
+			outline: none;
+			min-height: 15vh;
+			padding: 0.3vh 0.4vw;
+			font-size: 0.8vw;
+		}
+	}
+
+	.socials {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+		margin-bottom: 3vh;
+		.phone,
+		.email,
+		.facebook,
+		.whatsapp,
+		.skype,
+		.linkedIn,
+		.twitter,
+		.instagram {
+			display: flex;
+            align-items: center;
+            border: 1px solid grey;
+            padding: 1vh 0.3vw;
+            gap: 0.4vw;
+
+            label{
+                font-weight: 600;
+                font-size: 0.7vw;
+            }
+            input{
+                width: 50vw;
+                text-align: start;
+                background: transparent;
+            }
+		}
+	}
+}
