@@ -6,9 +6,14 @@ import DashboardWrapper from "./components/DashboardWrapper/DashboardWrapper";
 import ScrollToTop from "./components/Hooks/ScrollToTop";
 import { clearCacheData } from "./components/Hooks/clearCacheData";
 import LoadingIndicator from "./components/LoadingIndicator/LoadingIndicator";
+import AddBlog from "./pages/Blogs/AddBlog";
+import Blogs from "./pages/Blogs/Blogs";
+import Dashboard from "./pages/DashboardIndex/DashboardComp";
+import Developers from "./pages/Developers/Developers";
 import Login from "./pages/Login/Login";
 import Page404 from "./pages/Page404/Page404";
-import Dashboard from "./pages/DashboardIndex/DashboardComp";
+import Support from "./pages/Support/Support";
+import Testimonial from "./pages/Testimonial/Testimonial";
 
 function App() {
 	clearCacheData();
@@ -33,8 +38,14 @@ function App() {
 				<Routes>
 					<Route path="*" element={<Page404 />} />
 					<Route exact path="/" element={<Login />} />
+
 					<Route element={<DashboardWrapper />}>
 						<Route exact path="/dashboard" element={<Dashboard />} />
+						<Route exact path="/developers" element={<Developers />} />
+						<Route exact path="/testimonial" element={<Testimonial />} />
+						<Route exact path="/support" element={<Support />} />
+						<Route exact path="/blogs" element={<Blogs />} />
+						<Route exact path="/add-blog" element={<AddBlog />} />
 					</Route>
 				</Routes>
 			</Suspense>

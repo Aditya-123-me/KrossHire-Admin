@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import Logo from "../../assets/images/Logo.png";
 import eye from "../../assets/svg/eye.svg";
+import "./Login.scss";
+import { toast } from "react-toastify";
 import axios from "../../components/Hooks/axios";
 import { setUser } from "../../redux/slice/authSlice";
-import "./Login.scss";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -36,28 +36,32 @@ const Login = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		// if(formData.email ==="" || formData.password==="") return toast.error("Pleas fill !!")
 		setIsLoading(true);
-
+		
 		const raw = {
 			email: formData.email,
 			password: formData.password,
 		};
+		navigate("/dashboard", { replace: true });
+		setIsLoading(false);
 
-		axios
-			.post("/user/login", raw)
-			.then(({ data }) => {
-				if (data.status === 1) {
-					toast.success(data.message);
-					setIsLoading(false);
-					dispatch(setUser(data.data));
-					navigate("/dashboard", { replace: true });
-					axios.defaults.headers.Authorization = data.data.token.token;
-				}
-			})
-			.catch(({ response: { data } }) => {
-				setIsLoading(false);
-				toast.error(data.message);
-			});
+		// axios
+		// 	.post("/user/login", raw)
+		// 	.then(({ data }) => {
+		// 		if (data.status === 1) {
+		// 			console.log(data.data)
+		// 			toast.success(data.message);
+		// 			setIsLoading(false);
+		// 			dispatch(setUser(data.data));
+		// 			navigate("/dashboard", { replace: true });
+		// 			axios.defaults.headers.Authorization = data.data.token.token;
+		// 		}
+		// 	})
+		// 	.catch(({ response: { data } }) => {
+		// 		setIsLoading(false);
+		// 		toast.error(data.message);
+		// 	});
 	};
 
 	return (
@@ -67,14 +71,14 @@ const Login = () => {
 					<div className="logo">
 						<img src={Logo} alt="" />
 					</div>
-					<h3>Welcome To KROSShire</h3>
+					<h3>Welcome To Krosshire</h3>
 				</div>
 			</div>
 
 			<div className="rightSection">
 				<div className="formCon">
 					<h1>Login Admin</h1>
-					<form onSubmit={handleSubmit}>
+					<form>
 						<div className="inputs">
 							<div className="inp1">
 								<label htmlFor="email">Email</label>
@@ -107,7 +111,8 @@ const Login = () => {
 								</div>
 							</div>
 						</div>
-						<button disabled={isLoading} type="submit">
+
+						<button disabled={isLoading} type="submit" onClick={handleSubmit}>
 							Login
 						</button>
 					</form>

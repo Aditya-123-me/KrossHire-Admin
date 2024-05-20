@@ -5,13 +5,15 @@
 
 	.leftSection {
 		flex: 1;
-		background-color: var(--c1v2);
+		background-color: var(--c1);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background-image: url("https://firebasestorage.googleapis.com/v0/b/hansrajventures-b8dea.appspot.com/o/Used_Images%2FBannerFreeconsultLoginBg%2FloginBackground.png?alt=media&token=700acb2f-1ff7-4075-ab0c-f77b62d1afbd");
 		background-size: cover;
 		background-position: center;
+		mix-blend-mode: screen; 
+		background-blend-mode: luminosity;
 
 		.iconContainer {
 			width: 31.67vw;
