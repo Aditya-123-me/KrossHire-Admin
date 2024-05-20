@@ -40,7 +40,7 @@
 
 		.profile {
 			width: 20.33vw;
-			height: 6.67vh;
+			height: 4.5rem;
 			flex-shrink: 0;
 			display: flex;
 			padding: 0 1vw;
@@ -186,7 +186,7 @@
 .rpopup {
 	position: absolute;
 	width: calc(100vw - 14.64vw);
-	height: calc(100vh - 6.67vh);
+	height: calc(100vh - 4.5rem);
 	bottom: 0;
 	right: 0;
 	background: rgba(0, 0, 0, 0.3);
@@ -239,7 +239,7 @@
 		}
 		.profile {
 			width: 20.33vw;
-			height: 6.67vh;
+			height: 4.5rem;
 			flex-shrink: 0;
 			display: flex;
 			padding: 0 3vw;
@@ -399,7 +399,7 @@
 .cpopup {
 	position: absolute;
 	width: calc(100vw - 14.64vw);
-	height: calc(100vh - 6.67vh);
+	height: calc(100vh - 4.5rem);
 	bottom: 0;
 	right: 0;
 	background: rgba(0, 0, 0, 0.3);

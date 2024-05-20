@@ -12,7 +12,7 @@
 
 .cardContainer {
 	width: 24%;
-	height: 18vh;
+	height: 13rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
@@ -30,26 +30,26 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0.4vh 0.7vw;
+		padding: 0.4rem 0.7rem;
 
 		.details {
 			display: flex;
 			flex-direction: column;
-			gap: 0.2vh;
+			gap: 0.2rem;
 		}
 		img {
-			height: 6vh;
+			height: 6rem;
 			aspect-ratio: 1/1;
 		}
 	}
 
 	.line {
-		height: 0.4vh;
+		height: 0.4rem;
 		width: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin: 0.3vh 0;
+		margin: 0.3rem 0;
 
 		hr {
 			height: 100%;
@@ -67,11 +67,11 @@
 		display: flex;
 		align-items: center;
 		gap: 1vw;
-		padding: 0.3vh 0.5vw;
+		padding: 0.3rem 0.5rem;
 
 		button {
 			background-color: var(--c1);
-			padding: 0.3vh 0.5vw;
+			padding: 0.3rem 0.5rem;
 			cursor: pointer;
 			border: none;
 			color: var(--c2);

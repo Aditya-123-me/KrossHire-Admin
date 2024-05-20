@@ -1,5 +1,5 @@
 .AdmissionForms {
-	height: calc(100vh - 6.67vh);
+	height: calc(100vh - 4.5rem);
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -309,7 +309,7 @@
 		max-height: 90%;
 		background: var(--c4);
 		padding: 2rem 3rem;
-		border-radius: .5rem;
+		border-radius: 0.5rem;
 		overflow-y: scroll;
 
 		h2 {
@@ -406,7 +406,7 @@
 			border: none;
 			cursor: pointer;
 			font-size: 1.5rem;
-			border-radius: .5rem;
+			border-radius: 0.5rem;
 
 			&:hover {
 				// background: var(--c1v2);
