@@ -8,11 +8,11 @@ import { clearCacheData } from "./components/Hooks/clearCacheData";
 import LoadingIndicator from "./components/LoadingIndicator/LoadingIndicator";
 import AddBlog from "./pages/Blogs/AddBlog";
 import Blogs from "./pages/Blogs/Blogs";
+import ContactUS from "./pages/ContactUS/ContactUS";
 import Dashboard from "./pages/DashboardIndex/DashboardComp";
 import Developers from "./pages/Developers/Developers";
 import Login from "./pages/Login/Login";
 import Page404 from "./pages/Page404/Page404";
-import Support from "./pages/Support/Support";
 import Testimonial from "./pages/Testimonial/Testimonial";
 
 function App() {
@@ -43,7 +43,7 @@ function App() {
 						<Route exact path="/dashboard" element={<Dashboard />} />
 						<Route exact path="/developers" element={<Developers />} />
 						<Route exact path="/testimonial" element={<Testimonial />} />
-						<Route exact path="/support" element={<Support />} />
+						<Route exact path="/contact" element={<ContactUS />} />
 						<Route exact path="/blogs" element={<Blogs />} />
 						<Route exact path="/add-blog" element={<AddBlog />} />
 					</Route>

@@ -4,7 +4,7 @@ import rightArrow from "../../assets/svg/rightArrow.svg";
 import Loading from "../../components/Hooks/Loading";
 import styles from "./Styles.module.scss";
 
-function Support() {
+function ContactUS() {
 	const [selectedCategory, setSelectedCategory] = useState("all");
 	const [applications, setApplications] = useState([]);
 	const [page, setPage] = useState(1);
@@ -139,4 +139,4 @@ function Support() {
 	);
 }
 
-export default Support;
+export default ContactUS;

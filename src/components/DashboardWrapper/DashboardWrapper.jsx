@@ -51,19 +51,19 @@ const DashboardWrapper = () => {
 					</div>
 
 					<div
-						className={`${styles.items} ${pathname === "/support" ? styles.activeItem : ""}`}
-						onClick={() => navigate("/support")}>
-						<MdOutlineSupportAgent />
-						<p>Support</p>
-					</div>
-
-					<div
 						className={`${styles.items} ${
 							pathname === "/blogs" || pathname === "/add-blog" ? styles.activeItem : ""
 						}`}
 						onClick={() => navigate("/blogs")}>
 						<GrBlog />
 						<p>Blogs</p>
+					</div>
+
+					<div
+						className={`${styles.items} ${pathname === "/contact" ? styles.activeItem : ""}`}
+						onClick={() => navigate("/contact")}>
+						<MdOutlineSupportAgent />
+						<p>Contact Us</p>
 					</div>
 
 					<div
