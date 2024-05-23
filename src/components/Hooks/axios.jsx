@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let token = sessionStorage.getItem("HV_token");
+let token = sessionStorage.getItem("krosshire_token");
 if (token) token = JSON.parse(token);
 
 const Instance = axios.create({

@@ -17,10 +17,10 @@ const DashboardWrapper = () => {
 	const { pathname } = useLocation();
 
 	// useEffect(() => {
-	// 	if (!sessionStorage.getItem("HV_token")) navigate("/", { replace: true });
+	// 	if (!sessionStorage.getItem("krosshire_token")) navigate("/", { replace: true });
 	// }, []);
 
-	// if (sessionStorage.getItem("HV_token"))
+	// if (sessionStorage.getItem("krosshire_token"))
 	return (
 		<div className={styles.dashboardContainer}>
 			<div className={styles.sidebar}>

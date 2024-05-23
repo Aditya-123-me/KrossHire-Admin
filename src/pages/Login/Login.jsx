@@ -6,7 +6,6 @@ import eye from "../../assets/svg/eye.svg";
 import "./Login.scss";
 import { toast } from "react-toastify";
 import axios from "../../components/Hooks/axios";
-import { setUser } from "../../redux/slice/authSlice";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -19,7 +18,7 @@ const Login = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
-		if (sessionStorage.getItem("HV_token")) navigate("/dashboard", { replace: true });
+		if (sessionStorage.getItem("krosshire_token")) navigate("/dashboard", { replace: true });
 	}, []);
 
 	const handleInputChange = (e) => {
@@ -36,32 +35,30 @@ const Login = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		// if(formData.email ==="" || formData.password==="") return toast.error("Pleas fill !!")
+		if(formData.email ==="" || formData.password==="") return toast.error("Pleas fill !!")
 		setIsLoading(true);
-		
+
 		const raw = {
 			email: formData.email,
 			password: formData.password,
 		};
-		navigate("/dashboard", { replace: true });
-		setIsLoading(false);
 
-		// axios
-		// 	.post("/user/login", raw)
-		// 	.then(({ data }) => {
-		// 		if (data.status === 1) {
-		// 			console.log(data.data)
-		// 			toast.success(data.message);
-		// 			setIsLoading(false);
-		// 			dispatch(setUser(data.data));
-		// 			navigate("/dashboard", { replace: true });
-		// 			axios.defaults.headers.Authorization = data.data.token.token;
-		// 		}
-		// 	})
-		// 	.catch(({ response: { data } }) => {
-		// 		setIsLoading(false);
-		// 		toast.error(data.message);
-		// 	});
+		axios
+			.post("/user/login", raw)
+			.then(({ data }) => {
+				if (data.status === 1) {
+					console.log(data.data)
+					toast.success(data.message);
+					setIsLoading(false);
+					dispatch(setUser(data.data));
+					navigate("/dashboard", { replace: true });
+					axios.defaults.headers.Authorization = data.data.token.token;
+				}
+			})
+			.catch(({ response: { data } }) => {
+				setIsLoading(false);
+				toast.error(data.message);
+			});
 	};
 
 	return (
