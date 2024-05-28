@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import leftArrow from "../../assets/svg/leftArrow.svg";
 import rightArrow from "../../assets/svg/rightArrow.svg";
 import Loading from "../../components/Hooks/Loading";
+import axios from "../../components/Hooks/axios";
 import AddTestimonialPopup from "./AddDeveloperPopup";
 import styles from "./Testimonial.module.scss";
+import { dateFormat } from "../../components/Functions/Date";
 
 function Testimonial() {
 	const [selectedCategory, setSelectedCategory] = useState("all");
@@ -16,16 +18,14 @@ function Testimonial() {
 
 	useEffect(() => {
 		setLoading(true);
-		// axios
-		// 	.get(`/carrier/list?itemPerPage=10&page=${page}`)
-		// 	.then(({ data }) => {
-		// 			setApplications(data.data);
-		// 			setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });
-		// 			setLoading(false);
-		// 		})
-		// 		.catch((e) => console.log(e));
-		setApplications(Array(10).fill(""));
-		setLoading(false);
+		axios
+			.get(`/testimonial/allTestimonial`)
+			.then(({ data }) => {
+				setApplications(data.data);
+				setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });
+				setLoading(false);
+			})
+			.catch((e) => console.log(e));
 	}, [page, reload]);
 
 	const filterTestimonial = () => {
@@ -38,14 +38,14 @@ function Testimonial() {
 
 	return (
 		<div className={styles.AdmissionForms}>
-			{addPopup && <AddTestimonialPopup {...{ setAddPopup }} />}
+			{addPopup && <AddTestimonialPopup {...{ setAddPopup, setReload }} />}
 
 			<h1>Testimonial</h1>
 
 			<div className={styles.ContentWrapper}>
 				<div className={styles.heading}>
 					<div className={styles.ButtonWrapper}>
-						<button
+						{/* <button
 							className={selectedCategory === "all" ? styles.active : ""}
 							onClick={() => setSelectedCategory("all")}>
 							All
@@ -65,7 +65,7 @@ function Testimonial() {
 
 						<button className={styles.refresh} onClick={() => setReload(Math.random())}>
 							Refresh
-						</button>
+						</button> */}
 					</div>
 
 					<button className={styles.AddDeveloper} onClick={() => setAddPopup(true)}>
@@ -75,7 +75,7 @@ function Testimonial() {
 
 				<div className={styles.subHeading}>
 					<div className={styles.userId}>Sl.No</div>
-					<div className={styles.Name}>Founder Name</div>
+					<div className={styles.Name}>Name</div>
 					<div className={styles.Profession}>Company Name</div>
 					<div className={styles.Description}>Description</div>
 					<div className={styles.Date}>Date</div>
@@ -92,22 +92,18 @@ function Testimonial() {
 								</div>
 
 								<div className={styles.Name}>
-									<img src="https://picsum.photos/100/100" alt="" />
-									<p>Rohan</p>
+									<img src={item?.image} alt="" />
+									<p>{item?.name}</p>
 								</div>
 
 								<div className={styles.Profession}>
-									<p>Mary Johnson</p>
+									<p>{item?.title}</p>
 								</div>
 
-								<div className={styles.Description}>
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus mollitia veniam natus
-									beatae voluptatibus quae repellat reiciendis rem, tempore consequatur sit quos odit. Nemo
-									error quod aliquam consectetur veritatis in nisi, asperiores unde sunt! At tempore nam quo
-								</div>
+								<div className={styles.Description}>{item?.description}</div>
 
 								<div className={styles.Date}>
-									<p>22-05-2024</p>
+									<p>{dateFormat(item?.createdAt)}</p>
 								</div>
 							</div>
 						))

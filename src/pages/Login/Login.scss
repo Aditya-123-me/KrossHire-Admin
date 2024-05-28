@@ -12,7 +12,7 @@
 		background-image: url("https://firebasestorage.googleapis.com/v0/b/hansrajventures-b8dea.appspot.com/o/Used_Images%2FBannerFreeconsultLoginBg%2FloginBackground.png?alt=media&token=700acb2f-1ff7-4075-ab0c-f77b62d1afbd");
 		background-size: cover;
 		background-position: center;
-		mix-blend-mode: screen; 
+		mix-blend-mode: screen;
 		background-blend-mode: luminosity;
 
 		.iconContainer {
@@ -211,7 +211,7 @@
 				z-index: 1;
 				overflow: hidden;
 				position: relative;
-				
+
 				&::after {
 					content: "";
 					position: absolute;
@@ -236,6 +236,14 @@
 				&:disabled {
 					cursor: default;
 					background: #959fa3;
+
+					&:hover {
+						scale: 1;
+
+						&::after {
+							opacity: 0;
+						}
+					}
 				}
 			}
 		}

@@ -18,11 +18,11 @@ const authSlice = createSlice({
 		},
 
 		setUser: (state, { payload }) => {
-			state.user = payload;
-			state.token = payload.token.token;
+			state.user = payload.user;
+			state.token = payload.token;
 
-			sessionStorage.setItem("krosshire_user", JSON.stringify(payload));
-			sessionStorage.setItem("krosshire_token", JSON.stringify(payload.token.token));
+			sessionStorage.setItem("krosshire_user", JSON.stringify(payload.user));
+			sessionStorage.setItem("krosshire_token", JSON.stringify(payload.token));
 		},
 
 		removeUser: (state) => {

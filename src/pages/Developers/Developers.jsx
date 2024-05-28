@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import leftArrow from "../../assets/svg/leftArrow.svg";
 import rightArrow from "../../assets/svg/rightArrow.svg";
 import Loading from "../../components/Hooks/Loading";
+import axios from "../../components/Hooks/axios";
 import AddDeveloperPopup from "./AddDeveloperPopup";
 import styles from "./Developers.module.scss";
 
@@ -16,16 +17,14 @@ function Developers() {
 
 	useEffect(() => {
 		setLoading(true);
-		// axios
-		// 	.get(`/carrier/list?itemPerPage=10&page=${page}`)
-		// 	.then(({ data }) => {
-		// 			setApplications(data.data);
-		// 			setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });
-		// 			setLoading(false);
-		// 		})
-		// 		.catch((e) => console.log(e));
-		setApplications(Array(10).fill(""));
-		setLoading(false);
+		axios
+			.get(`developerProfile/allDeveloperProfile`)
+			.then(({ data }) => {
+				setApplications(data.data);
+				setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });
+				setLoading(false);
+			})
+			.catch((e) => console.log(e));
 	}, [page, reload]);
 
 	const filterApplications = () => {
@@ -38,13 +37,13 @@ function Developers() {
 
 	return (
 		<div className={styles.AdmissionForms}>
-			{addPopup && <AddDeveloperPopup {...{ setAddPopup }} />}
+			{addPopup && <AddDeveloperPopup {...{ setAddPopup, setReload }} />}
 
 			<h1>Developers</h1>
 			<div className={styles.paymentHistory}>
 				<div className={styles.heading}>
 					<div className={styles.ButtonWrapper}>
-						<button
+						{/* <button
 							className={selectedCategory === "all" ? styles.active : ""}
 							onClick={() => setSelectedCategory("all")}>
 							All
@@ -60,7 +59,7 @@ function Developers() {
 							className={selectedCategory === "filter 2" ? styles.active : ""}
 							onClick={() => setSelectedCategory("filter 2")}>
 							Filter 2
-						</button>
+						</button> */}
 
 						<button className={styles.refresh} onClick={() => setReload(Math.random())}>
 							Refresh
@@ -77,7 +76,9 @@ function Developers() {
 					<div className={styles.Name}>Name</div>
 					<div className={styles.Profession}>Profession</div>
 					<div className={styles.Description}>Description</div>
-					<div className={styles.Date}>Date</div>
+					<div className={styles.Skills}>Skills</div>
+					<div className={styles.Exp}>Exp</div>
+					<div className={styles.Location}>Location</div>
 				</div>
 
 				<div className={styles.supportCards}>
@@ -86,33 +87,31 @@ function Developers() {
 					) : (
 						filterApplications().map((item, index) => (
 							<div className={styles.ApplicationCard} key={index}>
-								<div className={styles.userName}>
+								<div className={styles.userId}>
 									<p>{index + 1}</p>
 								</div>
 
 								<div className={styles.Name}>
-									<img src="https://picsum.photos/100/100" alt="" />
-									<p>Rohan</p>
+									<img src={item?.image} alt="" />
+									<p>{item?.name}</p>
 								</div>
 
 								<div className={styles.Profession}>
-									<p>UI/UX</p>
+									<p>{item?.profession}</p>
 								</div>
 
-								<div className={styles.Description}>
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus mollitia veniam natus
-									beatae voluptatibus quae repellat reiciendis rem, tempore consequatur sit quos odit. Nemo
-									error quod aliquam consectetur veritatis in nisi, asperiores unde sunt! At tempore nam quo
-									perspiciatis? Quia doloremque nesciunt molestias beatae aliquam accusamus consequuntur
-									nostrum? Perferendis eum odit dolore, voluptas aliquid fuga culpa ducimus quaerat, neque illo
-									eaque, provident et sequi aliquam vitae laboriosam animi nobis dolorem? Voluptas veniam iste
-									voluptatibus atque quaerat quisquam obcaecati eos modi dolores necessitatibus perferendis non
-									provident, ipsum fugiat architecto, nesciunt, magni ea. Adipisci, sed aliquid? Repellendus
-									odit tempore excepturi nesciunt a?
+								<div className={styles.Description}>{item?.description}</div>
+
+								<div className={styles.Skills}>
+									<p>{item?.skills.join(", ")}</p>
 								</div>
 
-								<div className={styles.Date}>
-									<p>22-05-2024</p>
+								<div className={styles.Exp}>
+									<p>{item?.exp} years</p>
+								</div>
+
+								<div className={styles.Location}>
+									<p>{item?.location}</p>
 								</div>
 							</div>
 						))

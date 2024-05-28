@@ -3,8 +3,8 @@ import { CgProfile } from "react-icons/cg";
 import { FaNoteSticky } from "react-icons/fa6";
 import { GrBlog } from "react-icons/gr";
 import { IoIosNotifications } from "react-icons/io";
-import { IoSearchOutline } from "react-icons/io5";
 import { MdDashboard, MdDeveloperMode, MdLogout, MdOutlineSupportAgent } from "react-icons/md";
+import { TbSection } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/Logo.png";
@@ -16,11 +16,6 @@ const DashboardWrapper = () => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 
-	// useEffect(() => {
-	// 	if (!sessionStorage.getItem("krosshire_token")) navigate("/", { replace: true });
-	// }, []);
-
-	// if (sessionStorage.getItem("krosshire_token"))
 	return (
 		<div className={styles.dashboardContainer}>
 			<div className={styles.sidebar}>
@@ -44,6 +39,13 @@ const DashboardWrapper = () => {
 					</div>
 
 					<div
+						className={`${styles.items} ${pathname === "/footer" ? styles.activeItem : ""}`}
+						onClick={() => navigate("/footer")}>
+						<TbSection />
+						<p>Footer</p>
+					</div>
+
+					<div
 						className={`${styles.items} ${pathname === "/testimonial" ? styles.activeItem : ""}`}
 						onClick={() => navigate("/testimonial")}>
 						<FaNoteSticky />
@@ -63,7 +65,7 @@ const DashboardWrapper = () => {
 						className={`${styles.items} ${pathname === "/contact" ? styles.activeItem : ""}`}
 						onClick={() => navigate("/contact")}>
 						<MdOutlineSupportAgent />
-						<p>Contact Us</p>
+						<p>Contact/Hire</p>
 					</div>
 
 					<div
@@ -80,14 +82,6 @@ const DashboardWrapper = () => {
 
 			<div className={styles.content}>
 				<div className={styles.navbar}>
-					<div className={styles.search}>
-						<label htmlFor="search">
-							<IoSearchOutline />
-						</label>
-
-						<input type="search" name="" id="search" />
-					</div>
-
 					<div className={styles.languageNotification}>
 						<select name="language" id="" className={styles.language}>
 							<option value="english">English</option>

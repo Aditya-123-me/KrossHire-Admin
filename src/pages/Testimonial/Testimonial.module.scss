@@ -106,12 +106,13 @@
 
 		.subHeading {
 			width: 100%;
-			height: 3.33vh;
+			height: 3.3rem;
 			flex-shrink: 0;
-			opacity: 0.7;
-			background: #ffffff;
+			opacity: 0.9;
+			background: var(--c1);
 			display: flex;
 			align-items: center;
+			padding: 0 1rem;
 
 			.userId {
 				flex: 0.4;
@@ -120,10 +121,10 @@
 				flex: 1;
 			}
 			.Profession {
-				flex: 1;
+				flex: 1.5;
 			}
 			.Description {
-				flex: 4;
+				flex: 3;
 			}
 			.Date {
 				flex: 1;
@@ -137,19 +138,18 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				color: var(--c3);
+				color: var(--c2);
 				font-family: var(--f2);
 				font-size: 1.1rem;
 				font-style: normal;
 				font-weight: 500;
-				line-height: 100%; /* 12px */
 				text-transform: uppercase;
 			}
 		}
 
 		.supportCards {
 			flex: 1;
-			padding-bottom: 1vh;
+			padding: 1rem 1rem 1rem 1rem;
 			overflow-y: scroll;
 		}
 
@@ -217,42 +217,43 @@
 	min-height: 6rem;
 	display: flex;
 	align-items: center;
-	border-bottom: 1px solid var(--c4);
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
 	cursor: pointer;
 	margin-bottom: 1rem;
+	border-radius: 1rem;
+	box-shadow: 0 0 5px 3px var(--c1v2);
 
 	& > div {
 		width: 100%;
 		height: 100%;
 		overflow: hidden;
 		padding: 0.5rem 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
 	}
 
 	.userName {
 		flex: 0.4;
-		img {
-			width: 1.52vw;
-			aspect-ratio: 1/1;
-			border-radius: 50%;
-		}
 	}
 	.Name {
 		flex: 1;
+		justify-content: flex-start;
 
 		img {
-			width: 2rem;
-			height: 2rem;
+			width: 3rem;
+			height: 3rem;
 			border-radius: 50%;
 		}
 	}
 	.Profession {
-		flex: 1;
+		flex: 1.5;
 	}
 	.Description {
-		flex: 4;
+		flex: 3;
 		text-align: justify;
 		font-size: 1rem;
 	}
@@ -260,25 +261,14 @@
 		flex: 1;
 	}
 
-	.userName,
-	.Name,
-	.Profession,
-	.Description,
-	.Date {
-		display: flex;
-		align-items: center;
-		gap: 0.4vw;
-		justify-content: center;
-
-		p {
-			color: var(--c4);
-			font-family: var(--f3);
-			font-size: 1rem;
-			font-style: normal;
-			font-weight: 400;
-			line-height: 1.85vh; /* 142.857% */
-			white-space: nowrap;
-		}
+	p {
+		color: var(--c4);
+		font-family: var(--f3);
+		font-size: 1rem;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 1.85vh; /* 142.857% */
+		white-space: nowrap;
 	}
 }
 
@@ -299,7 +289,7 @@
 		max-height: 90%;
 		background: var(--c4);
 		padding: 2rem 3rem;
-		border-radius: 0.5rem;
+		border-radius: 1rem;
 		overflow-y: scroll;
 
 		h2 {
@@ -322,8 +312,8 @@
 			}
 
 			img {
-				width: 5rem;
-				height: 5rem;
+				width: 6rem;
+				height: 6rem;
 				border-radius: 50%;
 			}
 
@@ -331,8 +321,8 @@
 				position: absolute;
 				bottom: 0;
 				left: 52%;
-				width: 1.5rem;
-				height: 1.5rem;
+				width: 2rem;
+				height: 2rem;
 				border-radius: 50%;
 				cursor: pointer;
 				background: var(--c1);
@@ -373,6 +363,11 @@
 				font-size: 1.2rem;
 				outline: none;
 				color: var(--c2);
+				transition: all 0.3s ease-in-out;
+
+				&:focus {
+					border-bottom: 2px solid var(--c1);
+				}
 			}
 
 			textarea {
@@ -384,6 +379,11 @@
 				font-size: 1.2rem;
 				outline: none;
 				color: var(--c2);
+				transition: all 0.3s ease-in-out;
+
+				&:focus {
+					border-bottom: 2px solid var(--c1);
+				}
 			}
 		}
 

@@ -14,6 +14,7 @@ import Developers from "./pages/Developers/Developers";
 import Login from "./pages/Login/Login";
 import Page404 from "./pages/Page404/Page404";
 import Testimonial from "./pages/Testimonial/Testimonial";
+import Footer from "./pages/Footer/Footer";
 
 function App() {
 	clearCacheData();
@@ -42,6 +43,7 @@ function App() {
 					<Route element={<DashboardWrapper />}>
 						<Route exact path="/dashboard" element={<Dashboard />} />
 						<Route exact path="/developers" element={<Developers />} />
+						<Route exact path="/footer" element={<Footer />} />
 						<Route exact path="/testimonial" element={<Testimonial />} />
 						<Route exact path="/contact" element={<ContactUS />} />
 						<Route exact path="/blogs" element={<Blogs />} />

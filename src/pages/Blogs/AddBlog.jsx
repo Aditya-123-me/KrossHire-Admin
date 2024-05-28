@@ -7,10 +7,19 @@ const AddBlog = ({ setAddPopup }) => {
 	const [color, setColor] = useState("#fff");
 	const [imageFile, setImageFile] = useState(null);
 	const inputRef = useRef();
+	const [title, setTitle] = useState("");
 
 	const handelSubmit = () => {
 		setAddPopup(false);
+		const formData = new FormData();
+		formData.append("title", title);
+		formData.append("image", imageFile);
+		formData.append("bgColor", bg);
+		formData.append("textColor", color);
+		formData.append("content", "Some Desc");
+		formData.append("authorId", "664dab0cb978b54b764bfa14");
 	};
+
 	return (
 		<div className={styles.AddBlog} onClick={() => setAddPopup(false)}>
 			<h1>Add Blog</h1>
@@ -18,7 +27,11 @@ const AddBlog = ({ setAddPopup }) => {
 			<div className={styles.WrapperContainer} onClick={(e) => e.stopPropagation()}>
 				<div className={styles.ImageWrapper} style={{ background: bg }}>
 					<div className={styles.Left}>
-						<textarea placeholder="Add your title" style={{ color: color }}></textarea>
+						<textarea
+							placeholder="Add your title"
+							style={{ color: color }}
+							value={title}
+							onChange={(e) => setTitle(e.target.value)}></textarea>
 
 						<div className={styles.Section}>
 							<div>

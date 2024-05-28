@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import leftArrow from "../../assets/svg/leftArrow.svg";
 import rightArrow from "../../assets/svg/rightArrow.svg";
+import { dateFormat } from "../../components/Functions/Date";
 import Loading from "../../components/Hooks/Loading";
+import axios from "../../components/Hooks/axios";
 import styles from "./Styles.module.scss";
 
 function ContactUS() {
-	const [selectedCategory, setSelectedCategory] = useState("all");
+	const [selectedCategory, setSelectedCategory] = useState("contact");
 	const [applications, setApplications] = useState([]);
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState({ totalCount: 0, totalPages: 1 });
@@ -14,25 +16,15 @@ function ContactUS() {
 
 	useEffect(() => {
 		setLoading(true);
-		// axios
-		// 	.get(`/carrier/list?itemPerPage=10&page=${page}`)
-		// 	.then(({ data }) => {
-		// 			setApplications(data.data);
-		// 			setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });
-		// 			setLoading(false);
-		// 		})
-		// 		.catch((e) => console.log(e));
-		setApplications(Array(10).fill(""));
-		setLoading(false);
-	}, [page, reload]);
-
-	const filterTestimonial = () => {
-		if (selectedCategory === "all") {
-			return applications;
-		} else {
-			return applications.filter((item) => item.gender === selectedCategory);
-		}
-	};
+		axios
+			.get(`contact_hire/allContact_hire?type=${selectedCategory}`)
+			.then(({ data }) => {
+				setApplications(data.data);
+				setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });
+				setLoading(false);
+			})
+			.catch((e) => console.log(e));
+	}, [page, reload, selectedCategory]);
 
 	return (
 		<div className={styles.AdmissionForms}>
@@ -42,21 +34,15 @@ function ContactUS() {
 				<div className={styles.heading}>
 					<div className={styles.ButtonWrapper}>
 						<button
-							className={selectedCategory === "all" ? styles.active : ""}
-							onClick={() => setSelectedCategory("all")}>
-							All
+							className={selectedCategory === "contact" ? styles.active : ""}
+							onClick={() => setSelectedCategory("contact")}>
+							Contact Form
 						</button>
 
 						<button
-							className={selectedCategory === "filter 1" ? styles.active : ""}
-							onClick={() => setSelectedCategory("filter 1")}>
-							Filter 1
-						</button>
-
-						<button
-							className={selectedCategory === "filter 2" ? styles.active : ""}
-							onClick={() => setSelectedCategory("filter 2")}>
-							Filter 2
+							className={selectedCategory === "hire developer" ? styles.active : ""}
+							onClick={() => setSelectedCategory("hire developer")}>
+							Hire Developer Form
 						</button>
 
 						<button className={styles.refresh} onClick={() => setReload(Math.random())}>
@@ -67,8 +53,10 @@ function ContactUS() {
 
 				<div className={styles.subHeading}>
 					<div className={styles.userId}>Sl.No</div>
-					<div className={styles.Name}>Founder Name</div>
-					<div className={styles.Profession}>Company Name</div>
+					<div className={styles.Name}>Name</div>
+					<div className={styles.Email}>Email</div>
+					<div className={styles.Phone}>Phone</div>
+					<div className={styles.Skills}>Skills</div>
 					<div className={styles.Description}>Description</div>
 					<div className={styles.Date}>Date</div>
 				</div>
@@ -77,30 +65,15 @@ function ContactUS() {
 					{loading ? (
 						<Loading height="10rem" width="10rem" />
 					) : (
-						filterTestimonial().map((item, index) => (
+						applications.map((item, index) => (
 							<div className={styles.ApplicationCard} key={index}>
-								<div className={styles.userName}>
-									<p>{index + 1}</p>
-								</div>
-
-								<div className={styles.Name}>
-									<img src="https://picsum.photos/100/100" alt="" />
-									<p>Rohan</p>
-								</div>
-
-								<div className={styles.Profession}>
-									<p>Mary Johnson</p>
-								</div>
-
-								<div className={styles.Description}>
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus mollitia veniam natus
-									beatae voluptatibus quae repellat reiciendis rem, tempore consequatur sit quos odit. Nemo
-									error quod aliquam consectetur veritatis in nisi, asperiores unde sunt! At tempore nam quo
-								</div>
-
-								<div className={styles.Date}>
-									<p>22-05-2024</p>
-								</div>
+								<div className={styles.userId}>{index + 1}</div>
+								<div className={styles.Name}>{item?.name}</div>
+								<div className={styles.Email}>{item?.email}</div>
+								<div className={styles.Phone}>{item?.phone}</div>
+								<div className={styles.Skills}>{item?.skills}</div>
+								<div className={styles.Description}>{item?.writeSomething}</div>
+								<div className={styles.Date}>{dateFormat(item?.createdAt)}</div>
 							</div>
 						))
 					)}

@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Logo from "../../assets/images/Logo.png";
 import eye from "../../assets/svg/eye.svg";
-import "./Login.scss";
-import { toast } from "react-toastify";
 import axios from "../../components/Hooks/axios";
+import { setUser } from "../../redux/slice/authSlice";
+import "./Login.scss";
 
 const Login = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+
 	const [formData, setFormData] = useState({
-		email: "",
-		password: "",
+		email: "admimn@gmail.com",
+		password: "123@admin",
 	});
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +37,7 @@ const Login = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		if(formData.email ==="" || formData.password==="") return toast.error("Pleas fill !!")
+		if (formData.email === "" || formData.password === "") return toast.error("Pleas fill !!");
 		setIsLoading(true);
 
 		const raw = {
@@ -44,15 +46,14 @@ const Login = () => {
 		};
 
 		axios
-			.post("/user/login", raw)
+			.post("/admin/login", raw)
 			.then(({ data }) => {
-				if (data.status === 1) {
-					console.log(data.data)
-					toast.success(data.message);
+				if (data.status) {
+					toast.success(data.msg);
 					setIsLoading(false);
 					dispatch(setUser(data.data));
 					navigate("/dashboard", { replace: true });
-					axios.defaults.headers.Authorization = data.data.token.token;
+					axios.defaults.headers.Authorization = data.data.token;
 				}
 			})
 			.catch(({ response: { data } }) => {
