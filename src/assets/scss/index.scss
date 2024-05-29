@@ -71,15 +71,15 @@ input[type="number"] {
 	--f5: "Open Sans", sans-serif;
 	--f6: "Roboto", sans-serif;
 
-	--c1: #FF621F;
-	--c1v2: #FF621F42;
+	--c1: #ff621f;
+	--c1v2: #ff621f42;
 	--c2: #fff;
 	--c3: #000;
-	--c4: #3B3C4A;
+	--c4: #3b3c4a;
 	--c4v2: rgba(32, 34, 53, 0.87);
-	--c5: #191B1C;
+	--c5: #191b1c;
 
-	--b1: rgba(37, 46, 54, 0.50);
+	--b1: rgba(37, 46, 54, 0.5);
 	--b2: rgba(255, 255, 255, 0.06);
 
 	--lg1: linear-gradient(112deg, var(--c1) 4.93%, #fff 256.79%);
@@ -87,6 +87,14 @@ input[type="number"] {
 
 	--Base_Font_Size: 100%;
 	font-size: var(--Base_Font_Size);
+}
+
+.quill {
+	// height: 100% !important;
+	// overflow: hidden;
+	
+	.ql-container {
+	}
 }
 
 // 850px switch mobile view
