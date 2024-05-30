@@ -53,9 +53,14 @@ const DashboardWrapper = () => {
 					</div>
 
 					<div
-						className={`${styles.items} ${
-							pathname === "/blogs" || pathname === "/add-blog" ? styles.activeItem : ""
-						}`}
+						className={`${styles.items} ${pathname === "/requests" ? styles.activeItem : ""}`}
+						onClick={() => navigate("/requests")}>
+						<FaNoteSticky />
+						<p>Requests</p>
+					</div>
+
+					<div
+						className={`${styles.items} ${pathname === "/blogs" || pathname === "/add-blog" ? styles.activeItem : ""}`}
 						onClick={() => navigate("/blogs")}>
 						<GrBlog />
 						<p>Blogs</p>
@@ -66,6 +71,11 @@ const DashboardWrapper = () => {
 						onClick={() => navigate("/contact")}>
 						<MdOutlineSupportAgent />
 						<p>Contact/Hire</p>
+					</div>
+
+					<div className={`${styles.items} ${pathname === "/query" ? styles.activeItem : ""}`} onClick={() => navigate("/query")}>
+						<MdOutlineSupportAgent />
+						<p>Query</p>
 					</div>
 
 					<div

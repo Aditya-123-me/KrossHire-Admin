@@ -15,6 +15,8 @@ import Login from "./pages/Login/Login";
 import Page404 from "./pages/Page404/Page404";
 import Testimonial from "./pages/Testimonial/Testimonial";
 import Footer from "./pages/Footer/Footer";
+import Query from "./pages/DeveloperQuery/Query";
+import Requests from "./pages/RequestsPage/Requests";
 
 function App() {
 	clearCacheData();
@@ -46,6 +48,8 @@ function App() {
 						<Route exact path="/footer" element={<Footer />} />
 						<Route exact path="/testimonial" element={<Testimonial />} />
 						<Route exact path="/contact" element={<ContactUS />} />
+						<Route exact path="/query" element={<Query />} />
+						<Route exact path="/requests" element={<Requests />} />
 						<Route exact path="/blogs" element={<Blogs />} />
 						<Route exact path="/add-blog" element={<AddBlog />} />
 					</Route>
