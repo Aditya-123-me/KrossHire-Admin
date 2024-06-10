@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import leftArrow from "../../assets/svg/leftArrow.svg";
 import rightArrow from "../../assets/svg/rightArrow.svg";
 import Loading from "../../components/Hooks/Loading";
 import axios from "../../components/Hooks/axios";
+import { useDeleteAlert } from "../../components/Hooks/useDeleteAlert";
 import styles from "./Styles.module.scss";
 
 function Blogs() {
@@ -26,6 +29,19 @@ function Blogs() {
 			})
 			.catch((e) => console.log(e));
 	}, [page, reload]);
+
+	const handelDelete = async (id) => {
+		const confirmed = await useDeleteAlert();
+		if (!confirmed) return;
+
+		axios
+			.delete(`/blog/delete/${id}`)
+			.then(({ data }) => {
+				toast.success("Successfully Deleted !");
+				setReload(Math.random());
+			})
+			.catch((e) => console.log(e));
+	};
 
 	return (
 		<div className={styles.AdmissionForms}>
@@ -74,6 +90,9 @@ function Blogs() {
 								>
 									<img src={data?.image} alt="" />
 									<h2 style={{ color: data?.textColor }}>{data?.title}</h2>
+									<p onClick={() => handelDelete(data._id)}>
+										<FaTrashAlt />
+									</p>
 								</div>
 							</div>
 						))}

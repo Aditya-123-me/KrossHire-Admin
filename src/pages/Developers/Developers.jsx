@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 import leftArrow from "../../assets/svg/leftArrow.svg";
 import rightArrow from "../../assets/svg/rightArrow.svg";
 import Loading from "../../components/Hooks/Loading";
 import axios from "../../components/Hooks/axios";
+import { useDeleteAlert } from "../../components/Hooks/useDeleteAlert";
 import AddDeveloperPopup from "./AddDeveloperPopup";
 import styles from "./Developers.module.scss";
+import EditDeveloperPopup from "./EditDeveloperPopup";
 
 function Developers() {
 	const [selectedCategory, setSelectedCategory] = useState("all");
@@ -14,6 +18,7 @@ function Developers() {
 	const [reload, setReload] = useState(0);
 	const [loading, setLoading] = useState(true);
 	const [addPopup, setAddPopup] = useState(false);
+	const [activeData, setActiveData] = useState(null)
 
 	useEffect(() => {
 		setLoading(true);
@@ -35,9 +40,23 @@ function Developers() {
 		}
 	};
 
+	const handelDelete = async (id) => {
+		const confirmed = await useDeleteAlert();
+		if (!confirmed) return;
+
+		axios
+			.delete(`/developerProfile/delete/${id}`)
+			.then(({ data }) => {
+				toast.success("Successfully Deleted !");
+				setReload(Math.random());
+			})
+			.catch((e) => console.log(e));
+	};
+
 	return (
 		<div className={styles.AdmissionForms}>
 			{addPopup && <AddDeveloperPopup {...{ setAddPopup, setReload }} />}
+			{activeData && <EditDeveloperPopup {...{ activeData, setActiveData, setReload }} />}
 
 			<h1>Developers</h1>
 			<div className={styles.paymentHistory}>
@@ -79,6 +98,7 @@ function Developers() {
 					<div className={styles.Skills}>Skills</div>
 					<div className={styles.Exp}>Exp</div>
 					<div className={styles.Location}>Location</div>
+					<div className={styles.Actions}>Actions</div>
 				</div>
 
 				<div className={styles.supportCards}>
@@ -112,6 +132,15 @@ function Developers() {
 
 								<div className={styles.Location}>
 									<p>{item?.location}</p>
+								</div>
+
+								<div className={styles.Actions}>
+									<p onClick={() => setActiveData(item)}>
+										<FaEdit />
+									</p>
+									<p onClick={() => handelDelete(item._id)}>
+										<FaTrashAlt />
+									</p>
 								</div>
 							</div>
 						))

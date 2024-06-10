@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import leftArrow from "../../assets/svg/leftArrow.svg";
 import rightArrow from "../../assets/svg/rightArrow.svg";
+import { dateFormat } from "../../components/Functions/Date";
 import Loading from "../../components/Hooks/Loading";
 import axios from "../../components/Hooks/axios";
+import { useDeleteAlert } from "../../components/Hooks/useDeleteAlert";
 import AddTestimonialPopup from "./AddDeveloperPopup";
 import styles from "./Testimonial.module.scss";
-import { dateFormat } from "../../components/Functions/Date";
+import EditTestimonialPopup from "./EditTestimonialPopup";
 
 function Testimonial() {
 	const [selectedCategory, setSelectedCategory] = useState("all");
@@ -15,6 +19,7 @@ function Testimonial() {
 	const [reload, setReload] = useState(0);
 	const [loading, setLoading] = useState(true);
 	const [addPopup, setAddPopup] = useState(false);
+	const [activeData, setActiveData] = useState(null);
 
 	useEffect(() => {
 		setLoading(true);
@@ -36,9 +41,23 @@ function Testimonial() {
 		}
 	};
 
+	const handelDelete = async (id) => {
+		const confirmed = await useDeleteAlert();
+		if (!confirmed) return;
+
+		axios
+			.delete(`/testimonial/delete/${id}`)
+			.then(({ data }) => {
+				toast.success("Successfully Deleted !");
+				setReload(Math.random());
+			})
+			.catch((e) => console.log(e));
+	};
+
 	return (
 		<div className={styles.AdmissionForms}>
 			{addPopup && <AddTestimonialPopup {...{ setAddPopup, setReload }} />}
+			{activeData && <EditTestimonialPopup {...{ activeData, setActiveData, setReload }} />}
 
 			<h1>Testimonial</h1>
 
@@ -79,6 +98,7 @@ function Testimonial() {
 					<div className={styles.Profession}>Company Name</div>
 					<div className={styles.Description}>Description</div>
 					<div className={styles.Date}>Date</div>
+					<div className={styles.Actions}>Actions</div>
 				</div>
 
 				<div className={styles.supportCards}>
@@ -104,6 +124,15 @@ function Testimonial() {
 
 								<div className={styles.Date}>
 									<p>{dateFormat(item?.createdAt)}</p>
+								</div>
+
+								<div className={styles.Actions}>
+									<p onClick={() => setActiveData(item)}>
+										<FaEdit />
+									</p>
+									<p onClick={() => handelDelete(item._id)}>
+										<FaTrashAlt />
+									</p>
 								</div>
 							</div>
 						))

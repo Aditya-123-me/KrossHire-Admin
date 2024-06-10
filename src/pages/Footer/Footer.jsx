@@ -78,7 +78,9 @@ const Footer = () => {
 				setExp(data.data?.exp);
 				setSkills(data.data?.skills);
 			})
-			.catch(({ response }) => {
+			.catch((response) => {
+				if (response.message) toast.error(response.message);
+				setIsLoading(false);
 				console.log("Error => ", response);
 			});
 	};
@@ -160,7 +162,7 @@ const Footer = () => {
 					</div>
 					<div className={styles.Image}>
 						<img src={image4 ? URL.createObjectURL(image4) : footerData?.image4} alt="" />
-						<input type="file" ref={imageRef4} onChange={(e) => setImage1(e.target.files[0])} />
+						<input type="file" ref={imageRef4} onChange={(e) => setImage4(e.target.files[0])} />
 						<button onClick={() => imageRef4.current.click()}>
 							<FaCamera />
 						</button>

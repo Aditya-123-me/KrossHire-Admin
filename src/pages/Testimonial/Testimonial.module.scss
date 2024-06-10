@@ -129,12 +129,16 @@
 			.Date {
 				flex: 1;
 			}
+			.Actions {
+				flex: 0.5;
+			}
 
 			.userId,
 			.Name,
 			.Profession,
 			.Description,
-			.Date {
+			.Date,
+			.Actions {
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -259,6 +263,20 @@
 	}
 	.Date {
 		flex: 1;
+	}
+	.Actions {
+		flex: 0.5;
+		gap: 1rem;
+
+		p {
+			cursor: pointer;
+			font-size: 1.5rem;
+			transition: all 0.3s ease-in-out;
+
+			&:hover {
+				color: var(--c1);
+			}
+		}
 	}
 
 	p {

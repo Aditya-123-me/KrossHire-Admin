@@ -5,7 +5,10 @@ import rightArrow from "../../assets/svg/rightArrow.svg";
 import { dateFormat } from "../../components/Functions/Date";
 import Loading from "../../components/Hooks/Loading";
 import axios from "../../components/Hooks/axios";
+import { FaTrashAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 import styles from "./Query.module.scss";
+import { useDeleteAlert } from "../../components/Hooks/useDeleteAlert";
 
 function Query() {
 	const [selectedCategory, setSelectedCategory] = useState("contact");
@@ -34,6 +37,19 @@ function Query() {
 			})
 			.catch((e) => console.log(e));
 	}, [page, reload, filter]);
+
+	const handelDelete = async (id) => {
+		const confirmed = await useDeleteAlert();
+		if (!confirmed) return;
+
+		axios
+			.delete(`/query/delete/${id}`)
+			.then(({ data }) => {
+				toast.success("Successfully Deleted !");
+				setReload(Math.random());
+			})
+			.catch((e) => console.log(e));
+	};
 
 	return (
 		<div className={styles.AdmissionForms}>
@@ -78,6 +94,7 @@ function Query() {
 					<div className={styles.Skills}>File</div>
 					<div className={styles.Description}>Project Brief</div>
 					<div className={styles.Date}>Date</div>
+					<div className={styles.Actions}>Actions</div>
 				</div>
 
 				<div className={styles.supportCards}>
@@ -101,6 +118,11 @@ function Query() {
 								</div>
 								<div className={styles.Description}>{item?.projectBrief}</div>
 								<div className={styles.Date}>{dateFormat(item?.createdAt)}</div>
+								<div className={styles.Actions}>
+									<p onClick={() => handelDelete(item._id)}>
+										<FaTrashAlt />
+									</p>
+								</div>
 							</div>
 						))
 					)}

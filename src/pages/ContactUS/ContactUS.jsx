@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { FaTrashAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 import leftArrow from "../../assets/svg/leftArrow.svg";
 import rightArrow from "../../assets/svg/rightArrow.svg";
 import { dateFormat } from "../../components/Functions/Date";
 import Loading from "../../components/Hooks/Loading";
 import axios from "../../components/Hooks/axios";
+import { useDeleteAlert } from "../../components/Hooks/useDeleteAlert";
 import styles from "./Styles.module.scss";
 
 function ContactUS() {
@@ -25,6 +28,19 @@ function ContactUS() {
 			})
 			.catch((e) => console.log(e));
 	}, [page, reload, selectedCategory]);
+
+	const handelDelete = async (id) => {
+		const confirmed = await useDeleteAlert();
+		if (!confirmed) return;
+
+		axios
+			.delete(`/contact_hire/delete/${id}`)
+			.then(({ data }) => {
+				toast.success("Successfully Deleted !");
+				setReload(Math.random());
+			})
+			.catch((e) => console.log(e));
+	};
 
 	return (
 		<div className={styles.AdmissionForms}>
@@ -59,6 +75,7 @@ function ContactUS() {
 					<div className={styles.Skills}>Skills</div>
 					<div className={styles.Description}>Description</div>
 					<div className={styles.Date}>Date</div>
+					<div className={styles.Actions}>Actions</div>
 				</div>
 
 				<div className={styles.supportCards}>
@@ -74,6 +91,11 @@ function ContactUS() {
 								<div className={styles.Skills}>{item?.skills}</div>
 								<div className={styles.Description}>{item?.writeSomething}</div>
 								<div className={styles.Date}>{dateFormat(item?.createdAt)}</div>
+								<div className={styles.Actions}>
+									<p onClick={() => handelDelete(item._id)}>
+										<FaTrashAlt />
+									</p>
+								</div>
 							</div>
 						))
 					)}
