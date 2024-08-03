@@ -10,6 +10,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/Logo.png";
 import { removeUser } from "../../redux/slice/authSlice";
 import styles from "./DashboardWrapper.module.scss";
+import { RiHomeOfficeFill } from "react-icons/ri";
 
 const DashboardWrapper = () => {
 	const navigate = useNavigate();
@@ -31,11 +32,17 @@ const DashboardWrapper = () => {
 						<p>Dashboard</p>
 					</div>
 
-					<div
+					{/* <div
 						className={`${styles.items} ${pathname === "/developers" ? styles.activeItem : ""}`}
 						onClick={() => navigate("/developers")}>
 						<MdDeveloperMode />
 						<p>Developers</p>
+					</div> */}
+					<div
+						className={`${styles.items} ${pathname === "/jobs" ? styles.activeItem : ""}`}
+						onClick={() => navigate("/jobs")}>
+						<RiHomeOfficeFill />
+						<p>Jobs</p>
 					</div>
 
 					<div

@@ -17,6 +17,7 @@ import Testimonial from "./pages/Testimonial/Testimonial";
 import Footer from "./pages/Footer/Footer";
 import Query from "./pages/DeveloperQuery/Query";
 import Requests from "./pages/RequestsPage/Requests";
+import Jobs from "./pages/Job/Jobs";
 
 function App() {
 	clearCacheData();
@@ -44,7 +45,8 @@ function App() {
 
 					<Route element={<DashboardWrapper />}>
 						<Route exact path="/dashboard" element={<Dashboard />} />
-						<Route exact path="/developers" element={<Developers />} />
+						{/* <Route exact path="/developers" element={<Developers />} /> */}
+						<Route exact path="/jobs" element={<Jobs />} />
 						<Route exact path="/footer" element={<Footer />} />
 						<Route exact path="/testimonial" element={<Testimonial />} />
 						<Route exact path="/contact" element={<ContactUS />} />

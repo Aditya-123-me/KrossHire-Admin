@@ -69,7 +69,7 @@ const Login = () => {
 					<div className="logo">
 						<img src={Logo} alt="" />
 					</div>
-					<h3>Welcome To Krosshire</h3>
+					<h3>Welcome To AcrossTek</h3>
 				</div>
 			</div>
 
