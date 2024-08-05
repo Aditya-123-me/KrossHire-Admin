@@ -25,20 +25,13 @@ function Jobs() {
 		axios
 			.get(`jobPost/allJobs`)
 			.then(({ data }) => {
+				console.log(data)
 				setApplications(data.data);
-				setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });
+				setTotal({ totalCount: data.totalJobData, totalPages: data.totalPage });
 				setLoading(false);
 			})
 			.catch((e) => console.log(e));
 	}, [page, reload]);
-
-	const filterApplications = () => {
-		if (selectedCategory === "all") {
-			return applications;
-		} else {
-			return applications.filter((item) => item.gender === selectedCategory);
-		}
-	};
 
 	const handelDelete = async (id) => {
 		const confirmed = await useDeleteAlert();
@@ -102,7 +95,7 @@ function Jobs() {
 					{loading ? (
 						<Loading height="10rem" width="10rem" />
 					) : (
-						filterApplications().map((item, index) => (
+						applications.map((item, index) => (
 							<div className={styles.ApplicationCard} key={index}>
 								<div className={styles.userId}>
 									<p>{index + 1}</p>
@@ -133,34 +126,34 @@ function Jobs() {
 					)}
 				</div>
 
-				<div className={styles.pagination}>
-					<div className={styles.records}>{`Showing 10 of ${total.totalCount} users in ${page} page`}</div>
-					<div className={styles.pageButtons}>
-						<button
-							className={styles.leftArrow}
-							disabled={page === 1}
-							onClick={() => {
-								setSelectedCategory("all");
-								setPage(page - 1);
-							}}>
-							{page > 1 && <img src={leftArrow} alt="" />}
-						</button>
+				{applications?.length > 0 && (
+					<div className={styles.pagination}>
+						<div className={styles.records}>{`Showing ${applications.length} of ${total.totalCount} users in page ${page} `}</div>
+						<div className={styles.pageButtons}>
+							<button
+								className={styles.leftArrow}
+								disabled={page === 1}
+								onClick={() => {
+									setPage(page - 1);
+								}}>
+								{page > 1 && <img src={leftArrow} alt="" />}
+							</button>
 
-						<div className={styles.pages}>
-							<div className={`${styles.buttons} ${styles.active}`}>{page}</div>
+							<div className={styles.pages}>
+								<div className={`${styles.buttons} ${styles.active}`}>{page}</div>
+							</div>
+
+							<button
+								className={styles.rightArrow}
+								disabled={page === total.totalPages}
+								onClick={() => {
+									setPage(page + 1);
+								}}>
+								{page < total.totalPages && <img src={rightArrow} alt="" />}
+							</button>
 						</div>
-
-						<button
-							className={styles.rightArrow}
-							disabled={page === total.totalPages}
-							onClick={() => {
-								setSelectedCategory("all");
-								setPage(page + 1);
-							}}>
-							{total.totalPages === page ? "" : <img src={rightArrow} alt="" />}
-						</button>
 					</div>
-				</div>
+				)}
 			</div>
 		</div>
 	);

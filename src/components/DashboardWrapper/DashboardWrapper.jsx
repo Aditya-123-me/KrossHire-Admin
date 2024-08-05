@@ -3,14 +3,13 @@ import { CgProfile } from "react-icons/cg";
 import { FaNoteSticky } from "react-icons/fa6";
 import { GrBlog } from "react-icons/gr";
 import { IoIosNotifications } from "react-icons/io";
-import { MdDashboard, MdDeveloperMode, MdLogout, MdOutlineSupportAgent } from "react-icons/md";
+import { MdDashboard, MdLogout, MdOutlineSupportAgent, MdWork } from "react-icons/md";
 import { TbSection } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/Logo.png";
 import { removeUser } from "../../redux/slice/authSlice";
 import styles from "./DashboardWrapper.module.scss";
-import { RiHomeOfficeFill } from "react-icons/ri";
 
 const DashboardWrapper = () => {
 	const navigate = useNavigate();
@@ -38,10 +37,9 @@ const DashboardWrapper = () => {
 						<MdDeveloperMode />
 						<p>Developers</p>
 					</div> */}
-					<div
-						className={`${styles.items} ${pathname === "/jobs" ? styles.activeItem : ""}`}
-						onClick={() => navigate("/jobs")}>
-						<RiHomeOfficeFill />
+					<div className={`${styles.items} ${pathname === "/jobs" ? styles.activeItem : ""}`} onClick={() => navigate("/jobs")}>
+						{/* <RiHomeOfficeFill /> */}
+						<MdWork />
 						<p>Jobs</p>
 					</div>
 
