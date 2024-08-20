@@ -125,6 +125,31 @@
 			}
 		}
 
+		.TagWrapper {
+			height: auto;
+			width: 100%;
+			padding: 2rem;
+
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1rem;
+
+			h1 {
+				margin: 0;
+			}
+
+			.rti--container {
+				border: 10px solid red;
+			}
+			#tag-input {
+				border: 10px solid rgb(30, 231, 97);
+			}
+			textarea {
+				border: 1px solid red;
+			}
+		}
+
 		.ContentWrapper {
 			width: 100%;
 			margin-bottom: 2rem;
@@ -274,6 +299,27 @@
 .TextBox {
 	margin-bottom: 2rem;
 	border-bottom: 2px solid var(--c1);
+	position: relative;
+
+	.Remove {
+		position: absolute;
+		top: 1rem;
+		right: 2rem;
+		z-index: 5;
+		background-color: rgb(12, 13, 14);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 3px;
+		border-radius: 0.4rem;
+		cursor: pointer;
+		transition: all ease-in-out 0.3s;
+
+		&:hover {
+			opacity: 0.9;
+			scale: 0.9;
+		}
+	}
 }
 
 .ImageBox {
@@ -281,6 +327,27 @@
 	padding-bottom: 2rem;
 	margin-bottom: 2rem;
 	border-bottom: 2px solid var(--c1);
+	position: relative;
+
+	.Remove {
+		position: absolute;
+		top: 2rem;
+		right: 3rem;
+		z-index: 5;
+		background-color: rgb(12, 13, 14);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 3px;
+		border-radius: 0.4rem;
+		cursor: pointer;
+		transition: all ease-in-out 0.3s;
+
+		&:hover {
+			opacity: 0.9;
+			scale: 0.9;
+		}
+	}
 
 	.Image {
 		width: 100%;

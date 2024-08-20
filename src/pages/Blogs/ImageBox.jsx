@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import { RxCross2 } from "react-icons/rx";
 import FooterBG from "../../assets/images/FooterBG.webp";
 import styles from "./AddBlog.module.scss";
 
-const ImageBox = ({ index, updateBoxData }) => {
+const ImageBox = ({ id, updateBoxData, removeBox }) => {
 	const inputRef = useRef();
 	const [altText, setAltText] = useState("");
 	const [imageFile, setImageFile] = useState(null);
@@ -10,8 +11,8 @@ const ImageBox = ({ index, updateBoxData }) => {
 
 	useEffect(() => {
 		const imageData = `<img src="${base64Image}" alt="${altText}" />`;
-		updateBoxData(index, imageData);
-	}, [imageFile, base64Image, altText, index, updateBoxData]);
+		updateBoxData(id, imageData);
+	}, [base64Image, altText, id, updateBoxData]);
 
 	const handleFileChange = (e) => {
 		const file = e.target.files[0];
@@ -24,11 +25,13 @@ const ImageBox = ({ index, updateBoxData }) => {
 			};
 			reader.readAsDataURL(file);
 		}
-
 	};
 
 	return (
 		<div className={styles.ImageBox}>
+			<div className={styles.Remove} onClick={() => removeBox(id)}>
+				<RxCross2 size={"2rem"} color="#fff" />
+			</div>
 			<div className={styles.Image}>
 				<img src={imageFile ? URL.createObjectURL(imageFile) : FooterBG} alt={altText} />
 				<input type="file" ref={inputRef} style={{ display: "none" }} onChange={handleFileChange} />
