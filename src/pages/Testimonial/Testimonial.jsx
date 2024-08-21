@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 import leftArrow from "../../assets/svg/leftArrow.svg";
 import rightArrow from "../../assets/svg/rightArrow.svg";
 import { dateFormat } from "../../components/Functions/Date";
@@ -8,8 +8,9 @@ import Loading from "../../components/Hooks/Loading";
 import axios from "../../components/Hooks/axios";
 import { useDeleteAlert } from "../../components/Hooks/useDeleteAlert";
 import AddTestimonialPopup from "./AddDeveloperPopup";
-import styles from "./Testimonial.module.scss";
 import EditTestimonialPopup from "./EditTestimonialPopup";
+import styles from "./Testimonial.module.scss";
+import { useSelector } from "react-redux";
 
 function Testimonial() {
 	const [selectedCategory, setSelectedCategory] = useState("all");
@@ -21,17 +22,19 @@ function Testimonial() {
 	const [addPopup, setAddPopup] = useState(false);
 	const [activeData, setActiveData] = useState(null);
 
+	const { language } = useSelector((state) => state.auth);
+
 	useEffect(() => {
 		setLoading(true);
 		axios
-			.get(`/testimonial/allTestimonial`)
+			.get(`/testimonial/allTestimonial?type=${language}`)
 			.then(({ data }) => {
 				setApplications(data.data);
 				setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });
 				setLoading(false);
 			})
 			.catch((e) => console.log(e));
-	}, [page, reload]);
+	}, [page, reload, language]);
 
 	const filterTestimonial = () => {
 		if (selectedCategory === "all") {

@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CgProfile } from "react-icons/cg";
 import { FaNoteSticky } from "react-icons/fa6";
 import { GrBlog } from "react-icons/gr";
 import { IoIosNotifications } from "react-icons/io";
 import { MdDashboard, MdLogout, MdOutlineSupportAgent, MdWork } from "react-icons/md";
 import { TbSection } from "react-icons/tb";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../../assets/images/Logo.png";
-import { removeUser } from "../../redux/slice/authSlice";
+import { fetchLanguageFromLocal, removeUser, setLanguage } from "../../redux/slice/authSlice";
 import styles from "./DashboardWrapper.module.scss";
 
 const DashboardWrapper = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
+	const { language } = useSelector((state) => state.auth);
+
+	useEffect(() => {
+		dispatch(fetchLanguageFromLocal());
+	}, []);
 
 	return (
 		<div className={styles.dashboardContainer}>
@@ -98,9 +103,14 @@ const DashboardWrapper = () => {
 			<div className={styles.content}>
 				<div className={styles.navbar}>
 					<div className={styles.languageNotification}>
-						<select name="language" id="" className={styles.language}>
-							<option value="english">English</option>
-							<option value="hindi">Hindi</option>
+						<select
+							name="language"
+							id=""
+							className={styles.language}
+							value={language}
+							onChange={(e) => dispatch(setLanguage(e.target.value))}>
+							<option value="English">English</option>
+							<option value="German">German</option>
 						</select>
 
 						<div className={styles.notification}>

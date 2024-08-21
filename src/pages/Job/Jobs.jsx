@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import leftArrow from "../../assets/svg/leftArrow.svg";
 import rightArrow from "../../assets/svg/rightArrow.svg";
@@ -19,19 +20,20 @@ function Jobs() {
 	const [loading, setLoading] = useState(true);
 	const [addPopup, setAddPopup] = useState(false);
 	const [activeData, setActiveData] = useState(null);
+	const { language } = useSelector((state) => state.auth);
 
 	useEffect(() => {
 		setLoading(true);
 		axios
-			.get(`jobPost/allJobs`)
+			.get(`jobPost/allJobs?language=${language}`)
 			.then(({ data }) => {
-				console.log(data)
+				console.log(data);
 				setApplications(data.data);
 				setTotal({ totalCount: data.totalJobData, totalPages: data.totalPage });
 				setLoading(false);
 			})
 			.catch((e) => console.log(e));
-	}, [page, reload]);
+	}, [page, reload, language]);
 
 	const handelDelete = async (id) => {
 		const confirmed = await useDeleteAlert();

@@ -10,14 +10,13 @@ import AddBlog from "./pages/Blogs/AddBlog";
 import Blogs from "./pages/Blogs/Blogs";
 import ContactUS from "./pages/ContactUS/ContactUS";
 import Dashboard from "./pages/DashboardIndex/DashboardComp";
-import Developers from "./pages/Developers/Developers";
+import Query from "./pages/DeveloperQuery/Query";
+import Footer from "./pages/Footer/Footer";
+import Jobs from "./pages/Job/Jobs";
 import Login from "./pages/Login/Login";
 import Page404 from "./pages/Page404/Page404";
-import Testimonial from "./pages/Testimonial/Testimonial";
-import Footer from "./pages/Footer/Footer";
-import Query from "./pages/DeveloperQuery/Query";
 import Requests from "./pages/RequestsPage/Requests";
-import Jobs from "./pages/Job/Jobs";
+import Testimonial from "./pages/Testimonial/Testimonial";
 
 function App() {
 	clearCacheData();

@@ -91,7 +91,13 @@ const AddBlog = () => {
 	const handelSubmit = () => {
 		if (!title || !smallText || !blogData) return toast.error("Please fill data !!");
 
-		if (activeAuthId === "") return toast.error("Please select author");
+		if (activeAuthId === "" && authorName === "") return toast.error("Please select author");
+		console.log(blogData);
+
+		if (blogData.length === 0) {
+			toast.warn("Please add at least One textBox or Image Box");
+			return;
+		}
 
 		setIsLoading(true);
 		const formData = new FormData();
@@ -114,7 +120,6 @@ const AddBlog = () => {
 			.post(`/blog/create`, formData)
 			.then(({ data }) => {
 				toast.success("Blog uploaded successfully !!");
-				setIsLoading(false);
 				setBg("#ff621f");
 				setColor("#fff");
 				setImageFile(null);
@@ -131,7 +136,8 @@ const AddBlog = () => {
 			})
 			.catch(({ response }) => {
 				console.log("Error => ", response);
-			});
+			})
+			.finally(() => setIsLoading(false));
 	};
 
 	return (

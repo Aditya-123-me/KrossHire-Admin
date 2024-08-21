@@ -4,9 +4,9 @@ let token = sessionStorage.getItem("krosshire_token");
 if (token) token = JSON.parse(token);
 
 const Instance = axios.create({
-	// baseURL: "http://localhost:8521/api",
+	baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`,
 	// baseURL: "https://krosshire-be.vercel.app/api",
-	baseURL: "https://www.acrosstek.com/api",
+	// baseURL: "https://www.acrosstek.com/api",
 	headers: {
 		Authorization: token,
 	},

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaCamera, FaRegClock } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 import { TagsInput } from "react-tag-input-component";
 import { toast } from "react-toastify";
 import Loading from "../../components/Hooks/Loading";
@@ -28,12 +29,13 @@ const Footer = () => {
 	const [reload, setReload] = useState(0);
 	const [footerData, setFooterData] = useState({});
 
+	const { language } = useSelector((state) => state.auth);
+
 	useEffect(() => {
 		axios
-			.get(`/footer/oneFooter/6655a24b2efcc4ff81abe112`)
+			.get(`/footer/oneFooter?language=${language}`)
 			.then(({ data }) => {
 				setFooterData(data.data);
-
 				setName(data.data?.name);
 				setProfession(data.data?.profession);
 				setDescription(data.data?.description);
@@ -44,14 +46,14 @@ const Footer = () => {
 			.catch(({ response }) => {
 				console.log("Error => ", response);
 			});
-	}, [reload]);
+	}, [reload, language]);
 
 	const handelSubmit = () => {
 		if (!name || !profession || !description || !location || !exp || !skills) return toast.error("Please all data !!");
 		setIsLoading(true);
 
 		const formData = new FormData();
-		formData.append("id", "6655a24b2efcc4ff81abe112");
+		formData.append("id", "66c5ac2a9ca7d1ce34152bc7");
 		formData.append("name", name);
 		if (image1) formData.append("image1", image1);
 		if (image2) formData.append("image2", image2);
@@ -61,6 +63,7 @@ const Footer = () => {
 		formData.append("description", description);
 		formData.append("profession", profession);
 		formData.append("location", location);
+		formData.append("language", language);
 		formData.append("exp", exp);
 		formData.append("skills", JSON.stringify(skills));
 
@@ -184,12 +187,7 @@ const Footer = () => {
 				<div className={styles.Row}>
 					<div className={styles.InputWrapper}>
 						<label>Profession</label>
-						<input
-							type="text"
-							placeholder="Add Profession"
-							value={profession}
-							onChange={(e) => setProfession(e.target.value)}
-						/>
+						<input type="text" placeholder="Add Profession" value={profession} onChange={(e) => setProfession(e.target.value)} />
 					</div>
 
 					<div className={styles.InputWrapper}>
@@ -211,20 +209,12 @@ const Footer = () => {
 
 				<div className={styles.InputWrapper}>
 					<label>Description</label>
-					<textarea
-						placeholder="Add Description"
-						value={description}
-						onChange={(e) => setDescription(e.target.value)}></textarea>
+					<textarea placeholder="Add Description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
 				</div>
 
 				<div className={styles.InputWrapper}>
 					<label>Location</label>
-					<input
-						type="text"
-						placeholder="Add Location"
-						value={location}
-						onChange={(e) => setLocation(e.target.value)}
-					/>
+					<input type="text" placeholder="Add Location" value={location} onChange={(e) => setLocation(e.target.value)} />
 				</div>
 
 				<button className={styles.Submit} onClick={handelSubmit}>
