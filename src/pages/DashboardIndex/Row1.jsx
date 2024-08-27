@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
+import axios from "../../components/Hooks/axios";
 import Loading from "../../components/Hooks/Loading";
 import styles from "./Dashboard.module.scss";
 
@@ -31,7 +32,7 @@ const Row1 = () => {
 			event_name: "click",
 		},
 	]);
-	const [eventCount, setEventCount] = useState(2671);
+	const [eventCount, setEventCount] = useState(0);
 	const [eventLoading, setEventLoading] = useState(false);
 
 	const [userActivate, setUserActivate] = useState({
@@ -203,52 +204,58 @@ const Row1 = () => {
 	const [user_01, setUser_01] = useState([106]);
 	const [userLoading, setUserLoading] = useState(false);
 
-	// useEffect(() => {
-	// 	setUserLoading(true);
-	// 	// setEventLoading(true);
-	// 	axios
-	// 		.get(`/user_activity`)
-	// 		.then(({ data }) => {
-	// 			setUserActivate(data);
-	// 			const u_30 = [];
-	// 			const d_30 = [];
-	// 			const u_07 = [];
-	// 			const u_01 = [];
-	// 			data?.last_30_days?.data.map((item) => {
-	// 				u_30.push(Number(item?.active_users));
-	// 				d_30.push(Number(item?.date));
-	// 			});
-	// 			data?.last_7_days?.data.map((item) => {
-	// 				u_07.push(Number(item?.active_users));
-	// 			});
-	// 			data?.last_1_day?.data.map((item) => {
-	// 				u_01.push(Number(item?.active_users));
-	// 			});
-	// 			setUser_30(u_30);
-	// 			setDate_30(d_30);
-	// 			setUser_07(u_07);
-	// 			setUser_01(u_01);
+	const totalEventCount = (data) => {
+		const sum = data.reduce((accumulator, current) => accumulator + Number(current.event_count), 0);
+		return sum;
+	};
 
-	// 			setUserLoading(false);
-	// 		})
-	// 		.catch(({ response }) => {
-	// 			console.log("Error => ", response);
-	// 		});
+	useEffect(() => {
+		// 	setUserLoading(true);
+		// 	// setEventLoading(true);
+		// 	axios
+		// 		.get(`/user_activity`)
+		// 		.then(({ data }) => {
+		// 			setUserActivate(data);
+		// 			const u_30 = [];
+		// 			const d_30 = [];
+		// 			const u_07 = [];
+		// 			const u_01 = [];
+		// 			data?.last_30_days?.data.map((item) => {
+		// 				u_30.push(Number(item?.active_users));
+		// 				d_30.push(Number(item?.date));
+		// 			});
+		// 			data?.last_7_days?.data.map((item) => {
+		// 				u_07.push(Number(item?.active_users));
+		// 			});
+		// 			data?.last_1_day?.data.map((item) => {
+		// 				u_01.push(Number(item?.active_users));
+		// 			});
+		// 			setUser_30(u_30);
+		// 			setDate_30(d_30);
+		// 			setUser_07(u_07);
+		// 			setUser_01(u_01);
 
-	// 	//event
+		// 			setUserLoading(false);
+		// 		})
+		// 		.catch(({ response }) => {
+		// 			console.log("Error => ", response);
+		// 		});
 
-	// 	// axios
-	// 	// 	.get(`/event_count_by_event_name`)
-	// 	// 	.then(({ data }) => {
-	// 	// 		console.log(data);
-	// 	// 		setEventData(data);
-	// 	// 		setEventCount(Number(data[0].event_count));
-	// 	// 		setEventLoading(false);
-	// 	// 	})
-	// 	// 	.catch(({ response }) => {
-	// 	// 		console.log("Error => ", response);
-	// 	// 	});
-	// }, []);
+		// 	//event
+
+		setEventLoading(true);
+		axios
+			.get(`/getEventCounts`)
+			.then(({ data }) => {
+				console.log(data);
+				setEventData(data?.data);
+				setEventCount(totalEventCount(data?.data));
+			})
+			.catch(({ response }) => {
+				console.log("Error => ", response);
+			})
+			.finally(() => setEventLoading(false));
+	}, []);
 
 	return (
 		<div className={styles.Row1}>

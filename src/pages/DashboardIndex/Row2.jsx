@@ -9,86 +9,8 @@ import styles from "./Dashboard.module.scss";
 
 const Row2 = () => {
 	const [activeMapBtn, setActiveMapBtn] = useState("monthly");
-	const [pageViewData, setPageViewData] = useState([
-		{
-			page_path: "/Home",
-			page_title: "/Home",
-			views: "412",
-		},
-
-		{
-			page_path: "/signin",
-			page_title: "/signin",
-			views: "101",
-		},
-		{
-			page_path: "/Setting",
-			page_title: "/Setting",
-			views: "56",
-		},
-		{
-			page_path: "/Chat",
-			page_title: "/Chat",
-			views: "44",
-		},
-		{
-			page_path: "/signup",
-			page_title: "/signup",
-			views: "27",
-		},
-		{
-			page_path: "/verification-code",
-			page_title: "/verification-code",
-			views: "12",
-		},
-		{
-			page_path: "/Privacy",
-			page_title: "/Privacy",
-			views: "10",
-		},
-		{
-			page_path: "/Security",
-			page_title: "/Security",
-			views: "6",
-		},
-		{
-			page_path: "/remote-jobs",
-			page_title: "remote jobs",
-			views: "5",
-		},
-
-		{
-			page_path: "/blogs/668405bf9e7c785f07191773",
-			page_title: "/Post/668405bf9e7c785f07191773",
-			views: "1",
-		},
-		{
-			page_path: "/blogs",
-			page_title: "/Post/668fd9099e7c785f0719b33a",
-			views: "1",
-		},
-		{
-			page_path: "/contact-us",
-			page_title: "/Story/6683e0e29e7c785f07190d20",
-			views: "1",
-		},
-		{
-			page_path: "/jobs",
-			page_title: "jobs acrosstek",
-			views: "1",
-		},
-		{
-			page_path: "/hire?react",
-			page_title: "hire developer remote",
-			views: "1",
-		},
-		{
-			page_path: "/forget-password",
-			page_title: "Emagz | Best Social Media Platform- Chat, Persona, Networking",
-			views: "1",
-		},
-	]);
-	const [pageViewCount, setPageViewCount] = useState(412);
+	const [pageViewData, setPageViewData] = useState([]);
+	const [pageViewCount, setPageViewCount] = useState(0);
 	const [pageViewLoading, setPageViewLoading] = useState(false);
 
 	const [countryData, setCountryData] = useState({
@@ -109,42 +31,55 @@ const Row2 = () => {
 	const [totalUserByCountry, setTotalUserByCountry] = useState(103);
 	const [countryLoading, setCountryLoading] = useState(false);
 
-	// useEffect(() => {
-	// 	setPageViewLoading(true);
+	const totalPageViewCount = (data) => {
+		const sum = data.reduce((accumulator, current) => accumulator + Number(current.count), 0);
+		return sum;
+	};
+	useEffect(() => {
+		setPageViewLoading(true);
 
-
-	// 	axios
-	// 		.get(`/views_by_page_title_and_page_path`)
-	// 		.then(({ data }) => {
-	// 			console.log(data);
-	// 			setPageViewData(data);
-	// 			setPageViewCount(data[0].views);
-	// 			setPageViewLoading(false);
-	// 		})
-	// 		.catch((response) => {
-	// 			console.log("Error => ", response);
-	// 		});
-	// }, []);
+		axios
+			.get(`/getRoutePageViews`)
+			.then(({ data }) => {
+				setPageViewData(data.data);
+				setPageViewCount(totalPageViewCount(data.data));
+			})
+			.catch((response) => {
+				console.log("Error => ", response);
+			})
+			.finally(() => setPageViewLoading(false));
+	}, []);
 
 	const totalUserCountInCountry = (data) => {
 		const sum = Object.values(data).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 		return sum;
 	};
+	// const displayNames = new Intl.DisplayNames(["en"], { type: "region" });
 	const displayNames = new Intl.DisplayNames(["en"], { type: "region" });
 
-	// useEffect(() => {
-	// 	setCountryLoading(true);
-	// 	axios
-	// 		.get(`/users_by_country?time_range=${activeMapBtn}`)
-	// 		.then(({ data }) => {
-	// 			setCountryData(data);
-	// 			setTotalUserByCountry(totalUserCountInCountry(data?.user_data));
-	// 			setCountryLoading(false);
-	// 		})
-	// 		.catch((response) => {
-	// 			console.log("Error => ", response);
-	// 		});
-	// }, [activeMapBtn]);
+	// Function to get full country name from country code
+	function getCountryName(countryCode) {
+		return displayNames.of(countryCode);
+	}
+
+	// Example usage
+	// const countryCode = "IN";
+	// const countryName = getCountryName(countryCode);
+
+	useEffect(() => {
+		setCountryLoading(true);
+		axios
+			.get(`/getMostUsersCountry?time_range=${activeMapBtn}`)
+			.then(({ data }) => {
+				console.log(data);
+				setCountryData(data?.data);
+				setTotalUserByCountry(totalUserCountInCountry(data?.data?.user_data));
+				setCountryLoading(false);
+			})
+			.catch((response) => {
+				console.log("Error => ", response);
+			});
+	}, [activeMapBtn]);
 
 	return (
 		<div className={styles.Row2}>
@@ -187,7 +122,9 @@ const Row2 = () => {
 									],
 								}}
 								onRegionTipShow={function reginalTip(event, label, code) {
-									return label.html(`<div> <p>${label.html()}</p>  <p>${countryData?.user_data[code]}</p> </div>`);
+									return label.html(
+										`<div> <p>${label.html()}</p>  <p>${countryData?.user_data[getCountryName(code)] || 0}</p> </div>`
+									);
 								}}
 							/>
 						</div>
@@ -196,7 +133,7 @@ const Row2 = () => {
 							<div className={styles.Box}>
 								<img src={Flag} alt="" />
 								<div className={styles.Text}>
-									<h2>{displayNames.of(countryData?.most_users_country)}</h2>
+									<h2>{countryData?.most_users_country}</h2>
 									<p>
 										{Math.floor((countryData?.user_data[countryData?.most_users_country] / totalUserByCountry) * 100)}
 										% <span /> {countryData?.user_data[countryData?.most_users_country]} Users
@@ -223,11 +160,11 @@ const Row2 = () => {
 						pageViewData.map((data, index) => (
 							<div key={index} className={styles.Box}>
 								<div className={styles.Text}>
-									<h4>{data?.page_path}</h4>
-									<h5>{data?.views}</h5>
+									<h4>{data?.route}</h4>
+									<h5>{data?.count}</h5>
 								</div>
 								<div className={styles.Bar}>
-									<span style={{ width: `${(data.views / pageViewCount) * 100}%` }} />
+									<span style={{ width: `${(data?.count / pageViewCount) * 100}%` }} />
 								</div>
 							</div>
 						))

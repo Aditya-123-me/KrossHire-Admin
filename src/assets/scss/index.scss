@@ -74,6 +74,7 @@ input[type="number"] {
 	--c1: #ff621f;
 	--c1v2: #ff621f42;
 	--c2: #fff;
+	--c2h: #5e7af5;
 	--c3: #000;
 	--c4: #3b3c4a;
 	--c4v2: rgba(32, 34, 53, 0.87);
@@ -84,7 +85,7 @@ input[type="number"] {
 
 	--b1: rgba(37, 46, 54, 0.5);
 	--b2: rgba(255, 255, 255, 0.06);
-	--b3:rgb(96, 102, 102);
+	--b3: rgb(96, 102, 102);
 
 	--bg8: #0b1233d6;
 
@@ -98,7 +99,7 @@ input[type="number"] {
 .quill {
 	// height: 100% !important;
 	// overflow: hidden;
-	
+
 	.ql-container {
 	}
 }
