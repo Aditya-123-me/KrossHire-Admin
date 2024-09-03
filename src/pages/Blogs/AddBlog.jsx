@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import "react-quill/dist/quill.snow.css";
+import { useSelector } from "react-redux";
 import { TagsInput } from "react-tag-input-component";
 import { toast } from "react-toastify";
 import FooterBG from "../../assets/images/FooterBG.webp";
@@ -28,7 +29,7 @@ const AddBlog = () => {
 	const [activeAuthId, setActiveAuthId] = useState("");
 	const [contentText, setContentText] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-
+	const { language } = useSelector((state) => state.auth);
 	const [selected, setSelected] = useState([]);
 
 	// Helper function to generate a unique ID
@@ -108,6 +109,7 @@ const AddBlog = () => {
 		formData.append("smallText", smallText);
 		formData.append("content", blogData.map((item) => item.data).join("\n"));
 		formData.append("tags", JSON.stringify(selected));
+		formData.append("language", language);
 
 		if (activeAuthId) formData.append("authorId", activeAuthId);
 		else {

@@ -39,7 +39,11 @@ const authSlice = createSlice({
 			ls.set("language", payload);
 		},
 		fetchLanguageFromLocal: (state) => {
-			state.language = ls.get("language");
+			const storedLanguage = ls.get("language");
+			state.language = storedLanguage || "English";
+			if (!storedLanguage) {
+				ls.set("language", "English");
+			}
 		},
 	},
 });

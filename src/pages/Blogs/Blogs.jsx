@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import leftArrow from "../../assets/svg/leftArrow.svg";
@@ -17,18 +18,19 @@ function Blogs() {
 	const [total, setTotal] = useState({ totalCount: 0, totalPages: 1 });
 	const [reload, setReload] = useState(0);
 	const [loading, setLoading] = useState(true);
+	const { language } = useSelector((state) => state.auth);
 
 	useEffect(() => {
 		setLoading(true);
 		axios
-			.get(`/blog/allBlog`)
+			.get(`/blog/allBlog?page=1&limit=25&language=${language}`)
 			.then(({ data }) => {
 				setApplications(data.data);
 				setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });
 				setLoading(false);
 			})
 			.catch((e) => console.log(e));
-	}, [page, reload]);
+	}, [page, reload, language]);
 
 	const handelDelete = async (id) => {
 		const confirmed = await useDeleteAlert();

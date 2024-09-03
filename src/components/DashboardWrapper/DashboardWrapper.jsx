@@ -54,13 +54,13 @@ const DashboardWrapper = () => {
 						<TbSection />
 						<p>Footer</p>
 					</div>
-
+					{/* 
 					<div
 						className={`${styles.items} ${pathname === "/testimonial" ? styles.activeItem : ""}`}
 						onClick={() => navigate("/testimonial")}>
 						<FaNoteSticky />
 						<p>Testimonial</p>
-					</div>
+					</div> */}
 
 					<div
 						className={`${styles.items} ${pathname === "/requests" ? styles.activeItem : ""}`}
@@ -111,6 +111,7 @@ const DashboardWrapper = () => {
 							onChange={(e) => dispatch(setLanguage(e.target.value))}>
 							<option value="English">English</option>
 							<option value="German">German</option>
+							<option value="French">French</option>
 						</select>
 
 						<div className={styles.notification}>

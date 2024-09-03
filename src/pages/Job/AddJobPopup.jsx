@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { TagsInput } from "react-tag-input-component";
 import { toast } from "react-toastify";
 import Loading from "../../components/Hooks/Loading";
@@ -10,16 +11,16 @@ const AddJobPopup = ({ setAddPopup, setReload }) => {
 	const [description, setDescription] = useState("");
 	const [skills, setSkills] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const { language } = useSelector((state) => state.auth);
 
 	const handelSubmit = () => {
 		if (!title || !description || !skills) return toast.error("Please fill all data !!");
 		setIsLoading(true);
 
 		axios
-			.post(`/jobPost/create`, { title, description, skills })
+			.post(`/jobPost/create`, { title, description, skills, language })
 			.then(({ data }) => {
 				toast.success(data.msg);
-				console.log(data);
 				setIsLoading(false);
 				setAddPopup(false);
 				setReload(Math.random());

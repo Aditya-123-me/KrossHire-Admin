@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import leftArrow from "../../assets/svg/leftArrow.svg";
 import rightArrow from "../../assets/svg/rightArrow.svg";
@@ -21,9 +21,15 @@ function Jobs() {
 	const [addPopup, setAddPopup] = useState(false);
 	const [activeData, setActiveData] = useState(null);
 	const { language } = useSelector((state) => state.auth);
+	const dispatch = useDispatch();
+
+	// useEffect(() => {
+	// 	dispatch(fetchLanguageFromLocal());
+	// }, []);
 
 	useEffect(() => {
 		setLoading(true);
+		console.log(language);
 		axios
 			.get(`jobPost/allJobs?language=${language}`)
 			.then(({ data }) => {
