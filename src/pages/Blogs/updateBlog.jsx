@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import "react-quill/dist/quill.snow.css";
 import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import { TagsInput } from "react-tag-input-component";
 import { toast } from "react-toastify";
 import FooterBG from "../../assets/images/FooterBG.webp";
@@ -13,7 +14,9 @@ import "./AddBlogs.scss";
 import ImageBox from "./ImageBox";
 import TextBox from "./TextBox";
 
-const AddBlog = () => {
+const UpdateBlog = () => {
+	const { id } = useParams(); // Blog ID from the route
+	const navigate = useNavigate();
 	const [bg, setBg] = useState("#ff621f");
 	const [color, setColor] = useState("#ffffff");
 	const [imageFile, setImageFile] = useState(null);
@@ -32,19 +35,72 @@ const AddBlog = () => {
 	const { language } = useSelector((state) => state.auth);
 	const [selected, setSelected] = useState([]);
 
+    const [previewImageFile, setPreviewImageFile] = useState(null);
+    const [blogId,setBlogId]=useState(null)
+    // const []
+
 	// Helper function to generate a unique ID
 	const generateId = () => "_" + Math.random().toString(36).substr(2, 9);
 
 	useEffect(() => {
 		axios
-			.get(`/blog/allAuth`)
+			.get(`/blog/oneBlog/${id}`)
 			.then(({ data }) => {
-				setAuthData(data.data);
+                const blog = data.data;
+                setBlogId(blog._id)
+				console.log(blog);
+				setTitle(blog.title || "");
+				setBg(blog.bgColor || "#ffffff");
+				setColor(blog.textColor || "#000000");
+				setSmallText(blog.smallText || "");
+				setSelected(blog.tags || []);
+				setPreviewImageFile(blog.image);
+
+				// Parse the content into separate boxes
+				const contentParts = blog.content.split("\r\n").map((item, index) => {
+					const trimmedItem = item.trim();
+					const isText = trimmedItem.startsWith("<p>");
+					const isImage = trimmedItem.startsWith("<img");
+
+					return {
+						id: generateId(),
+						comp: isText ? (
+							<TextBox
+								key={index}
+								id={generateId()}
+								initialData={trimmedItem}
+								updateBoxData={updateBoxData}
+								removeBox={removeTextBox}
+							/>
+						) : isImage ? (
+							<ImageBox
+								key={index}
+								id={generateId()}
+								initialData={trimmedItem}
+								updateBoxData={updateBoxData}
+								removeBox={removeImageBox}
+							/>
+						) : null,
+					};
+				});
+
+				setContentText(contentParts);
+				setBlogData(contentParts.map((item) => ({ id: item.id, data: item.comp.props.initialData })));
+
+				// Handle author data
+				if (blog.authorId) {
+					setActiveAuthId(blog.authorId);
+				} else {
+					setAuthorName(blog.authorName || "");
+					setAuthorDesignation(blog.authorDesignation || "");
+					setAuthFile(blog.authorImage || null);
+				}
 			})
-			.catch(({ response }) => {
-				console.log("Error => ", response);
+			.catch((error) => {
+				console.error("Error fetching blog data:", error);
 			});
-	}, []);
+	}, [id]);
+
 
 	const updateBoxData = (id, data) => {
 		const tempData = [...blogData];
@@ -93,7 +149,6 @@ const AddBlog = () => {
 		if (!title || !smallText || !blogData) return toast.error("Please fill data !!");
 
 		if (activeAuthId === "" && authorName === "") return toast.error("Please select author");
-		console.log(blogData);
 
 		if (blogData.length === 0) {
 			toast.warn("Please add at least One textBox or Image Box");
@@ -103,43 +158,27 @@ const AddBlog = () => {
 		setIsLoading(true);
 		const formData = new FormData();
 		formData.append("title", title);
-		formData.append("image", imageFile);
+		if (imageFile) formData.append("image", imageFile); 
 		formData.append("bgColor", bg);
 		formData.append("textColor", color);
 		formData.append("smallText", smallText);
 		formData.append("content", blogData.map((item) => item.data).join("\n"));
-		// const content = blogData.map((item) => item.data).join("\r\n");
-		// formData.append("content", content);
 		formData.append("tags", JSON.stringify(selected));
 		formData.append("language", language);
+		formData.append("id", blogId);
 
-		if (activeAuthId) formData.append("authorId", activeAuthId);
-		else {
-			formData.append("authorName", authorName);
-			formData.append("authorImage", authFile);
-			formData.append("authorDesignation", authorDesignation);
-		}
-
-		console.log(formData);
-		// return
+		// if (activeAuthId) formData.append("authorId", activeAuthId);
+		// else {
+		// 	formData.append("authorName", authorName);
+		// 	formData.append("authorImage", authFile);
+		// 	formData.append("authorDesignation", authorDesignation);
+		// }
 
 		axios
-			.post(`/blog/create`, formData)
+			.put(`/blog/update`, formData)
 			.then(({ data }) => {
-				toast.success("Blog uploaded successfully !!");
-				setBg("#ff621f");
-				setColor("#fff");
-				setImageFile(null);
-				setTitle("");
-				setBlogData([]);
-				setSmallText("");
-				setAuthFile(null);
-				setAuthorName("");
-				setAuthorDesignation("");
-				// setAuthData([]);
-				setActiveAuthId("");
-				setContentText([]);
-				setSelected([]);
+				toast.success("Blog updated successfully !!");
+				navigate("/blogs");
 			})
 			.catch(({ response }) => {
 				console.log("Error => ", response);
@@ -148,8 +187,8 @@ const AddBlog = () => {
 	};
 
 	return (
-		<div className={styles.AddBlog} onClick={() => setAddPopup(false)}>
-			<h1>Add Blog</h1>
+		<div className={styles.AddBlog}>
+			<h1>Update Blog</h1>
 
 			<div className={styles.WrapperContainer} onClick={(e) => e.stopPropagation()}>
 				<div className={styles.ImageWrapper} style={{ background: bg }}>
@@ -181,7 +220,7 @@ const AddBlog = () => {
 					</div>
 
 					<div className={styles.Right}>
-						<img src={imageFile ? URL.createObjectURL(imageFile) : FooterBG} alt="" />
+						<img src={imageFile ? URL.createObjectURL(imageFile) : previewImageFile} alt="" />
 						<input type="file" ref={inputRef} onChange={(e) => setImageFile(e.target.files[0])} />
 						<button onClick={() => inputRef.current.click()}>
 							<FaCamera />
@@ -201,10 +240,16 @@ const AddBlog = () => {
 						<button onClick={handelAddImageBox}>Add Image Box</button>
 					</div>
 
-					<div className={styles.BodySection}>{contentText.map((data, index) => data.comp)}</div>
+					<div className={styles.BodySection}>
+						{contentText.map((data, index) => (
+							<div key={index}>{data.comp}</div>
+						))}
+					</div>
 				</div>
 
-				<div className={styles.AuthSection}>
+
+
+				{/* <div className={styles.AuthSection}>
 					<div className={styles.AuthSectionLeft}>
 						<img src={authFile ? URL.createObjectURL(authFile) : user} alt="" onClick={() => authRef.current.click()} />
 
@@ -243,14 +288,14 @@ const AddBlog = () => {
 							))}
 						</select>
 					</div>
-				</div>
+				</div> */}
 
-				<div className={styles.Submit}>
-					<button onClick={handelSubmit}>{isLoading ? <Loading color="#fff" /> : "Submit"}</button>
+				<div className={styles.ButtonWrapper}>
+					<button onClick={handelSubmit}>{isLoading ? <Loading /> : "Update Blog"}</button>
 				</div>
 			</div>
 		</div>
 	);
 };
 
-export default AddBlog;
+export default UpdateBlog;

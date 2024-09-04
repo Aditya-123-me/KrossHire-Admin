@@ -4,10 +4,9 @@ import { FaNoteSticky } from "react-icons/fa6";
 import { GrBlog } from "react-icons/gr";
 import { IoIosNotifications } from "react-icons/io";
 import { MdDashboard, MdLogout, MdOutlineSupportAgent, MdWork } from "react-icons/md";
-import { TbSection } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Logo from "../../assets/images/Logo.png";
+import Logo from "../../assets/images/AcrosstekLogo.png";
 import { fetchLanguageFromLocal, removeUser, setLanguage } from "../../redux/slice/authSlice";
 import styles from "./DashboardWrapper.module.scss";
 
@@ -48,12 +47,12 @@ const DashboardWrapper = () => {
 						<p>Jobs</p>
 					</div>
 
-					<div
+					{/* <div
 						className={`${styles.items} ${pathname === "/footer" ? styles.activeItem : ""}`}
 						onClick={() => navigate("/footer")}>
 						<TbSection />
 						<p>Footer</p>
-					</div>
+					</div> */}
 					{/* 
 					<div
 						className={`${styles.items} ${pathname === "/testimonial" ? styles.activeItem : ""}`}

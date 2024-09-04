@@ -17,6 +17,7 @@ import Login from "./pages/Login/Login";
 import Page404 from "./pages/Page404/Page404";
 import Requests from "./pages/RequestsPage/Requests";
 import Testimonial from "./pages/Testimonial/Testimonial";
+import UpdateBlog from "./pages/Blogs/updateBlog";
 
 function App() {
 	clearCacheData();
@@ -53,6 +54,7 @@ function App() {
 						<Route exact path="/requests" element={<Requests />} />
 						<Route exact path="/blogs" element={<Blogs />} />
 						<Route exact path="/add-blog" element={<AddBlog />} />
+						<Route exact path="/update-blog/:id" element={<UpdateBlog />} />
 					</Route>
 				</Routes>
 			</Suspense>

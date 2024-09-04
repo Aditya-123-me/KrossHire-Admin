@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { RxCross2 } from "react-icons/rx";
 import ReactQuill from "react-quill";
 import styles from "./AddBlog.module.scss";
-import { RxCross2 } from "react-icons/rx";
 
-const TextBox = ({ id, updateBoxData, removeBox }) => {
-	const [content, setContent] = useState("");
+const TextBox = ({ id, updateBoxData, removeBox, initialData }) => {
+	const [content, setContent] = useState(initialData || "");
 
 	useEffect(() => {
 		updateBoxData(id, content);

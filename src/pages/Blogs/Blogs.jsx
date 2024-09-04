@@ -89,6 +89,7 @@ function Blogs() {
 									className={styles.ApplicationCard}
 									style={{ background: data?.bgColor }}
 									// onClick={() => navigate(`/edit-blog/${data?._id}`)}
+									onClick={()=>navigate(`/update-blog/${data.title}`)}
 								>
 									<img src={data?.image} alt="" />
 									<h2 style={{ color: data?.textColor }}>{data?.title}</h2>

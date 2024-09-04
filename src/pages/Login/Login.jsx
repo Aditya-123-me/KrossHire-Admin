@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Logo from "../../assets/images/Logo.png";
+import Logo from "../../assets/images/AcrosstekLogo.png";
 import eye from "../../assets/svg/eye.svg";
 import axios from "../../components/Hooks/axios";
 import { setUser } from "../../redux/slice/authSlice";
