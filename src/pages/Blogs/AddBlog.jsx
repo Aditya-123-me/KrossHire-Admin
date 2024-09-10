@@ -33,7 +33,8 @@ const AddBlog = () => {
 	const [selected, setSelected] = useState([]);
 
 	// Helper function to generate a unique ID
-	const generateId = () => "_" + Math.random().toString(36).substr(2, 9);
+	// const generateId = () => "_" + Math.random().toString(36).substr(2, 9);
+	const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
 
 	useEffect(() => {
 		axios
@@ -59,7 +60,7 @@ const AddBlog = () => {
 
 	// Separate function to remove TextBox
 	const removeTextBox = (id) => {
-		const tempContent = contentText.filter((item) => item.id !== id || item.comp.type !== TextBox);
+		const tempContent = contentText.filter((item) => item.id !== id);
 		setContentText(tempContent);
 
 		const tempBlogData = blogData.filter((item) => item.id !== id);
@@ -67,11 +68,46 @@ const AddBlog = () => {
 	};
 
 	// Separate function to remove ImageBox
+	// const removeImageBox = (id) => {
+	// 	console.log(contentText, id);
+
+	// 	// const tempContent = contentText.filter((item) => item.id !== id);
+	// 	const tempContent = contentText.filter((item) => String(item.id) !== String(id));
+
+	// 	setContentText(tempContent);
+
+	// 	console.log(tempContent);
+	// 	console.log(contentText);
+
+	// 	const tempBlogData = blogData.filter((item) => item.id !== id);
+	// 	setBlogData(tempBlogData);
+	// };
+
 	const removeImageBox = (id) => {
-		const tempContent = contentText.filter((item) => item.id !== id || item.comp.type !== ImageBox);
+		console.log("Removing ID:", id);
+
+		// Log each ID from contentText for comparison
+		// contentText.forEach((item, index) => {
+		// 	console.log(`Item ${index} ID:`, item.id);
+		// });
+
+		// Find the items that match the ID using `includes`
+		const matchedItems = contentText.filter((item) => item.id.includes(id));
+		console.log("Matched Items:", matchedItems);
+
+		// Find the remaining items
+		const tempContent = contentText.filter((item) => !item.id.includes(id));
+		console.log("Remaining Items (after removal):", tempContent);
+
 		setContentText(tempContent);
 
-		const tempBlogData = blogData.filter((item) => item.id !== id);
+		// Similarly for blogData
+		const matchedBlogData = blogData.filter((item) => item.id.includes(id));
+		console.log("Matched Blog Data:", matchedBlogData);
+
+		const tempBlogData = blogData.filter((item) => !item.id.includes(id));
+		console.log("Remaining Blog Data (after removal):", tempBlogData);
+
 		setBlogData(tempBlogData);
 	};
 
@@ -79,6 +115,7 @@ const AddBlog = () => {
 		const id = generateId();
 		const temp = [...contentText];
 		temp.push({ id, comp: <TextBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeTextBox} /> });
+		console.log(temp, "TextBox");
 		setContentText(temp);
 	};
 
@@ -86,6 +123,8 @@ const AddBlog = () => {
 		const id = generateId();
 		const temp = [...contentText];
 		temp.push({ id, comp: <ImageBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeImageBox} /> });
+
+		console.log(temp, "ImageBox");
 		setContentText(temp);
 	};
 
@@ -148,7 +187,7 @@ const AddBlog = () => {
 	};
 
 	return (
-		<div className={styles.AddBlog} onClick={() => setAddPopup(false)}>
+		<div className={styles.AddBlog}>
 			<h1>Add Blog</h1>
 
 			<div className={styles.WrapperContainer} onClick={(e) => e.stopPropagation()}>
