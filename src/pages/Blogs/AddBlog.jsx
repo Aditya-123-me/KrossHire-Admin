@@ -86,17 +86,17 @@ const AddBlog = () => {
 	const removeImageBox = (id) => {
 		console.log("Removing ID:", id);
 
-		// Log each ID from contentText for comparison
+	
 		// contentText.forEach((item, index) => {
 		// 	console.log(`Item ${index} ID:`, item.id);
 		// });
 
 		// Find the items that match the ID using `includes`
-		const matchedItems = contentText.filter((item) => item.id.includes(id));
+		const matchedItems = contentText.filter((item) => item.id === id);
 		console.log("Matched Items:", matchedItems);
 
 		// Find the remaining items
-		const tempContent = contentText.filter((item) => !item.id.includes(id));
+		const tempContent = contentText.filter((item) => item.id !== id);
 		console.log("Remaining Items (after removal):", tempContent);
 
 		setContentText(tempContent);
