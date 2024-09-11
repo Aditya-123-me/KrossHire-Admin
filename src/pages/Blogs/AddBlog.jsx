@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { TagsInput } from "react-tag-input-component";
 import { toast } from "react-toastify";
 import FooterBG from "../../assets/images/FooterBG.webp";
-import user from "../../assets/images/user.png";
 import Loading from "../../components/Hooks/Loading";
 import axios from "../../components/Hooks/axios";
 import styles from "./AddBlog.module.scss";
@@ -33,8 +32,7 @@ const AddBlog = () => {
 	const [selected, setSelected] = useState([]);
 
 	// Helper function to generate a unique ID
-	// const generateId = () => "_" + Math.random().toString(36).substr(2, 9);
-	const generateId = () => Date.now().toString(36) + Math.random().toString(36).substr(2, 9);
+	const generateId = () => "_" + Math.random().toString(36).substr(2, 9);
 
 	useEffect(() => {
 		axios
@@ -68,47 +66,17 @@ const AddBlog = () => {
 	};
 
 	// Separate function to remove ImageBox
-	// const removeImageBox = (id) => {
-	// 	console.log(contentText, id);
-
-	// 	// const tempContent = contentText.filter((item) => item.id !== id);
-	// 	const tempContent = contentText.filter((item) => String(item.id) !== String(id));
-
-	// 	setContentText(tempContent);
-
-	// 	console.log(tempContent);
-	// 	console.log(contentText);
-
-	// 	const tempBlogData = blogData.filter((item) => item.id !== id);
-	// 	setBlogData(tempBlogData);
-	// };
-
 	const removeImageBox = (id) => {
-		console.log("Removing ID:", id);
+		console.log(contentText, id);
 
-	
-		// contentText.forEach((item, index) => {
-		// 	console.log(`Item ${index} ID:`, item.id);
-		// });
+		// const tempContent = contentText.filter((item) => item.id !== id);
+		// setContentText(tempContent);
 
-		// Find the items that match the ID using `includes`
-		const matchedItems = contentText.filter((item) => item.id === id);
-		console.log("Matched Items:", matchedItems);
+		// console.log(tempContent);
+		// console.log(contentText);
 
-		// Find the remaining items
-		const tempContent = contentText.filter((item) => item.id !== id);
-		console.log("Remaining Items (after removal):", tempContent);
-
-		setContentText(tempContent);
-
-		// Similarly for blogData
-		const matchedBlogData = blogData.filter((item) => item.id.includes(id));
-		console.log("Matched Blog Data:", matchedBlogData);
-
-		const tempBlogData = blogData.filter((item) => !item.id.includes(id));
-		console.log("Remaining Blog Data (after removal):", tempBlogData);
-
-		setBlogData(tempBlogData);
+		// const tempBlogData = blogData.filter((item) => item.id !== id);
+		// setBlogData(tempBlogData);
 	};
 
 	const handelAddTextBox = () => {
@@ -228,10 +196,28 @@ const AddBlog = () => {
 					</div>
 				</div>
 
-				<div className={styles.TagWrapper}>
-					<h1>Add Tags</h1>
-					<TagsInput value={selected} onChange={setSelected} name="tags" placeHolder="enter tags" id="tag-input" />
-					<em>press enter to add new tag</em>
+				<div className={styles.TagAuthor}>
+					<div className={styles.TagWrapper}>
+						<h1>Add Tags</h1>
+						<TagsInput value={selected} onChange={setSelected} name="tags" placeHolder="enter tags" id="tag-input" />
+						<em>press enter to add new tag</em>
+					</div>
+
+					<div className={styles.AuthSectionRight}>
+						<h3>Select Author</h3>
+
+						<select value={activeAuthId} onChange={(e) => setActiveAuthId(e.target.value)}>
+							<option value="" disabled>
+								Select one author
+							</option>
+
+							{authData?.map((data, index) => (
+								<option value={data._id} key={index}>
+									{data?.authorName}
+								</option>
+							))}
+						</select>
+					</div>
 				</div>
 
 				<div className={styles.ContentWrapper}>
@@ -244,7 +230,7 @@ const AddBlog = () => {
 				</div>
 
 				<div className={styles.AuthSection}>
-					<div className={styles.AuthSectionLeft}>
+					{/* <div className={styles.AuthSectionLeft}>
 						<img src={authFile ? URL.createObjectURL(authFile) : user} alt="" onClick={() => authRef.current.click()} />
 
 						<input
@@ -265,9 +251,9 @@ const AddBlog = () => {
 						/>
 					</div>
 
-					<div className={styles.AuthSectionMid}>OR</div>
+					<div className={styles.AuthSectionMid}>OR</div> */}
 
-					<div className={styles.AuthSectionRight}>
+					{/* <div className={styles.AuthSectionRight}>
 						<h3>Select Author</h3>
 
 						<select value={activeAuthId} onChange={(e) => setActiveAuthId(e.target.value)}>
@@ -281,7 +267,7 @@ const AddBlog = () => {
 								</option>
 							))}
 						</select>
-					</div>
+					</div> */}
 				</div>
 
 				<div className={styles.Submit}>

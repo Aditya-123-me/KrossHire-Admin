@@ -6,8 +6,10 @@ import DashboardWrapper from "./components/DashboardWrapper/DashboardWrapper";
 import ScrollToTop from "./components/Hooks/ScrollToTop";
 import { clearCacheData } from "./components/Hooks/clearCacheData";
 import LoadingIndicator from "./components/LoadingIndicator/LoadingIndicator";
+import Author from "./pages/Author/Author";
 import AddBlog from "./pages/Blogs/AddBlog";
 import Blogs from "./pages/Blogs/Blogs";
+import UpdateBlog from "./pages/Blogs/updateBlog";
 import ContactUS from "./pages/ContactUS/ContactUS";
 import Dashboard from "./pages/DashboardIndex/DashboardComp";
 import Query from "./pages/DeveloperQuery/Query";
@@ -16,8 +18,8 @@ import Jobs from "./pages/Job/Jobs";
 import Login from "./pages/Login/Login";
 import Page404 from "./pages/Page404/Page404";
 import Requests from "./pages/RequestsPage/Requests";
+import Tag from "./pages/Tag/Tag";
 import Testimonial from "./pages/Testimonial/Testimonial";
-import UpdateBlog from "./pages/Blogs/updateBlog";
 
 function App() {
 	clearCacheData();
@@ -53,6 +55,8 @@ function App() {
 						<Route exact path="/query" element={<Query />} />
 						<Route exact path="/requests" element={<Requests />} />
 						<Route exact path="/blogs" element={<Blogs />} />
+						<Route exact path="/author" element={<Author />} />
+						<Route exact path="/tags" element={<Tag />} />
 						<Route exact path="/add-blog" element={<AddBlog />} />
 						<Route exact path="/update-blog/:id" element={<UpdateBlog />} />
 					</Route>

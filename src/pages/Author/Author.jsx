@@ -2,24 +2,26 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import leftArrow from "../../assets/svg/leftArrow.svg";
-import rightArrow from "../../assets/svg/rightArrow.svg";
 import Loading from "../../components/Hooks/Loading";
 import axios from "../../components/Hooks/axios";
 import { useDeleteAlert } from "../../components/Hooks/useDeleteAlert";
-import AddDeveloperPopup from "./AddJobPopup";
-import EditDeveloperPopup from "./EditJobPopup";
-import styles from "./Jobs.module.scss";
+import AddAuthorPopup from "./AddAuthorPopup";
+import styles from "./Author.module.scss";
+import EditAuthorPopup from "./EditAuthorPopup";
 
-function Jobs() {
+function Author() {
 	const [selectedCategory, setSelectedCategory] = useState("all");
-	const [applications, setApplications] = useState([]);
-	const [page, setPage] = useState(1);
-	const [total, setTotal] = useState({ totalCount: 0, totalPages: 1 });
-	const [reload, setReload] = useState(0);
-	const [loading, setLoading] = useState(true);
+
+	const [authors, setAuthor] = useState([]);
 	const [addPopup, setAddPopup] = useState(false);
+	const [EditPopup, setEditPopup] = useState(false);
 	const [activeData, setActiveData] = useState(null);
+	const [reload, setReload] = useState(0);
+
+	// const [page, setPage] = useState(1);
+	// const [total, setTotal] = useState({ totalCount: 0, totalPages: 1 });
+
+	const [loading, setLoading] = useState(true);
 	const { language } = useSelector((state) => state.auth);
 	const dispatch = useDispatch();
 
@@ -31,24 +33,24 @@ function Jobs() {
 		setLoading(true);
 		console.log(language);
 		axios
-			.get(`jobPost/allJobs?language=${language}`)
+			.get(`blog/allAuth`)
 			.then(({ data }) => {
 				console.log(data);
-				setApplications(data.data);
-				setTotal({ totalCount: data.totalJobData, totalPages: data.totalPage });
+				setAuthor(data.data);
+				// setTotal({ totalCount: data.totalJobData, totalPages: data.totalPage });
 				setLoading(false);
 			})
 			.catch((e) => console.log(e));
-	}, [page, reload, language]);
+	}, [reload]);
 
 	const handelDelete = async (id) => {
 		const confirmed = await useDeleteAlert();
 		if (!confirmed) return;
 
 		axios
-			.delete(`/jobPost/delete/${id}`)
+			.delete(`author/delete/${id}`)
 			.then(({ data }) => {
-				toast.success("Successfully Deleted !");
+				toast.success("Author Successfully Deleted !");
 				setReload(Math.random());
 			})
 			.catch((e) => console.log(e));
@@ -56,10 +58,9 @@ function Jobs() {
 
 	return (
 		<div className={styles.AdmissionForms}>
-			{addPopup && <AddDeveloperPopup {...{ setAddPopup, setReload }} />}
-			{activeData && <EditDeveloperPopup {...{ activeData, setActiveData, setReload }} />}
+			{addPopup && <AddAuthorPopup {...{ setAddPopup, setReload }} />}
+			{activeData && <EditAuthorPopup {...{ activeData, setActiveData, setReload }} />}
 
-			<h1>Developers</h1>
 			<div className={styles.paymentHistory}>
 				<div className={styles.heading}>
 					<div className={styles.ButtonWrapper}>
@@ -69,15 +70,15 @@ function Jobs() {
 					</div>
 
 					<button className={styles.AddDeveloper} onClick={() => setAddPopup(true)}>
-						Add Job
+						Add Author
 					</button>
 				</div>
 
 				<div className={styles.subHeading}>
 					<div className={styles.userId}>Sl.No</div>
-					<div className={styles.Title}>Job Title</div>
-					<div className={styles.Description}>Description</div>
-					<div className={styles.Skills}>Skills</div>
+					<div className={styles.Title}>Author Name</div>
+					<div className={styles.Description}>Designation</div>
+					{/* <div className={styles.Skills}>Skills</div> */}
 					<div className={styles.Actions}>Actions</div>
 				</div>
 
@@ -85,22 +86,19 @@ function Jobs() {
 					{loading ? (
 						<Loading height="10rem" width="10rem" />
 					) : (
-						applications.map((item, index) => (
+						authors.map((item, index) => (
 							<div className={styles.ApplicationCard} key={index}>
 								<div className={styles.userId}>
 									<p>{index + 1}</p>
 								</div>
 
 								<div className={styles.Title}>
-									<p>{item?.title}</p>
+									<img src={item?.authorImage} alt="" />
+									<p>{item?.authorName}</p>
 								</div>
 
 								<div className={styles.Description}>
-									<p>{item?.description}</p>
-								</div>
-
-								<div className={styles.Skills}>
-									<p>{item?.skills.join(", ")}</p>
+									<p>{item?.authorDesignation}</p>
 								</div>
 
 								<div className={styles.Actions}>
@@ -116,7 +114,7 @@ function Jobs() {
 					)}
 				</div>
 
-				{applications?.length > 0 && (
+				{/* {applications?.length > 0 && (
 					<div className={styles.pagination}>
 						<div className={styles.records}>{`Showing ${applications.length} of ${total.totalCount} users in page ${page} `}</div>
 						<div className={styles.pageButtons}>
@@ -143,10 +141,12 @@ function Jobs() {
 							</button>
 						</div>
 					</div>
-				)}
+				)} */}
 			</div>
 		</div>
 	);
 }
 
-export default Jobs;
+export default Author;
+
+// blog / allAuth;

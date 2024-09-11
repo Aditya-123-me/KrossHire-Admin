@@ -125,28 +125,65 @@
 			}
 		}
 
-		.TagWrapper {
-			height: auto;
-			width: 100%;
-			padding: 2rem;
-
+		.TagAuthor {
 			display: flex;
-			flex-direction: column;
-			align-items: flex-start;
-			gap: 1rem;
+			align-items: center;
+			gap: 2rem;
+			.TagWrapper {
+				height: auto;
+				width: 50%;
+				padding: 2rem;
 
-			h1 {
-				margin: 0;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 1rem;
+
+				h1 {
+					margin: 0;
+				}
+
+				.rti--container {
+					border: 10px solid red;
+				}
+				#tag-input {
+					border: 10px solid rgb(30, 231, 97);
+				}
+				textarea {
+					border: 1px solid red;
+				}
 			}
 
-			.rti--container {
-				border: 10px solid red;
-			}
-			#tag-input {
-				border: 10px solid rgb(30, 231, 97);
-			}
-			textarea {
-				border: 1px solid red;
+			.AuthSectionRight {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 1rem;
+
+				h3 {
+					font-size: 1.8rem;
+				}
+
+				select {
+					width: 60%;
+					height: 2.5rem;
+					padding: 0 2rem;
+					outline: none;
+					border: none;
+					border-bottom: 2px solid var(--c1);
+					background: transparent;
+
+					&::placeholder {
+						color: rgba(0, 0, 0, 0.7);
+					}
+
+					option {
+						color: var(--c2);
+						background: var(--c1);
+					}
+				}
 			}
 		}
 

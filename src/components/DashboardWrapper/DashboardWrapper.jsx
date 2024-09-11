@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { CgProfile } from "react-icons/cg";
+import { FaPenNib, FaTags } from "react-icons/fa";
 import { FaNoteSticky } from "react-icons/fa6";
 import { GrBlog } from "react-icons/gr";
 import { IoIosNotifications } from "react-icons/io";
@@ -62,10 +63,22 @@ const DashboardWrapper = () => {
 					</div> */}
 
 					<div
+						className={`${styles.items} ${pathname === "/author" ? styles.activeItem : ""}`}
+						onClick={() => navigate("/author")}>
+						<FaPenNib />
+						<p>Authors</p>
+					</div>
+
+					<div
 						className={`${styles.items} ${pathname === "/requests" ? styles.activeItem : ""}`}
 						onClick={() => navigate("/requests")}>
 						<FaNoteSticky />
 						<p>Requests</p>
+					</div>
+
+					<div className={`${styles.items} ${pathname === "/tags" ? styles.activeItem : ""}`} onClick={() => navigate("/tags")}>
+						<FaTags />
+						<p>Manage Tags</p>
 					</div>
 
 					<div
