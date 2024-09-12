@@ -81,6 +81,10 @@ function Blogs() {
 
 				{loading ? (
 					<Loading height="10rem" width="10rem" />
+				) : applications.length === 0 ? (
+					<div className={styles.supportCards}>
+						<h3>No Blogs Added Yet</h3>
+					</div>
 				) : (
 					<div className={styles.supportCards}>
 						{applications.map((data, index) => (
@@ -89,8 +93,7 @@ function Blogs() {
 									className={styles.ApplicationCard}
 									style={{ background: data?.bgColor }}
 									// onClick={() => navigate(`/edit-blog/${data?._id}`)}
-									onClick={()=>navigate(`/update-blog/${data.title}`)}
-								>
+									onClick={() => navigate(`/update-blog/${data.title}`)}>
 									<img src={data?.image} alt="" />
 									<h2 style={{ color: data?.textColor }}>{data?.title}</h2>
 									<p onClick={() => handelDelete(data._id)}>

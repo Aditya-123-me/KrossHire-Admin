@@ -5,10 +5,8 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { TagsInput } from "react-tag-input-component";
 import { toast } from "react-toastify";
-import FooterBG from "../../assets/images/FooterBG.webp";
-import user from "../../assets/images/user.png";
-import Loading from "../../components/Hooks/Loading";
 import axios from "../../components/Hooks/axios";
+import Loading from "../../components/Hooks/Loading";
 import styles from "./AddBlog.module.scss";
 import "./AddBlogs.scss";
 import ImageBox from "./ImageBox";
@@ -21,34 +19,25 @@ const UpdateBlog = () => {
 	const [color, setColor] = useState("#ffffff");
 	const [imageFile, setImageFile] = useState(null);
 	const inputRef = useRef();
-	const authRef = useRef();
 	const [title, setTitle] = useState("");
 	const [blogData, setBlogData] = useState([]);
 	const [smallText, setSmallText] = useState("");
-	const [authFile, setAuthFile] = useState(null);
-	const [authorName, setAuthorName] = useState("");
-	const [authorDesignation, setAuthorDesignation] = useState("");
-	const [authData, setAuthData] = useState([]);
-	const [activeAuthId, setActiveAuthId] = useState("");
+	const [previewImageFile, setPreviewImageFile] = useState(null);
 	const [contentText, setContentText] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const { language } = useSelector((state) => state.auth);
 	const [selected, setSelected] = useState([]);
+	const [blogId, setBlogId] = useState(null);
 
-    const [previewImageFile, setPreviewImageFile] = useState(null);
-    const [blogId,setBlogId]=useState(null)
-    // const []
-
-	// Helper function to generate a unique ID
-	const generateId = () => "_" + Math.random().toString(36).substr(2, 9);
+	const generateId = () => "_" + Math.random().toString(36).substr(2, 9); // Generate unique IDs
 
 	useEffect(() => {
+		// Fetch blog data based on the provided ID
 		axios
 			.get(`/blog/oneBlog/${id}`)
 			.then(({ data }) => {
-                const blog = data.data;
-                setBlogId(blog._id)
-				console.log(blog);
+				const blog = data.data;
+				setBlogId(blog._id);
 				setTitle(blog.title || "");
 				setBg(blog.bgColor || "#ffffff");
 				setColor(blog.textColor || "#000000");
@@ -56,7 +45,7 @@ const UpdateBlog = () => {
 				setSelected(blog.tags || []);
 				setPreviewImageFile(blog.image);
 
-				// Parse the content into separate boxes
+				// Process blog content into TextBox or ImageBox components
 				const contentParts = blog.content.split("\r\n").map((item, index) => {
 					const trimmedItem = item.trim();
 					const isText = trimmedItem.startsWith("<p>");
@@ -86,22 +75,13 @@ const UpdateBlog = () => {
 
 				setContentText(contentParts);
 				setBlogData(contentParts.map((item) => ({ id: item.id, data: item.comp.props.initialData })));
-
-				// Handle author data
-				if (blog.authorId) {
-					setActiveAuthId(blog.authorId);
-				} else {
-					setAuthorName(blog.authorName || "");
-					setAuthorDesignation(blog.authorDesignation || "");
-					setAuthFile(blog.authorImage || null);
-				}
 			})
 			.catch((error) => {
 				console.error("Error fetching blog data:", error);
 			});
 	}, [id]);
 
-
+	// Function to update the box data
 	const updateBoxData = (id, data) => {
 		const tempData = [...blogData];
 		const index = tempData.findIndex((item) => item.id === id);
@@ -113,52 +93,43 @@ const UpdateBlog = () => {
 		setBlogData(tempData);
 	};
 
-	// Separate function to remove TextBox
+	// Function to remove a TextBox
 	const removeTextBox = (id) => {
-		const tempContent = contentText.filter((item) => item.id !== id || item.comp.type !== TextBox);
-		setContentText(tempContent);
-
-		const tempBlogData = blogData.filter((item) => item.id !== id);
-		setBlogData(tempBlogData);
+		setContentText((prev) => prev.filter((item) => item.id !== id || item.comp.type !== TextBox));
+		setBlogData((prev) => prev.filter((item) => item.id !== id));
 	};
 
-	// Separate function to remove ImageBox
+	// Function to remove an ImageBox
 	const removeImageBox = (id) => {
-		const tempContent = contentText.filter((item) => item.id !== id || item.comp.type !== ImageBox);
-		setContentText(tempContent);
-
-		const tempBlogData = blogData.filter((item) => item.id !== id);
-		setBlogData(tempBlogData);
+		setContentText((prev) => prev.filter((item) => item.id !== id || item.comp.type !== ImageBox));
+		setBlogData((prev) => prev.filter((item) => item.id !== id));
 	};
 
-	const handelAddTextBox = () => {
+	// Add TextBox component
+	const handleAddTextBox = () => {
 		const id = generateId();
-		const temp = [...contentText];
-		temp.push({ id, comp: <TextBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeTextBox} /> });
-		setContentText(temp);
+		setContentText((prev) => [
+			...prev,
+			{ id, comp: <TextBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeTextBox} /> },
+		]);
 	};
 
-	const handelAddImageBox = () => {
+	// Add ImageBox component
+	const handleAddImageBox = () => {
 		const id = generateId();
-		const temp = [...contentText];
-		temp.push({ id, comp: <ImageBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeImageBox} /> });
-		setContentText(temp);
+		setContentText((prev) => [
+			...prev,
+			{ id, comp: <ImageBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeImageBox} /> },
+		]);
 	};
 
-	const handelSubmit = () => {
-		if (!title || !smallText || !blogData) return toast.error("Please fill data !!");
-
-		if (activeAuthId === "" && authorName === "") return toast.error("Please select author");
-
-		if (blogData.length === 0) {
-			toast.warn("Please add at least One textBox or Image Box");
-			return;
-		}
+	// Submit updated blog
+	const handleSubmit = () => {
+		if (!title || !smallText || !blogData.length) return toast.error("Please fill all required fields!");
 
 		setIsLoading(true);
 		const formData = new FormData();
 		formData.append("title", title);
-		if (imageFile) formData.append("image", imageFile); 
 		formData.append("bgColor", bg);
 		formData.append("textColor", color);
 		formData.append("smallText", smallText);
@@ -166,25 +137,24 @@ const UpdateBlog = () => {
 		formData.append("tags", JSON.stringify(selected));
 		formData.append("language", language);
 		formData.append("id", blogId);
-
-		// if (activeAuthId) formData.append("authorId", activeAuthId);
-		// else {
-		// 	formData.append("authorName", authorName);
-		// 	formData.append("authorImage", authFile);
-		// 	formData.append("authorDesignation", authorDesignation);
-		// }
+		if (imageFile) formData.append("image", imageFile);
 
 		axios
 			.put(`/blog/update`, formData)
 			.then(({ data }) => {
-				toast.success("Blog updated successfully !!");
+				toast.success("Blog updated successfully!");
 				navigate("/blogs");
 			})
-			.catch(({ response }) => {
-				console.log("Error => ", response);
+			.catch((error) => {
+				console.error("Error updating blog:", error);
+				toast.error("Error updating the blog");
 			})
 			.finally(() => setIsLoading(false));
 	};
+
+	useEffect(() => {
+		console.log(blogData);
+	}, [blogData]);
 
 	return (
 		<div className={styles.AddBlog}>
@@ -197,31 +167,32 @@ const UpdateBlog = () => {
 							placeholder="Add your title"
 							style={{ color: color }}
 							value={title}
-							onChange={(e) => setTitle(e.target.value)}></textarea>
+							onChange={(e) => setTitle(e.target.value)}
+						/>
 
 						<textarea
-							placeholder="Add Small text"
+							placeholder="Add small text"
 							style={{ color: color }}
 							value={smallText}
 							className={styles.smallText}
-							onChange={(e) => setSmallText(e.target.value)}></textarea>
+							onChange={(e) => setSmallText(e.target.value)}
+						/>
 
 						<div className={styles.Section}>
 							<div>
-								<label htmlFor="Background-Color">Background Color : </label>
-								<input type="color" name="Background-Color" value={bg} onChange={(e) => setBg(e.target.value)} />
+								<label>Background Color:</label>
+								<input type="color" value={bg} onChange={(e) => setBg(e.target.value)} />
 							</div>
-
 							<div>
-								<label htmlFor="Background-Color">Text Color : </label>
-								<input type="color" name="Background-Color" value={color} onChange={(e) => setColor(e.target.value)} />
+								<label>Text Color:</label>
+								<input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
 							</div>
 						</div>
 					</div>
 
 					<div className={styles.Right}>
-						<img src={imageFile ? URL.createObjectURL(imageFile) : previewImageFile} alt="" />
-						<input type="file" ref={inputRef} onChange={(e) => setImageFile(e.target.files[0])} />
+						<img src={imageFile ? URL.createObjectURL(imageFile) : previewImageFile} alt="Blog" />
+						<input type="file" ref={inputRef} onChange={(e) => setImageFile(e.target.files[0])} style={{ display: "none" }} />
 						<button onClick={() => inputRef.current.click()}>
 							<FaCamera />
 						</button>
@@ -230,14 +201,14 @@ const UpdateBlog = () => {
 
 				<div className={styles.TagWrapper}>
 					<h1>Add Tags</h1>
-					<TagsInput value={selected} onChange={setSelected} name="tags" placeHolder="enter tags" id="tag-input" />
-					<em>press enter to add new tag</em>
+					<TagsInput value={selected} onChange={setSelected} name="tags" placeholder="Enter tags" />
+					<em>Press enter to add new tag</em>
 				</div>
 
 				<div className={styles.ContentWrapper}>
 					<div className={styles.HeaderSection}>
-						<button onClick={handelAddTextBox}>Add Text Box</button>
-						<button onClick={handelAddImageBox}>Add Image Box</button>
+						<button onClick={handleAddTextBox}>Add Text Box</button>
+						<button onClick={handleAddImageBox}>Add Image Box</button>
 					</div>
 
 					<div className={styles.BodySection}>
@@ -247,51 +218,8 @@ const UpdateBlog = () => {
 					</div>
 				</div>
 
-
-
-				{/* <div className={styles.AuthSection}>
-					<div className={styles.AuthSectionLeft}>
-						<img src={authFile ? URL.createObjectURL(authFile) : user} alt="" onClick={() => authRef.current.click()} />
-
-						<input
-							type="file"
-							ref={authRef}
-							onChange={(e) => {
-								setAuthFile(e.target.files[0]);
-								e.target.value = null;
-							}}
-							style={{ display: "none" }}
-						/>
-						<input type="text" placeholder="Author Name" value={authorName} onChange={(e) => setAuthorName(e.target.value)} />
-						<input
-							type="text"
-							placeholder="Author Designation"
-							value={authorDesignation}
-							onChange={(e) => setAuthorDesignation(e.target.value)}
-						/>
-					</div>
-
-					<div className={styles.AuthSectionMid}>OR</div>
-
-					<div className={styles.AuthSectionRight}>
-						<h3>Select Author</h3>
-
-						<select value={activeAuthId} onChange={(e) => setActiveAuthId(e.target.value)}>
-							<option value="" disabled>
-								Select one author
-							</option>
-
-							{authData?.map((data, index) => (
-								<option value={data._id} key={index}>
-									{data?.authorName}
-								</option>
-							))}
-						</select>
-					</div>
-				</div> */}
-
 				<div className={styles.ButtonWrapper}>
-					<button onClick={handelSubmit}>{isLoading ? <Loading /> : "Update Blog"}</button>
+					<button onClick={handleSubmit}>{isLoading ? <Loading /> : "Update Blog"}</button>
 				</div>
 			</div>
 		</div>

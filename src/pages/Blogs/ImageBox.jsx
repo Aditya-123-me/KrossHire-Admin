@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BiUpload } from "react-icons/bi";
 import { RxCross2 } from "react-icons/rx";
 import FooterBG from "../../assets/images/FooterBG.webp";
@@ -34,12 +34,23 @@ const ImageBox = ({ id, initialData, updateBoxData, removeBox }) => {
 				setImageUrl(data);
 				setImageFile(null);
 
-				const imageData = `<img src="${imageUrl}" alt="${altText}" />`;
+				// Set the content and update the data once the image is uploaded
+				const imageData = `<img src="${data}" alt="${altText}" />`;
+				setContent(imageData);
 				updateBoxData(id, imageData);
 			})
 			.catch((err) => console.log(err))
 			.finally(() => setUploading(false));
 	};
+
+	const [content, setContent] = useState(null);
+	useEffect(() => {
+		if (initialData) {
+			setContent(initialData);
+			setImageUrl(initialData.imageUrl || null);
+		}
+		updateBoxData(id, content);
+	}, [content, id, updateBoxData, initialData]);
 
 	return (
 		<div className={styles.ImageBox}>

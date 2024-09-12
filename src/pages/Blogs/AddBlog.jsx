@@ -21,9 +21,6 @@ const AddBlog = () => {
 	const [title, setTitle] = useState("");
 	const [blogData, setBlogData] = useState([]);
 	const [smallText, setSmallText] = useState("");
-	const [authFile, setAuthFile] = useState(null);
-	const [authorName, setAuthorName] = useState("");
-	const [authorDesignation, setAuthorDesignation] = useState("");
 	const [authData, setAuthData] = useState([]);
 	const [activeAuthId, setActiveAuthId] = useState("");
 	const [contentText, setContentText] = useState([]);
@@ -46,60 +43,49 @@ const AddBlog = () => {
 	}, []);
 
 	const updateBoxData = (id, data) => {
-		const tempData = [...blogData];
-		const index = tempData.findIndex((item) => item.id === id);
-		if (index > -1) {
-			tempData[index].data = data;
-		} else {
-			tempData.push({ id, data });
-		}
-		setBlogData(tempData);
+		setBlogData((prevData) => {
+			const newData = [...prevData];
+			const index = newData.findIndex((item) => item.id === id);
+			if (index > -1) {
+				newData[index].data = data;
+			} else {
+				newData.push({ id, data });
+			}
+			return newData;
+		});
 	};
 
-	// Separate function to remove TextBox
 	const removeTextBox = (id) => {
-		const tempContent = contentText.filter((item) => item.id !== id);
-		setContentText(tempContent);
-
-		const tempBlogData = blogData.filter((item) => item.id !== id);
-		setBlogData(tempBlogData);
+		setContentText((prevContentText) => prevContentText.filter((item) => item.id !== id));
+		setBlogData((prevBlogData) => prevBlogData.filter((item) => item.id !== id));
 	};
 
-	// Separate function to remove ImageBox
 	const removeImageBox = (id) => {
-		console.log(contentText, id);
-
-		// const tempContent = contentText.filter((item) => item.id !== id);
-		// setContentText(tempContent);
-
-		// console.log(tempContent);
-		// console.log(contentText);
-
-		// const tempBlogData = blogData.filter((item) => item.id !== id);
-		// setBlogData(tempBlogData);
+		setContentText((prevContentText) => prevContentText.filter((item) => item.id !== id));
+		setBlogData((prevBlogData) => prevBlogData.filter((item) => item.id !== id));
 	};
 
 	const handelAddTextBox = () => {
 		const id = generateId();
-		const temp = [...contentText];
-		temp.push({ id, comp: <TextBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeTextBox} /> });
-		console.log(temp, "TextBox");
-		setContentText(temp);
+		setContentText((prevContentText) => [
+			...prevContentText,
+			{ id, comp: <TextBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeTextBox} /> },
+		]);
 	};
 
 	const handelAddImageBox = () => {
 		const id = generateId();
-		const temp = [...contentText];
-		temp.push({ id, comp: <ImageBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeImageBox} /> });
-
-		console.log(temp, "ImageBox");
-		setContentText(temp);
+		setContentText((prevContentText) => [
+			...prevContentText,
+			{ id, comp: <ImageBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeImageBox} /> },
+		]);
 	};
 
 	const handelSubmit = () => {
-		if (!title || !smallText || !blogData) return toast.error("Please fill data !!");
+		if (!title) return toast.error("Title is required...");
+		if (!smallText) return toast.error("Small Text is required !!");
 
-		if (activeAuthId === "" && authorName === "") return toast.error("Please select author");
+		if (activeAuthId === "") return toast.error("Please select author");
 		console.log(blogData);
 
 		if (blogData.length === 0) {
@@ -121,11 +107,6 @@ const AddBlog = () => {
 		formData.append("language", language);
 
 		if (activeAuthId) formData.append("authorId", activeAuthId);
-		else {
-			formData.append("authorName", authorName);
-			formData.append("authorImage", authFile);
-			formData.append("authorDesignation", authorDesignation);
-		}
 
 		console.log(formData);
 		// return
@@ -140,9 +121,6 @@ const AddBlog = () => {
 				setTitle("");
 				setBlogData([]);
 				setSmallText("");
-				setAuthFile(null);
-				setAuthorName("");
-				setAuthorDesignation("");
 				// setAuthData([]);
 				setActiveAuthId("");
 				setContentText([]);
@@ -153,6 +131,36 @@ const AddBlog = () => {
 			})
 			.finally(() => setIsLoading(false));
 	};
+
+	// useEffect(() => {
+	// 	console.log(contentText);
+	// 	console.log(blogData);
+	// }, [contentText, blogData]);
+
+	//for tag suggestion
+	const predefinedTags = [
+		"ai_ml",
+		"android",
+		"angular",
+		"automation",
+		"aws",
+		"azure",
+		"c",
+		"c_Plus",
+		"dot_net",
+		"flutter",
+		"java",
+		"mean",
+		"mern",
+		"nodejs",
+		"react",
+		"react_native",
+		"ror",
+		"swift",
+		"ui_ux",
+		"vuejs",
+	];
+
 
 	return (
 		<div className={styles.AddBlog}>
@@ -227,47 +235,6 @@ const AddBlog = () => {
 					</div>
 
 					<div className={styles.BodySection}>{contentText.map((data, index) => data.comp)}</div>
-				</div>
-
-				<div className={styles.AuthSection}>
-					{/* <div className={styles.AuthSectionLeft}>
-						<img src={authFile ? URL.createObjectURL(authFile) : user} alt="" onClick={() => authRef.current.click()} />
-
-						<input
-							type="file"
-							ref={authRef}
-							onChange={(e) => {
-								setAuthFile(e.target.files[0]);
-								e.target.value = null;
-							}}
-							style={{ display: "none" }}
-						/>
-						<input type="text" placeholder="Author Name" value={authorName} onChange={(e) => setAuthorName(e.target.value)} />
-						<input
-							type="text"
-							placeholder="Author Designation"
-							value={authorDesignation}
-							onChange={(e) => setAuthorDesignation(e.target.value)}
-						/>
-					</div>
-
-					<div className={styles.AuthSectionMid}>OR</div> */}
-
-					{/* <div className={styles.AuthSectionRight}>
-						<h3>Select Author</h3>
-
-						<select value={activeAuthId} onChange={(e) => setActiveAuthId(e.target.value)}>
-							<option value="" disabled>
-								Select one author
-							</option>
-
-							{authData?.map((data, index) => (
-								<option value={data._id} key={index}>
-									{data?.authorName}
-								</option>
-							))}
-						</select>
-					</div> */}
 				</div>
 
 				<div className={styles.Submit}>
