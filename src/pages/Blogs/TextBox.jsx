@@ -6,7 +6,6 @@ import styles from "./AddBlog.module.scss";
 const TextBox = ({ id, updateBoxData, removeBox, initialData }) => {
 	const [content, setContent] = useState(initialData || "");
 
-
 	useEffect(() => {
 		if (initialData) {
 			setContent(initialData);
@@ -15,7 +14,7 @@ const TextBox = ({ id, updateBoxData, removeBox, initialData }) => {
 
 	useEffect(() => {
 		updateBoxData(id, content);
-	}, [content, id, updateBoxData]);
+	}, [content]);
 
 	return (
 		<div className={styles.TextBox}>

@@ -6,6 +6,19 @@ import axios from "../../components/Hooks/axios";
 import Loading from "../../components/Hooks/Loading";
 import styles from "./AddBlog.module.scss";
 
+//function to extract the imgUrl
+function extractImageSrc(imgTag) {
+	const tempElement = document.createElement("div");
+	tempElement.innerHTML = imgTag;
+
+	const imgElement = tempElement.querySelector("img");
+	if (imgElement) {
+		return imgElement.getAttribute("src");
+	} else {
+		return null;
+	}
+}
+
 const ImageBox = ({ id, initialData, updateBoxData, removeBox }) => {
 	const inputRef = useRef();
 	const [altText, setAltText] = useState("");
@@ -19,8 +32,6 @@ const ImageBox = ({ id, initialData, updateBoxData, removeBox }) => {
 
 	const [uploading, setUploading] = useState(false);
 	const handleUpload = () => {
-		console.log(id, imageFile);
-
 		const formData = new FormData();
 
 		formData.append("image", imageFile);
@@ -47,10 +58,10 @@ const ImageBox = ({ id, initialData, updateBoxData, removeBox }) => {
 	useEffect(() => {
 		if (initialData) {
 			setContent(initialData);
-			setImageUrl(initialData.imageUrl || null);
+			setImageUrl(extractImageSrc(initialData));
 		}
 		updateBoxData(id, content);
-	}, [content, id, updateBoxData, initialData]);
+	}, [initialData, content]);
 
 	return (
 		<div className={styles.ImageBox}>

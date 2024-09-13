@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -89,15 +89,15 @@ function Blogs() {
 					<div className={styles.supportCards}>
 						{applications.map((data, index) => (
 							<div className={styles.ApplicationCardOuter} key={index}>
-								<div
-									className={styles.ApplicationCard}
-									style={{ background: data?.bgColor }}
-									// onClick={() => navigate(`/edit-blog/${data?._id}`)}
-									onClick={() => navigate(`/update-blog/${data.title}`)}>
+								<div className={styles.ApplicationCard} style={{ background: data?.bgColor }}>
 									<img src={data?.image} alt="" />
 									<h2 style={{ color: data?.textColor }}>{data?.title}</h2>
 									<p onClick={() => handelDelete(data._id)}>
 										<FaTrashAlt />
+									</p>
+
+									<p className={styles.Edit} onClick={() => navigate(`/update-blog/${data.title}`)}>
+										<FaEdit />
 									</p>
 								</div>
 							</div>

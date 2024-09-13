@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaCamera } from "react-icons/fa";
+import { VscOpenPreview } from "react-icons/vsc";
 import "react-quill/dist/quill.snow.css";
 import { useSelector } from "react-redux";
 import { TagsInput } from "react-tag-input-component";
@@ -10,6 +11,7 @@ import axios from "../../components/Hooks/axios";
 import styles from "./AddBlog.module.scss";
 import "./AddBlogs.scss";
 import ImageBox from "./ImageBox";
+import PreviewBlog from "./PreviewBlog";
 import TextBox from "./TextBox";
 
 const AddBlog = () => {
@@ -27,6 +29,32 @@ const AddBlog = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { language } = useSelector((state) => state.auth);
 	const [selected, setSelected] = useState([]);
+
+	const [openPreview, setOpenPreview] = useState(false);
+
+	const handlePreview = () => {
+		if (!title) return toast.error("Plz add Title and necessary Fields To show Preview...");
+		if (!smallText) return toast.error("Plz add Small Text and necessary Fields To show Preview... !!");
+
+		let notUpdated = false;
+
+		if (blogData.length === 0) {
+			toast.warn("Please add at least One textBox or Image Box");
+			return;
+		}
+		blogData.forEach((item) => {
+			if (item.data === null || item.data === "") {
+				toast.warn("Please Remove Unfilled Text Boxes or Check All image box images Are uploaded ...");
+
+				notUpdated(true);
+			}
+		});
+		if (notUpdated) {
+			return;
+		}
+
+		setOpenPreview(true);
+	};
 
 	// Helper function to generate a unique ID
 	const generateId = () => "_" + Math.random().toString(36).substr(2, 9);
@@ -93,7 +121,17 @@ const AddBlog = () => {
 			return;
 		}
 
+		blogData.forEach((item) => {
+			if (item.data === null || item.data === "") {
+				return toast.warn("Please Remove Unfilled Text Boxes or Check All image box images Are uploaded ...");
+			}
+		});
+
+		// console.log(blogData);
+
 		setIsLoading(true);
+
+		console.log(blogData);
 		const formData = new FormData();
 		formData.append("title", title);
 		formData.append("image", imageFile);
@@ -132,10 +170,10 @@ const AddBlog = () => {
 			.finally(() => setIsLoading(false));
 	};
 
-	// useEffect(() => {
-	// 	console.log(contentText);
-	// 	console.log(blogData);
-	// }, [contentText, blogData]);
+	useEffect(() => {
+		console.log(contentText);
+		console.log(blogData);
+	}, [contentText, blogData]);
 
 	//for tag suggestion
 	const predefinedTags = [
@@ -161,87 +199,94 @@ const AddBlog = () => {
 		"vuejs",
 	];
 
-
 	return (
-		<div className={styles.AddBlog}>
-			<h1>Add Blog</h1>
+		<>
+			{openPreview && <PreviewBlog {...{ setOpenPreview, title, smallText, selected, blogData, color, bg, imageFile }} />}
+			<div className={styles.AddBlog}>
+				<div className={styles.Top}>
+					<h1>Add Blog</h1>
+					<p onClick={handlePreview}>
+						Preview <VscOpenPreview />
+					</p>
+				</div>
 
-			<div className={styles.WrapperContainer} onClick={(e) => e.stopPropagation()}>
-				<div className={styles.ImageWrapper} style={{ background: bg }}>
-					<div className={styles.Left}>
-						<textarea
-							placeholder="Add your title"
-							style={{ color: color }}
-							value={title}
-							onChange={(e) => setTitle(e.target.value)}></textarea>
+				<div className={styles.WrapperContainer} onClick={(e) => e.stopPropagation()}>
+					<div className={styles.ImageWrapper} style={{ background: bg }}>
+						<div className={styles.Left}>
+							<textarea
+								placeholder="Add your title"
+								style={{ color: color }}
+								value={title}
+								onChange={(e) => setTitle(e.target.value)}></textarea>
 
-						<textarea
-							placeholder="Add Small text"
-							style={{ color: color }}
-							value={smallText}
-							className={styles.smallText}
-							onChange={(e) => setSmallText(e.target.value)}></textarea>
+							<textarea
+								placeholder="Add Small text"
+								style={{ color: color }}
+								value={smallText}
+								className={styles.smallText}
+								onChange={(e) => setSmallText(e.target.value)}></textarea>
 
-						<div className={styles.Section}>
-							<div>
-								<label htmlFor="Background-Color">Background Color : </label>
-								<input type="color" name="Background-Color" value={bg} onChange={(e) => setBg(e.target.value)} />
+							<div className={styles.Section}>
+								<div>
+									<label htmlFor="Background-Color">Background Color : </label>
+									<input type="color" name="Background-Color" value={bg} onChange={(e) => setBg(e.target.value)} />
+								</div>
+
+								<div>
+									<label htmlFor="Background-Color">Text Color : </label>
+									<input type="color" name="Background-Color" value={color} onChange={(e) => setColor(e.target.value)} />
+								</div>
 							</div>
+						</div>
 
-							<div>
-								<label htmlFor="Background-Color">Text Color : </label>
-								<input type="color" name="Background-Color" value={color} onChange={(e) => setColor(e.target.value)} />
-							</div>
+						<div className={styles.Right}>
+							<img src={imageFile ? URL.createObjectURL(imageFile) : FooterBG} alt="" />
+							<input type="file" ref={inputRef} onChange={(e) => setImageFile(e.target.files[0])} />
+							<button onClick={() => inputRef.current.click()}>
+								<FaCamera />
+							</button>
 						</div>
 					</div>
 
-					<div className={styles.Right}>
-						<img src={imageFile ? URL.createObjectURL(imageFile) : FooterBG} alt="" />
-						<input type="file" ref={inputRef} onChange={(e) => setImageFile(e.target.files[0])} />
-						<button onClick={() => inputRef.current.click()}>
-							<FaCamera />
-						</button>
-					</div>
-				</div>
+					<div className={styles.TagAuthor}>
+						<div className={styles.TagWrapper}>
+							<h1>Add Tags</h1>
+							<TagsInput value={selected} onChange={setSelected} name="tags" placeHolder="enter tags" id="tag-input" />
+							<em>press enter to add new tag</em>
+						</div>
 
-				<div className={styles.TagAuthor}>
-					<div className={styles.TagWrapper}>
-						<h1>Add Tags</h1>
-						<TagsInput value={selected} onChange={setSelected} name="tags" placeHolder="enter tags" id="tag-input" />
-						<em>press enter to add new tag</em>
-					</div>
+						<div className={styles.AuthSectionRight}>
+							<h3>Select Author</h3>
 
-					<div className={styles.AuthSectionRight}>
-						<h3>Select Author</h3>
-
-						<select value={activeAuthId} onChange={(e) => setActiveAuthId(e.target.value)}>
-							<option value="" disabled>
-								Select one author
-							</option>
-
-							{authData?.map((data, index) => (
-								<option value={data._id} key={index}>
-									{data?.authorName}
+							<select value={activeAuthId} onChange={(e) => setActiveAuthId(e.target.value)}>
+								<option value="" disabled>
+									Select one author
 								</option>
-							))}
-						</select>
+
+								{authData?.map((data, index) => (
+									<option value={data._id} key={index}>
+										{data?.authorName}
+									</option>
+								))}
+							</select>
+						</div>
 					</div>
-				</div>
 
-				<div className={styles.ContentWrapper}>
-					<div className={styles.HeaderSection}>
-						<button onClick={handelAddTextBox}>Add Text Box</button>
-						<button onClick={handelAddImageBox}>Add Image Box</button>
+					<div className={styles.ContentWrapper}>
+						<div className={styles.HeaderSection}>
+							<button onClick={handelAddTextBox}>Add Text Box</button>
+							<button onClick={handelAddImageBox}>Add Image Box</button>
+						</div>
+
+						<div className={styles.BodySection}>{contentText.map((data, index) => data.comp)}</div>
 					</div>
 
-					<div className={styles.BodySection}>{contentText.map((data, index) => data.comp)}</div>
-				</div>
-
-				<div className={styles.Submit}>
-					<button onClick={handelSubmit}>{isLoading ? <Loading color="#fff" /> : "Submit"}</button>
+					<div className={styles.Submit}>
+						<button onClick={handelSubmit}>{isLoading ? <Loading color="#fff" /> : "Submit"}</button>
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

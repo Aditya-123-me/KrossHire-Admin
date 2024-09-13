@@ -18,6 +18,24 @@
 		line-height: 2.13vh; /* 95.833% */
 	}
 
+	.Top {
+		width: 90%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		p {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 0.3rem;
+			font-size: 1.5rem;
+			color: var(--c3);
+			font-family: var(--f1);
+			font-weight: 400;
+		}
+	}
+
 	.WrapperContainer {
 		flex: 1;
 		overflow-y: scroll;
@@ -129,6 +147,7 @@
 			display: flex;
 			align-items: center;
 			gap: 2rem;
+
 			.TagWrapper {
 				height: auto;
 				width: 50%;
@@ -306,7 +325,8 @@
 			}
 		}
 
-		.Submit {
+		.Submit,
+		.ButtonWrapper {
 			width: 100%;
 			display: flex;
 			align-items: center;

@@ -10,10 +10,12 @@ import Loading from "../../components/Hooks/Loading";
 import styles from "./AddBlog.module.scss";
 import "./AddBlogs.scss";
 import ImageBox from "./ImageBox";
+import PreviewBlog from "./PreviewBlog";
 import TextBox from "./TextBox";
+import { VscOpenPreview } from "react-icons/vsc";
 
 const UpdateBlog = () => {
-	const { id } = useParams(); // Blog ID from the route
+	const { id } = useParams();
 	const navigate = useNavigate();
 	const [bg, setBg] = useState("#ff621f");
 	const [color, setColor] = useState("#ffffff");
@@ -31,8 +33,33 @@ const UpdateBlog = () => {
 
 	const generateId = () => "_" + Math.random().toString(36).substr(2, 9); // Generate unique IDs
 
+	const [openPreview, setOpenPreview] = useState(false);
+
+	const handlePreview = () => {
+		if (!title) return toast.error("Plz add Title and necessary Fields To show Preview...");
+		if (!smallText) return toast.error("Plz add Small Text and necessary Fields To show Preview... !!");
+
+		let notUpdated = false;
+
+		if (blogData.length === 0) {
+			toast.warn("Please add at least One textBox or Image Box");
+			return;
+		}
+		blogData.forEach((item) => {
+			if (item.data === null || item.data === "") {
+				toast.warn("Please Remove Unfilled Text Boxes or Check All image box images Are uploaded ...");
+
+				notUpdated(true);
+			}
+		});
+		if (notUpdated) {
+			return;
+		}
+
+		setOpenPreview(true);
+	};
+
 	useEffect(() => {
-		// Fetch blog data based on the provided ID
 		axios
 			.get(`/blog/oneBlog/${id}`)
 			.then(({ data }) => {
@@ -48,15 +75,18 @@ const UpdateBlog = () => {
 				// Process blog content into TextBox or ImageBox components
 				const contentParts = blog.content.split("\r\n").map((item, index) => {
 					const trimmedItem = item.trim();
+					console.log(trimmedItem);
 					const isText = trimmedItem.startsWith("<p>");
+
 					const isImage = trimmedItem.startsWith("<img");
 
+					let randomId = generateId();
 					return {
-						id: generateId(),
+						id: randomId,
 						comp: isText ? (
 							<TextBox
 								key={index}
-								id={generateId()}
+								id={randomId}
 								initialData={trimmedItem}
 								updateBoxData={updateBoxData}
 								removeBox={removeTextBox}
@@ -64,7 +94,7 @@ const UpdateBlog = () => {
 						) : isImage ? (
 							<ImageBox
 								key={index}
-								id={generateId()}
+								id={randomId}
 								initialData={trimmedItem}
 								updateBoxData={updateBoxData}
 								removeBox={removeImageBox}
@@ -75,57 +105,67 @@ const UpdateBlog = () => {
 
 				setContentText(contentParts);
 				setBlogData(contentParts.map((item) => ({ id: item.id, data: item.comp.props.initialData })));
+
+				console.log(contentParts);
+				console.log(contentParts.map((item) => ({ id: item.id, data: item.comp.props.initialData })));
 			})
 			.catch((error) => {
 				console.error("Error fetching blog data:", error);
 			});
-	}, [id]);
+	}, []);
 
 	// Function to update the box data
 	const updateBoxData = (id, data) => {
-		const tempData = [...blogData];
-		const index = tempData.findIndex((item) => item.id === id);
-		if (index > -1) {
-			tempData[index].data = data;
-		} else {
-			tempData.push({ id, data });
-		}
-		setBlogData(tempData);
+		setBlogData((prevData) => {
+			const newData = [...prevData];
+			const index = newData.findIndex((item) => item.id === id);
+			if (index > -1) {
+				newData[index].data = data;
+			} else {
+				newData.push({ id, data });
+			}
+			return newData;
+		});
 	};
 
 	// Function to remove a TextBox
 	const removeTextBox = (id) => {
-		setContentText((prev) => prev.filter((item) => item.id !== id || item.comp.type !== TextBox));
-		setBlogData((prev) => prev.filter((item) => item.id !== id));
+		setContentText((prevContentText) => prevContentText.filter((item) => item.id !== id));
+		setBlogData((prevBlogData) => prevBlogData.filter((item) => item.id !== id));
 	};
 
-	// Function to remove an ImageBox
 	const removeImageBox = (id) => {
-		setContentText((prev) => prev.filter((item) => item.id !== id || item.comp.type !== ImageBox));
-		setBlogData((prev) => prev.filter((item) => item.id !== id));
+		setContentText((prevContentText) => prevContentText.filter((item) => item.id !== id));
+		setBlogData((prevBlogData) => prevBlogData.filter((item) => item.id !== id));
 	};
 
 	// Add TextBox component
 	const handleAddTextBox = () => {
 		const id = generateId();
-		setContentText((prev) => [
-			...prev,
-			{ id, comp: <TextBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeTextBox} /> },
-		]);
+		const newTextBox = {
+			id,
+			comp: <TextBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeTextBox} />,
+		};
+		setContentText((prev) => [...prev, newTextBox]);
+		// setBlogData((prev) => [...prev, { id, data: "" }]);
 	};
 
 	// Add ImageBox component
 	const handleAddImageBox = () => {
 		const id = generateId();
-		setContentText((prev) => [
-			...prev,
-			{ id, comp: <ImageBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeImageBox} /> },
-		]);
+		const newImageBox = {
+			id,
+			comp: <ImageBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeImageBox} />,
+		};
+		setContentText((prev) => [...prev, newImageBox]);
+		// setBlogData((prev) => [...prev, { id, data: "" }]);
 	};
 
 	// Submit updated blog
 	const handleSubmit = () => {
 		if (!title || !smallText || !blogData.length) return toast.error("Please fill all required fields!");
+
+		console.log(blogData);
 
 		setIsLoading(true);
 		const formData = new FormData();
@@ -157,72 +197,82 @@ const UpdateBlog = () => {
 	}, [blogData]);
 
 	return (
-		<div className={styles.AddBlog}>
-			<h1>Update Blog</h1>
+		<>
+			{openPreview && (
+				<PreviewBlog {...{ setOpenPreview, title, smallText, selected, blogData, color, bg, imageFile, previewImageFile }} />
+			)}
+			<div className={styles.AddBlog}>
+				<div className={styles.Top}>
+					<h1>Add Blog</h1>
+					<p onClick={handlePreview}>
+						Preview <VscOpenPreview />
+					</p>
+				</div>
 
-			<div className={styles.WrapperContainer} onClick={(e) => e.stopPropagation()}>
-				<div className={styles.ImageWrapper} style={{ background: bg }}>
-					<div className={styles.Left}>
-						<textarea
-							placeholder="Add your title"
-							style={{ color: color }}
-							value={title}
-							onChange={(e) => setTitle(e.target.value)}
-						/>
+				<div className={styles.WrapperContainer} onClick={(e) => e.stopPropagation()}>
+					<div className={styles.ImageWrapper} style={{ background: bg }}>
+						<div className={styles.Left}>
+							<textarea
+								placeholder="Add your title"
+								style={{ color: color }}
+								value={title}
+								onChange={(e) => setTitle(e.target.value)}
+							/>
 
-						<textarea
-							placeholder="Add small text"
-							style={{ color: color }}
-							value={smallText}
-							className={styles.smallText}
-							onChange={(e) => setSmallText(e.target.value)}
-						/>
+							<textarea
+								placeholder="Add small text"
+								style={{ color: color }}
+								value={smallText}
+								className={styles.smallText}
+								onChange={(e) => setSmallText(e.target.value)}
+							/>
 
-						<div className={styles.Section}>
-							<div>
-								<label>Background Color:</label>
-								<input type="color" value={bg} onChange={(e) => setBg(e.target.value)} />
+							<div className={styles.Section}>
+								<div>
+									<label>Background Color:</label>
+									<input type="color" value={bg} onChange={(e) => setBg(e.target.value)} />
+								</div>
+								<div>
+									<label>Text Color:</label>
+									<input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
+								</div>
 							</div>
-							<div>
-								<label>Text Color:</label>
-								<input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
-							</div>
+						</div>
+
+						<div className={styles.Right}>
+							<img src={imageFile ? URL.createObjectURL(imageFile) : previewImageFile} alt="Blog" />
+							<input type="file" ref={inputRef} onChange={(e) => setImageFile(e.target.files[0])} style={{ display: "none" }} />
+							<button onClick={() => inputRef.current.click()}>
+								<FaCamera />
+							</button>
 						</div>
 					</div>
 
-					<div className={styles.Right}>
-						<img src={imageFile ? URL.createObjectURL(imageFile) : previewImageFile} alt="Blog" />
-						<input type="file" ref={inputRef} onChange={(e) => setImageFile(e.target.files[0])} style={{ display: "none" }} />
-						<button onClick={() => inputRef.current.click()}>
-							<FaCamera />
-						</button>
-					</div>
-				</div>
-
-				<div className={styles.TagWrapper}>
-					<h1>Add Tags</h1>
-					<TagsInput value={selected} onChange={setSelected} name="tags" placeholder="Enter tags" />
-					<em>Press enter to add new tag</em>
-				</div>
-
-				<div className={styles.ContentWrapper}>
-					<div className={styles.HeaderSection}>
-						<button onClick={handleAddTextBox}>Add Text Box</button>
-						<button onClick={handleAddImageBox}>Add Image Box</button>
+					<div className={styles.TagWrapper}>
+						<h1>Add Tags</h1>
+						<TagsInput value={selected} onChange={setSelected} name="tags" placeholder="Enter tags" />
+						<em>Press enter to add new tag</em>
 					</div>
 
-					<div className={styles.BodySection}>
-						{contentText.map((data, index) => (
-							<div key={index}>{data.comp}</div>
-						))}
-					</div>
-				</div>
+					<div className={styles.ContentWrapper}>
+						<div className={styles.HeaderSection}>
+							<button onClick={handleAddTextBox}>Add Text Box</button>
+							<button onClick={handleAddImageBox}>Add Image Box</button>
+						</div>
 
-				<div className={styles.ButtonWrapper}>
-					<button onClick={handleSubmit}>{isLoading ? <Loading /> : "Update Blog"}</button>
+						<div className={styles.BodySection}>
+							{contentText.map((data, index) => (
+								<div key={index}>{data.comp}</div>
+							))}
+						</div>
+					</div>
+
+					<div className={styles.ButtonWrapper}>
+						<button onClick={handleSubmit}>{isLoading ? <Loading /> : "Update Blog"}</button>
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 
