@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaCamera } from "react-icons/fa";
+import { VscOpenPreview } from "react-icons/vsc";
 import "react-quill/dist/quill.snow.css";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,7 +13,6 @@ import "./AddBlogs.scss";
 import ImageBox from "./ImageBox";
 import PreviewBlog from "./PreviewBlog";
 import TextBox from "./TextBox";
-import { VscOpenPreview } from "react-icons/vsc";
 
 const UpdateBlog = () => {
 	const { id } = useParams();
@@ -75,7 +75,6 @@ const UpdateBlog = () => {
 				// Process blog content into TextBox or ImageBox components
 				const contentParts = blog.content.split("\r\n").map((item, index) => {
 					const trimmedItem = item.trim();
-					console.log(trimmedItem);
 					const isText = trimmedItem.startsWith("<p>");
 
 					const isImage = trimmedItem.startsWith("<img");
@@ -99,7 +98,15 @@ const UpdateBlog = () => {
 								updateBoxData={updateBoxData}
 								removeBox={removeImageBox}
 							/>
-						) : null,
+						) : (
+							<TextBox
+								key={index}
+								id={randomId}
+								initialData={trimmedItem}
+								updateBoxData={updateBoxData}
+								removeBox={removeTextBox}
+							/>
+						),
 					};
 				});
 
@@ -203,7 +210,7 @@ const UpdateBlog = () => {
 			)}
 			<div className={styles.AddBlog}>
 				<div className={styles.Top}>
-					<h1>Add Blog</h1>
+					<h1>Update Blog</h1>
 					<p onClick={handlePreview}>
 						Preview <VscOpenPreview />
 					</p>

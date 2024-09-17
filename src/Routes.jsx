@@ -1,9 +1,11 @@
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DashboardWrapper from "./components/DashboardWrapper/DashboardWrapper";
 import ScrollToTop from "./components/Hooks/ScrollToTop";
+import axios from "./components/Hooks/axios";
 import { clearCacheData } from "./components/Hooks/clearCacheData";
 import LoadingIndicator from "./components/LoadingIndicator/LoadingIndicator";
 import Author from "./pages/Author/Author";
@@ -13,17 +15,28 @@ import UpdateBlog from "./pages/Blogs/updateBlog";
 import ContactUS from "./pages/ContactUS/ContactUS";
 import Dashboard from "./pages/DashboardIndex/DashboardComp";
 import Query from "./pages/DeveloperQuery/Query";
-import Footer from "./pages/Footer/Footer";
 import Jobs from "./pages/Job/Jobs";
 import Login from "./pages/Login/Login";
 import Page404 from "./pages/Page404/Page404";
 import Requests from "./pages/RequestsPage/Requests";
 import Tag from "./pages/Tag/Tag";
-import Testimonial from "./pages/Testimonial/Testimonial";
+import { setAllTags, setTagLoading } from "./redux/slice/tagSlice";
 
 function App() {
 	clearCacheData();
-
+	const { refreshTag } = useSelector((state) => state.temp);
+	const dispatch = useDispatch();
+	useEffect(() => {
+		dispatch(setTagLoading(true));
+		axios
+			.get(`/tags`)
+			.then(({ data }) => {
+				console.log(data);
+				dispatch(setAllTags(data?.data));
+			})
+			.catch((e) => console.log(e))
+			.finally(() => dispatch(setTagLoading(false)));
+	}, [refreshTag]);
 	return (
 		<BrowserRouter>
 			<ScrollToTop />
@@ -47,10 +60,8 @@ function App() {
 
 					<Route element={<DashboardWrapper />}>
 						<Route exact path="/dashboard" element={<Dashboard />} />
-						{/* <Route exact path="/developers" element={<Developers />} /> */}
 						<Route exact path="/jobs" element={<Jobs />} />
-						<Route exact path="/footer" element={<Footer />} />
-						<Route exact path="/testimonial" element={<Testimonial />} />
+
 						<Route exact path="/contact" element={<ContactUS />} />
 						<Route exact path="/query" element={<Query />} />
 						<Route exact path="/requests" element={<Requests />} />

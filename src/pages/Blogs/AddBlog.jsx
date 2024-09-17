@@ -112,6 +112,7 @@ const AddBlog = () => {
 	const handelSubmit = () => {
 		if (!title) return toast.error("Title is required...");
 		if (!smallText) return toast.error("Small Text is required !!");
+		if (!imageFile) return toast.error("Blog Image required !!");
 
 		if (activeAuthId === "") return toast.error("Please select author");
 		console.log(blogData);
@@ -198,6 +199,15 @@ const AddBlog = () => {
 		"ui_ux",
 		"vuejs",
 	];
+
+	const { allTags } = useSelector((state) => state.tag);
+
+	// const [tagsArray, setTagsArray] = useState([]);
+
+	// useEffect(() => {
+	// 	const newTagsArray = allTags.map((item) => item.name);
+	// 	setTagsArray(newTagsArray);
+	// }, [allTags]);
 
 	return (
 		<>

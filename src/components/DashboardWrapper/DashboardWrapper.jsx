@@ -36,31 +36,10 @@ const DashboardWrapper = () => {
 						<p>Dashboard</p>
 					</div>
 
-					{/* <div
-						className={`${styles.items} ${pathname === "/developers" ? styles.activeItem : ""}`}
-						onClick={() => navigate("/developers")}>
-						<MdDeveloperMode />
-						<p>Developers</p>
-					</div> */}
 					<div className={`${styles.items} ${pathname === "/jobs" ? styles.activeItem : ""}`} onClick={() => navigate("/jobs")}>
-						{/* <RiHomeOfficeFill /> */}
 						<MdWork />
 						<p>Jobs</p>
 					</div>
-
-					{/* <div
-						className={`${styles.items} ${pathname === "/footer" ? styles.activeItem : ""}`}
-						onClick={() => navigate("/footer")}>
-						<TbSection />
-						<p>Footer</p>
-					</div> */}
-					{/* 
-					<div
-						className={`${styles.items} ${pathname === "/testimonial" ? styles.activeItem : ""}`}
-						onClick={() => navigate("/testimonial")}>
-						<FaNoteSticky />
-						<p>Testimonial</p>
-					</div> */}
 
 					<div
 						className={`${styles.items} ${pathname === "/author" ? styles.activeItem : ""}`}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../components/Hooks/axios";
@@ -7,28 +7,17 @@ import Loading from "../../components/Hooks/Loading";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { useDeleteAlert } from "../../components/Hooks/useDeleteAlert";
+import { fetchTagsFromLocal } from "../../redux/slice/tagSlice";
 import { setRefreshTag } from "../../redux/slice/tempSlice";
 import styles from "./Tag.module.scss";
 
 const Tag = () => {
-	const [loading, setLoading] = useState(false);
-
-	const { refreshTag } = useSelector((state) => state.temp);
+	const { allTags, tagLoading } = useSelector((state) => state.tag);
 	const dispatch = useDispatch();
 
-	const [tags, setTags] = useState([]);
 	useEffect(() => {
-		setLoading(true);
-
-		axios
-			.get(`/tags`)
-			.then(({ data }) => {
-				console.log(data);
-				setTags(data?.data);
-			})
-			.catch((e) => console.log(e))
-			.finally(() => setLoading(false));
-	}, [refreshTag]);
+		dispatch(fetchTagsFromLocal());
+	}, []);
 
 	const handleAddTag = async () => {
 		const { value: tagName } = await Swal.fire({
@@ -89,7 +78,9 @@ const Tag = () => {
 					Add New Tag
 				</button>
 			</div>
-			<div className={styles.TagContainer}>{loading ? <Loading /> : tags?.map((tag) => <TagItem tag={tag} key={tag._id} />)}</div>
+			<div className={styles.TagContainer}>
+				{tagLoading ? <Loading /> : allTags?.map((tag) => <TagItem tag={tag} key={tag._id} />)}
+			</div>
 		</div>
 	);
 };

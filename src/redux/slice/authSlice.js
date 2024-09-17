@@ -32,6 +32,7 @@ const authSlice = createSlice({
 			sessionStorage.removeItem("krosshire_token");
 			state.user = null;
 			state.token = "";
+			ls.remove("allTagsAdmin");
 		},
 
 		setLanguage: (state, { payload }) => {
