@@ -4,7 +4,6 @@ import { VscOpenPreview } from "react-icons/vsc";
 import "react-quill/dist/quill.snow.css";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { TagsInput } from "react-tag-input-component";
 import { toast } from "react-toastify";
 import axios from "../../components/Hooks/axios";
 import Loading from "../../components/Hooks/Loading";
@@ -12,6 +11,7 @@ import styles from "./AddBlog.module.scss";
 import "./AddBlogs.scss";
 import ImageBox from "./ImageBox";
 import PreviewBlog from "./PreviewBlog";
+import TagSelector from "./TagSelector";
 import TextBox from "./TextBox";
 
 const UpdateBlog = () => {
@@ -69,7 +69,7 @@ const UpdateBlog = () => {
 				setBg(blog.bgColor || "#ffffff");
 				setColor(blog.textColor || "#000000");
 				setSmallText(blog.smallText || "");
-				setSelected(blog.tags || []);
+				setSelected(Array.isArray(blog.tags) ? blog.tags : JSON.parse(blog.tags) || []);
 				setPreviewImageFile(blog.image);
 
 				// Process blog content into TextBox or ImageBox components
@@ -112,9 +112,6 @@ const UpdateBlog = () => {
 
 				setContentText(contentParts);
 				setBlogData(contentParts.map((item) => ({ id: item.id, data: item.comp.props.initialData })));
-
-				console.log(contentParts);
-				console.log(contentParts.map((item) => ({ id: item.id, data: item.comp.props.initialData })));
 			})
 			.catch((error) => {
 				console.error("Error fetching blog data:", error);
@@ -199,9 +196,10 @@ const UpdateBlog = () => {
 			.finally(() => setIsLoading(false));
 	};
 
-	useEffect(() => {
-		console.log(blogData);
-	}, [blogData]);
+	//tag change
+	const handleTagsChange = (tags) => {
+		setSelected(tags);
+	};
 
 	return (
 		<>
@@ -255,10 +253,8 @@ const UpdateBlog = () => {
 						</div>
 					</div>
 
-					<div className={styles.TagWrapper}>
-						<h1>Add Tags</h1>
-						<TagsInput value={selected} onChange={setSelected} name="tags" placeholder="Enter tags" />
-						<em>Press enter to add new tag</em>
+					<div className={styles.TagWrapper} style={{ paddingLeft: "2rem" }}>
+						<TagSelector existingTags={selected} onTagsChange={handleTagsChange} />
 					</div>
 
 					<div className={styles.ContentWrapper}>

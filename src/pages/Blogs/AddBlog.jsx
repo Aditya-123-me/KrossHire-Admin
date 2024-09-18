@@ -3,7 +3,7 @@ import { FaCamera } from "react-icons/fa";
 import { VscOpenPreview } from "react-icons/vsc";
 import "react-quill/dist/quill.snow.css";
 import { useSelector } from "react-redux";
-import { TagsInput } from "react-tag-input-component";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import FooterBG from "../../assets/images/FooterBG.webp";
 import Loading from "../../components/Hooks/Loading";
@@ -12,9 +12,11 @@ import styles from "./AddBlog.module.scss";
 import "./AddBlogs.scss";
 import ImageBox from "./ImageBox";
 import PreviewBlog from "./PreviewBlog";
+import TagSelector from "./TagSelector";
 import TextBox from "./TextBox";
 
 const AddBlog = () => {
+	const navigate = useNavigate();
 	const [bg, setBg] = useState("#ff621f");
 	const [color, setColor] = useState("#ffffff");
 	const [imageFile, setImageFile] = useState(null);
@@ -164,6 +166,7 @@ const AddBlog = () => {
 				setActiveAuthId("");
 				setContentText([]);
 				setSelected([]);
+				navigate("/blogs");
 			})
 			.catch(({ response }) => {
 				console.log("Error => ", response);
@@ -176,38 +179,12 @@ const AddBlog = () => {
 		console.log(blogData);
 	}, [contentText, blogData]);
 
-	//for tag suggestion
-	const predefinedTags = [
-		"ai_ml",
-		"android",
-		"angular",
-		"automation",
-		"aws",
-		"azure",
-		"c",
-		"c_Plus",
-		"dot_net",
-		"flutter",
-		"java",
-		"mean",
-		"mern",
-		"nodejs",
-		"react",
-		"react_native",
-		"ror",
-		"swift",
-		"ui_ux",
-		"vuejs",
-	];
+	// for tags
 
-	const { allTags } = useSelector((state) => state.tag);
-
-	// const [tagsArray, setTagsArray] = useState([]);
-
-	// useEffect(() => {
-	// 	const newTagsArray = allTags.map((item) => item.name);
-	// 	setTagsArray(newTagsArray);
-	// }, [allTags]);
+	// This function will receive the updated tags from the TagSelector component
+	const handleTagsChange = (tags) => {
+		setSelected(tags);
+	};
 
 	return (
 		<>
@@ -260,9 +237,7 @@ const AddBlog = () => {
 
 					<div className={styles.TagAuthor}>
 						<div className={styles.TagWrapper}>
-							<h1>Add Tags</h1>
-							<TagsInput value={selected} onChange={setSelected} name="tags" placeHolder="enter tags" id="tag-input" />
-							<em>press enter to add new tag</em>
+							<TagSelector onTagsChange={handleTagsChange} />
 						</div>
 
 						<div className={styles.AuthSectionRight}>
