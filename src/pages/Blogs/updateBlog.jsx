@@ -271,7 +271,7 @@ const UpdateBlog = () => {
 					</div>
 
 					<div className={styles.ButtonWrapper}>
-						<button onClick={handleSubmit}>{isLoading ? <Loading /> : "Update Blog"}</button>
+						<button onClick={handleSubmit}>{isLoading ? <Loading color="#fff" /> : "Update Blog"}</button>
 					</div>
 				</div>
 			</div>

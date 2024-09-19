@@ -237,7 +237,7 @@ const AddBlog = () => {
 
 					<div className={styles.TagAuthor}>
 						<div className={styles.TagWrapper}>
-							<TagSelector onTagsChange={handleTagsChange} />
+							<TagSelector onTagsChange={handleTagsChange} existingTags={selected} />
 						</div>
 
 						<div className={styles.AuthSectionRight}>

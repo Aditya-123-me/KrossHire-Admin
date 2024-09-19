@@ -2,19 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./TagSelector.module.scss";
 
-const TagSelector = ({ onTagsChange, existingTags }) => {
+const TagSelector = ({ onTagsChange, existingTags = [] }) => {
 	const { allTags } = useSelector((state) => state.tag);
 
 	const [tagsArray, setTagsArray] = useState([]);
+	const [inputValue, setInputValue] = useState("");
+	const [selectedTags, setSelectedTags] = useState(existingTags);
+
+	useEffect(() => {
+		setTagsArray(allTags.map((item) => item.name));
+	}, [allTags]);
 
 	useEffect(() => {
 		setSelectedTags(existingTags);
-		const newTagsArray = allTags.map((item) => item.name);
-		setTagsArray(newTagsArray);
-	}, [allTags, existingTags]);
-
-	const [inputValue, setInputValue] = useState("");
-	const [selectedTags, setSelectedTags] = useState(existingTags || []);
+	}, [existingTags]);
 
 	// Filter suggestions based on user input
 	const filteredSuggestions = tagsArray.filter(
