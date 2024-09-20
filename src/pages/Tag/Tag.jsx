@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { FaEdit, FaSave, FaTrashAlt } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../components/Hooks/axios";
 import Loading from "../../components/Hooks/Loading";
@@ -78,6 +78,8 @@ const Tag = () => {
 					Add New Tag
 				</button>
 			</div>
+
+			<h2>Note :By Edit and Delete Tag it may effect the blog it is used...</h2>
 			<div className={styles.TagContainer}>
 				{tagLoading ? <Loading /> : allTags?.map((tag) => <TagItem tag={tag} key={tag._id} />)}
 			</div>
@@ -89,6 +91,8 @@ export default Tag;
 
 const TagItem = ({ tag }) => {
 	const dispatch = useDispatch();
+	const [editable, setEditable] = useState(false);
+	const [tagName, setTagName] = useState(tag?.name);
 	const handleDelete = async (id) => {
 		const confirmed = await useDeleteAlert();
 		if (!confirmed) return;
@@ -101,14 +105,31 @@ const TagItem = ({ tag }) => {
 			})
 			.catch((e) => console.log(e));
 	};
+
+	const handleEdit = (id) => {
+		axios
+			.put(`/tags/${id}`, { name: tagName })
+			.then(({ data }) => {
+				toast.success("Successfully updated !");
+				dispatch(setRefreshTag());
+			})
+			.catch((e) => console.log(e));
+	};
 	return (
 		<div className={styles.TagItem}>
-			<p>{tag?.name}</p>
+			{editable ? <input type="text" value={tagName} onChange={(e) => setTagName(e.target.value)} /> : <p>{tag?.name}</p>}
 
 			<div className={styles.Actions}>
-				<p>
-					<FaEdit />
-				</p>
+				{editable ? (
+					<p onClick={() => handleEdit(tag._id)}>
+						<FaSave />
+					</p>
+				) : (
+					<p onClick={() => setEditable(true)}>
+						<FaEdit />
+					</p>
+				)}
+
 				<p onClick={() => handleDelete(tag._id)}>
 					<FaTrashAlt />
 				</p>
