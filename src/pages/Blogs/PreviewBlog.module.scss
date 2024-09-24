@@ -11,17 +11,15 @@
 	z-index: 100;
 
 	.Wrapper {
-		width: 60rem;
+		width: 70rem;
 		height: 80%;
 		background-color: var(--c2);
 		border-radius: 2rem 0 0 2rem;
-
-		overflow-y: scroll;
+		overflow-x: hidden;
 
 		.Row1 {
 			width: 100%;
-
-			height: 28.4rem;
+			min-height: 28.4rem;
 			backdrop-filter: blur(5px);
 			display: flex;
 			align-items: center;
@@ -29,15 +27,17 @@
 			padding: 0 2rem;
 
 			.Left {
+				width: 50%;
 				.Details {
-					width: 50%;
+					width: 100%;
+					padding: 2rem 1rem;
 					h1 {
 						color: var(--c3);
 						font-family: var(--f2);
-						font-size: 3rem;
+						font-size: 2.3rem;
 						font-style: normal;
 						font-weight: 700;
-						line-height: 3.99rem;
+						line-height: 110%;
 						letter-spacing: -0.07838rem;
 						text-transform: capitalize;
 						margin-bottom: 1.94rem;
@@ -48,11 +48,11 @@
 					}
 
 					p {
-						width: 70%;
+						width: 90%;
 						font-size: 1.125rem;
 						font-style: normal;
 						font-weight: 400;
-						line-height: 1.755rem;
+						line-height: 130%;
 
 						display: -webkit-box;
 						-webkit-box-orient: vertical;
@@ -63,8 +63,10 @@
 				}
 
 				.Tags {
+					width: 100%;
 					display: flex;
 					align-items: center;
+					flex-wrap: wrap;
 					gap: 1rem;
 					margin: 2rem 0;
 
@@ -123,21 +125,23 @@
 
 		.Row2 {
 			width: 100%;
-			padding: 6.5rem 0 7.19rem 0;
+			padding: 4.5rem 1rem 7.19rem 1rem;
 			position: relative;
 			display: flex;
+			justify-content: space-between;
 			@media (max-width: 631px) {
 				padding: 3rem;
 			}
 
 			.Left {
-				width: 31.5rem;
+				width: 15%;
 				height: 10vh;
+
 				position: sticky;
 				top: 0;
 				display: flex;
 				justify-content: center;
-				gap: 1rem;
+				gap: 0.4rem;
 				padding-top: 2rem;
 
 				@media (max-width: 631px) {
@@ -156,26 +160,25 @@
 					transition: all 0.3s ease-in-out;
 
 					svg {
-						width: 60%;
-						height: 60%;
+						width: 1.2rem;
+						height: 1.2rem;
 						transition: all 0.3s ease-in-out;
 						// color: var(--c2);
 					}
 
-					&:hover {
-						scale: 1.2;
-						background: var(--c1) !important;
+					// &:hover {
+					// 	scale: 1.2;
+					// 	background: var(--c1) !important;
 
-						svg {
-							color: var(--c2);
-						}
-					}
+					// 	svg {
+					// 		color: var(--c2);
+					// 	}
+					// }
 				}
 			}
 
 			.Right {
-				width: 100%;
-				// min-height: 100vh;
+				width: 80%;
 				height: auto;
 				padding-right: 4rem;
 
@@ -187,10 +190,10 @@
 					width: 63.9375rem;
 					color: var(--c3);
 					font-family: var(--f2);
-					font-size: 3.5rem;
+					font-size: 2.5rem;
 					font-style: normal;
 					font-weight: 700;
-					line-height: 4.99rem;
+					line-height: 130%;
 					letter-spacing: -0.07838rem;
 					text-transform: capitalize;
 					margin-bottom: 1.56rem;
@@ -201,13 +204,13 @@
 				}
 
 				h2 {
-					width: 60rem;
+					width: 100%;
 					color: var(--c3);
 					font-family: var(--f2);
-					font-size: 3rem;
+					font-size: 2rem;
 					font-style: normal;
 					font-weight: 700;
-					line-height: 4.99rem;
+					line-height: 120%;
 					letter-spacing: -0.07838rem;
 					text-transform: capitalize;
 					margin-bottom: 1.56rem;
@@ -218,13 +221,13 @@
 				}
 
 				h3 {
-					width: 60rem;
+					width: 100%;
 					color: var(--c3);
 					font-family: var(--f2);
-					font-size: 2.5rem;
+					font-size: 2rem;
 					font-style: normal;
 					font-weight: 600;
-					line-height: 4.99rem;
+					line-height: 120%;
 					letter-spacing: -0.07838rem;
 					text-transform: capitalize;
 					margin-bottom: 1.56rem;
@@ -241,7 +244,7 @@
 					font-weight: 400;
 					line-height: 1.755rem;
 					letter-spacing: 0.05625rem;
-					margin-bottom: 2rem;
+					margin-bottom: 1rem;
 					text-align: justify;
 				}
 

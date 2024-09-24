@@ -129,7 +129,7 @@ function Blogs() {
 										<FaTrashAlt />
 									</p>
 
-									<p className={styles.Edit} onClick={() => navigate(`/update-blog/${data.title}`)}>
+									<p className={styles.Edit} onClick={() => navigate(`/update-blog/${data._id}`)}>
 										<FaEdit />
 									</p>
 								</div>

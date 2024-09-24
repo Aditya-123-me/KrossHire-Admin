@@ -61,7 +61,7 @@ const UpdateBlog = () => {
 
 	useEffect(() => {
 		axios
-			.get(`/blog/oneBlog/${id}`)
+			.get(`/blog/${id}`)
 			.then(({ data }) => {
 				const blog = data.data;
 				setBlogId(blog._id);
