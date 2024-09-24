@@ -179,12 +179,32 @@
 	height: 20rem;
 	display: flex;
 	align-items: center;
+	position: relative;
 
 	&:nth-child(odd) {
 		justify-content: flex-end;
 	}
 	&:nth-child(even) {
 		justify-content: flex-start;
+	}
+
+	.BlogTime {
+		display: none;
+		position: absolute;
+		bottom: 1rem;
+		right: 2rem;
+		background-color: var(--c2);
+		padding: 1.2rem;
+		border-radius: 1rem;
+		color: var(--c4);
+		font-family: Public Sans;
+		font-size: 0.973vw;
+		font-style: normal;
+		font-weight: 600;
+
+		&.ShowBlogTime {
+			display: block;
+		}
 	}
 
 	.ApplicationCard {

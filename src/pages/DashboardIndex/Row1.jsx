@@ -210,36 +210,36 @@ const Row1 = () => {
 	};
 
 	useEffect(() => {
-		// 	setUserLoading(true);
-		// 	// setEventLoading(true);
-		// 	axios
-		// 		.get(`/user_activity`)
-		// 		.then(({ data }) => {
-		// 			setUserActivate(data);
-		// 			const u_30 = [];
-		// 			const d_30 = [];
-		// 			const u_07 = [];
-		// 			const u_01 = [];
-		// 			data?.last_30_days?.data.map((item) => {
-		// 				u_30.push(Number(item?.active_users));
-		// 				d_30.push(Number(item?.date));
-		// 			});
-		// 			data?.last_7_days?.data.map((item) => {
-		// 				u_07.push(Number(item?.active_users));
-		// 			});
-		// 			data?.last_1_day?.data.map((item) => {
-		// 				u_01.push(Number(item?.active_users));
-		// 			});
-		// 			setUser_30(u_30);
-		// 			setDate_30(d_30);
-		// 			setUser_07(u_07);
-		// 			setUser_01(u_01);
+		setUserLoading(true);
+		// setEventLoading(true);
+		axios
+			.get(`/user-activity`)
+			.then(({ data }) => {
+				setUserActivate(data?.data);
+				const u_30 = [];
+				const d_30 = [];
+				const u_07 = [];
+				const u_01 = [];
+				data?.data?.last_30_days?.data.map((item) => {
+					u_30.push(Number(item?.active_users));
+					d_30.push(Number(item?.date));
+				});
+				data?.data?.last_7_days?.data.map((item) => {
+					u_07.push(Number(item?.active_users));
+				});
+				data?.data?.last_1_day?.data.map((item) => {
+					u_01.push(Number(item?.active_users));
+				});
+				setUser_30(u_30);
+				setDate_30(d_30);
+				setUser_07(u_07);
+				setUser_01(u_01);
 
-		// 			setUserLoading(false);
-		// 		})
-		// 		.catch(({ response }) => {
-		// 			console.log("Error => ", response);
-		// 		});
+				setUserLoading(false);
+			})
+			.catch(({ response }) => {
+				console.log("Error => ", response);
+			});
 
 		// 	//event
 
@@ -266,7 +266,7 @@ const Row1 = () => {
 
 				<div className={styles.Bottom}>
 					{userLoading ? (
-						<div className={styles.Loading}>
+						<div className={styles.Loading} style={{ margin: "auto" }}>
 							<Loading />
 						</div>
 					) : (

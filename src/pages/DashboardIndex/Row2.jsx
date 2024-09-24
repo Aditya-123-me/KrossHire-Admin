@@ -8,7 +8,7 @@ import Loading from "../../components/Hooks/Loading";
 import styles from "./Dashboard.module.scss";
 
 const Row2 = () => {
-	const [activeMapBtn, setActiveMapBtn] = useState("monthly");
+	const [activeMapBtn, setActiveMapBtn] = useState("7daysAgo");
 	const [pageViewData, setPageViewData] = useState([]);
 	const [pageViewCount, setPageViewCount] = useState(0);
 	const [pageViewLoading, setPageViewLoading] = useState(false);
@@ -69,7 +69,7 @@ const Row2 = () => {
 	useEffect(() => {
 		setCountryLoading(true);
 		axios
-			.get(`/getMostUsersCountry?time_range=${activeMapBtn}`)
+			.get(`/getMostUsersCountry?time-range=${activeMapBtn}`)
 			.then(({ data }) => {
 				console.log(data);
 				setCountryData(data?.data);
@@ -88,15 +88,18 @@ const Row2 = () => {
 					<h1>Users Location</h1>
 
 					<div className={styles.ButtonContainer}>
-						<button className={activeMapBtn === "weekly" ? styles.Active : ""} onClick={() => setActiveMapBtn("weekly")}>
+						<button className={activeMapBtn === "1daysAgo" ? styles.Active : ""} onClick={() => setActiveMapBtn("1daysAgo")}>
+							Daily
+						</button>
+						<button className={activeMapBtn === "7daysAgo" ? styles.Active : ""} onClick={() => setActiveMapBtn("7daysAgo")}>
 							Weekly
 						</button>
 
-						<button className={activeMapBtn === "monthly" ? styles.Active : ""} onClick={() => setActiveMapBtn("monthly")}>
+						<button className={activeMapBtn === "30daysAgo" ? styles.Active : ""} onClick={() => setActiveMapBtn("30daysAgo")}>
 							Monthly
 						</button>
 
-						<button className={activeMapBtn === "yearly" ? styles.Active : ""} onClick={() => setActiveMapBtn("yearly")}>
+						<button className={activeMapBtn === "365daysAgo" ? styles.Active : ""} onClick={() => setActiveMapBtn("365daysAgo")}>
 							Yearly
 						</button>
 					</div>

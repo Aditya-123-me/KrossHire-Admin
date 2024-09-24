@@ -99,6 +99,7 @@
 			.Right {
 				position: relative;
 				display: flex;
+
 				align-items: center;
 				justify-content: center;
 
@@ -203,6 +204,35 @@
 						background: var(--c1);
 					}
 				}
+			}
+		}
+
+		.DateTime {
+			width: 100%;
+			padding: 1rem 2rem;
+			display: flex;
+			flex-direction: column;
+			// align-items: center;
+			gap: 1rem;
+			background-color: var(--c1);
+
+			h3 {
+				color: var(--c2);
+			}
+
+			label,
+			input {
+				color: var(--c2);
+				font-family: var(--f3);
+			}
+			input {
+				background-color: transparent;
+				border: none;
+				border-bottom: 1px solid var(--c2);
+				margin-left: 0.3rem;
+			}
+			.Label1 {
+				margin-left: 3rem;
 			}
 		}
 

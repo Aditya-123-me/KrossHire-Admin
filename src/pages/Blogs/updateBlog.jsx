@@ -169,11 +169,11 @@ const UpdateBlog = () => {
 	const handleSubmit = () => {
 		if (!title || !smallText || !blogData.length) return toast.error("Please fill all required fields!");
 
-		console.log(blogData);
+		const sanitizedTitle = title.replace(/(\r\n|\n|\r)/gm, " ").trim();
 
 		setIsLoading(true);
 		const formData = new FormData();
-		formData.append("title", title);
+		formData.append("title", sanitizedTitle);
 		formData.append("bgColor", bg);
 		formData.append("textColor", color);
 		formData.append("smallText", smallText);
@@ -221,6 +221,7 @@ const UpdateBlog = () => {
 								placeholder="Add your title"
 								style={{ color: color }}
 								value={title}
+								defaultValue={title}
 								onChange={(e) => setTitle(e.target.value)}
 							/>
 

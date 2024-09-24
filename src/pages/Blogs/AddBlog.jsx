@@ -31,7 +31,6 @@ const AddBlog = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { language } = useSelector((state) => state.auth);
 	const [selected, setSelected] = useState([]);
-
 	const [openPreview, setOpenPreview] = useState(false);
 
 	const handlePreview = () => {
@@ -116,6 +115,8 @@ const AddBlog = () => {
 		if (!smallText) return toast.error("Small Text is required !!");
 		if (!imageFile) return toast.error("Blog Image required !!");
 
+		const sanitizedTitle = title.replace(/(\r\n|\n|\r)/gm, " ").trim();
+
 		if (activeAuthId === "") return toast.error("Please select author");
 		console.log(blogData);
 
@@ -131,26 +132,32 @@ const AddBlog = () => {
 		});
 
 		// console.log(blogData);
-
 		setIsLoading(true);
-
-		console.log(blogData);
 		const formData = new FormData();
-		formData.append("title", title);
+		formData.append("title", sanitizedTitle);
 		formData.append("image", imageFile);
 		formData.append("bgColor", bg);
 		formData.append("textColor", color);
 		formData.append("smallText", smallText);
 		formData.append("content", blogData.map((item) => item.data).join("\n"));
-		// const content = blogData.map((item) => item.data).join("\r\n");
-		// formData.append("content", content);
 		formData.append("tags", JSON.stringify(selected));
 		formData.append("language", language);
 
-		if (activeAuthId) formData.append("authorId", activeAuthId);
+		if (date && time) {
+			const dateTime = `${date}T${time}`;
+			console.log(dateTime);
+			const scheduledDateTime = new Date(dateTime);
+			const currentDateTime = new Date();
 
-		console.log(formData);
-		// return
+			// Check if the scheduled dateTime is in the past
+			if (scheduledDateTime < currentDateTime) {
+				toast.error("The scheduled time cannot be in the past!");
+				return;
+			}
+			formData.append("scheduleTime", dateTime);
+		}
+
+		if (activeAuthId) formData.append("authorId", activeAuthId);
 
 		axios
 			.post(`/blog/create`, formData)
@@ -186,6 +193,11 @@ const AddBlog = () => {
 		setSelected(tags);
 	};
 
+	//for date and time  blog scheduling
+
+	const [date, setDate] = useState("");
+	const [time, setTime] = useState("");
+
 	return (
 		<>
 			{openPreview && <PreviewBlog {...{ setOpenPreview, title, smallText, selected, blogData, color, bg, imageFile }} />}
@@ -203,6 +215,7 @@ const AddBlog = () => {
 							<textarea
 								placeholder="Add your title"
 								style={{ color: color }}
+								defaultValue={title}
 								value={title}
 								onChange={(e) => setTitle(e.target.value)}></textarea>
 
@@ -257,6 +270,20 @@ const AddBlog = () => {
 						</div>
 					</div>
 
+					<div className={styles.DateTime}>
+						<h3>Schedule Blog (choose date & time if want to schedule else leave as it is..)</h3>
+
+						<div>
+							<label htmlFor="date">Select Date:</label>
+							<input type="date" id="date" value={date} onChange={(e) => setDate(e.target.value)} required />
+
+							<label htmlFor="time" className={styles.Label1}>
+								Select Time:
+							</label>
+							<input type="time" id="time" value={time} onChange={(e) => setTime(e.target.value)} required />
+						</div>
+					</div>
+
 					<div className={styles.ContentWrapper}>
 						<div className={styles.HeaderSection}>
 							<button onClick={handelAddTextBox}>Add Text Box</button>
@@ -267,7 +294,9 @@ const AddBlog = () => {
 					</div>
 
 					<div className={styles.Submit}>
-						<button onClick={handelSubmit}>{isLoading ? <Loading color="#fff" /> : "Submit"}</button>
+						<button onClick={handelSubmit} disabled={isLoading}>
+							{isLoading ? <Loading color="#fff" /> : "Submit"}
+						</button>
 					</div>
 				</div>
 			</div>
