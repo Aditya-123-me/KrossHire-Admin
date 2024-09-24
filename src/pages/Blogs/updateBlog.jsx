@@ -260,8 +260,11 @@ const UpdateBlog = () => {
 
 					<div className={styles.ContentWrapper}>
 						<div className={styles.HeaderSection}>
-							<button onClick={handleAddTextBox}>Add Text Box</button>
-							<button onClick={handleAddImageBox}>Add Image Box</button>
+							<div className={styles.Buttons}>
+								<button onClick={handleAddTextBox}>Add Text Box</button>
+								<button onClick={handleAddImageBox}>Add Image Box</button>
+							</div>
+							<h2>Fonts For DropDown : serif , ariel , Helvetica , Helvetica-Neue , Intercom </h2>
 						</div>
 
 						<div className={styles.BodySection}>

@@ -6,7 +6,7 @@ import styles from "./AddBlog.module.scss";
 import "./TextBox.scss";
 
 // Custom fonts
-const customFonts = ["serif", "arial"];
+const customFonts = ["serif", "arial", "Helvetica", "Helvetica-Neue","Intercom"];
 
 // Add custom fonts to Quill
 const Font = ReactQuill.Quill.import("formats/font");

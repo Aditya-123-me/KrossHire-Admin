@@ -286,8 +286,11 @@ const AddBlog = () => {
 
 					<div className={styles.ContentWrapper}>
 						<div className={styles.HeaderSection}>
-							<button onClick={handelAddTextBox}>Add Text Box</button>
-							<button onClick={handelAddImageBox}>Add Image Box</button>
+							<div className={styles.Buttons}>
+								<button onClick={handelAddTextBox}>Add Text Box</button>
+								<button onClick={handelAddImageBox}>Add Image Box</button>
+							</div>
+							<h2>Fonts For DropDown : serif , ariel , Helvetica , Helvetica-Neue ,   Intercom </h2>
 						</div>
 
 						<div className={styles.BodySection}>{contentText.map((data, index) => data.comp)}</div>
