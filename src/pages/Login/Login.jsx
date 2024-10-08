@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Logo from "../../assets/images/AcrosstekLogo.png";
+import Logo from "../../assets/icons/Favicon.svg";
 import eye from "../../assets/svg/eye.svg";
 import axios from "../../components/Hooks/axios";
 import { setUser } from "../../redux/slice/authSlice";
@@ -65,12 +65,12 @@ const Login = () => {
 	return (
 		<div className="LoginContainer">
 			<div className="leftSection">
-				<div className="iconContainer">
-					<div className="logo">
-						<img src={Logo} alt="" />
-					</div>
-					<h3>Welcome To AcrossTek</h3>
-				</div>
+				{/* <div className="iconContainer"> */}
+				{/* <div className="logo"> */}
+				<img src={Logo} alt="" />
+				{/* </div> */}
+				<h3>Welcome to acrosstek.com</h3>
+				{/* </div> */}
 			</div>
 
 			<div className="rightSection">

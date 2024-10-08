@@ -61,7 +61,6 @@ function App() {
 					<Route element={<DashboardWrapper />}>
 						<Route exact path="/dashboard" element={<Dashboard />} />
 						<Route exact path="/jobs" element={<Jobs />} />
-
 						<Route exact path="/contact" element={<ContactUS />} />
 						<Route exact path="/query" element={<Query />} />
 						<Route exact path="/requests" element={<Requests />} />

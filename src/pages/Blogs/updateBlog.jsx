@@ -71,6 +71,7 @@ const UpdateBlog = () => {
 				setSmallText(blog.smallText || "");
 				setSelected(Array.isArray(blog.tags) ? blog.tags : JSON.parse(blog.tags) || []);
 				setPreviewImageFile(blog.image);
+				setTitleIds(blog.titleIds);
 
 				// Process blog content into TextBox or ImageBox components
 				const contentParts = blog.content.split("\r\n").map((item, index) => {
@@ -89,6 +90,8 @@ const UpdateBlog = () => {
 								initialData={trimmedItem}
 								updateBoxData={updateBoxData}
 								removeBox={removeTextBox}
+								type={"update"}
+								handleUpdateTitleIdFromUpdate={handleUpdateTitleIdFromUpdate}
 							/>
 						) : isImage ? (
 							<ImageBox
@@ -105,6 +108,8 @@ const UpdateBlog = () => {
 								initialData={trimmedItem}
 								updateBoxData={updateBoxData}
 								removeBox={removeTextBox}
+								type={"update"}
+								handleUpdateTitleIdFromUpdate={handleUpdateTitleIdFromUpdate}
 							/>
 						),
 					};
@@ -148,7 +153,16 @@ const UpdateBlog = () => {
 		const id = generateId();
 		const newTextBox = {
 			id,
-			comp: <TextBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeTextBox} />,
+			comp: (
+				<TextBox
+					key={id}
+					id={id}
+					updateBoxData={updateBoxData}
+					removeBox={removeTextBox}
+					type={"update"}
+					handleUpdateTitleIdFromUpdate={handleUpdateTitleIdFromUpdate}
+				/>
+			),
 		};
 		setContentText((prev) => [...prev, newTextBox]);
 		// setBlogData((prev) => [...prev, { id, data: "" }]);
@@ -181,6 +195,7 @@ const UpdateBlog = () => {
 		formData.append("tags", JSON.stringify(selected));
 		formData.append("language", language);
 		formData.append("id", blogId);
+		formData.append("titleIds", JSON.stringify(titleIds));
 		if (imageFile) formData.append("image", imageFile);
 
 		axios
@@ -201,6 +216,26 @@ const UpdateBlog = () => {
 		setSelected(tags);
 	};
 
+	//for title and ids to manage scrolling to particular section
+	const [titleIds, setTitleIds] = useState([]);
+
+	// Function to update titleIds array
+	const handleUpdateTitleIdFromUpdate = (newTitle, newId) => {
+		// Check if the id already exists in the array, update or add accordingly
+		setTitleIds((prevTitleIds) => {
+			const existingIndex = prevTitleIds.findIndex((item) => item.addedId === newId);
+
+			// If the ID exists, update the title, otherwise add a new entry
+			if (existingIndex !== -1) {
+				const updatedTitleIds = [...prevTitleIds];
+				updatedTitleIds[existingIndex].title = newTitle;
+				return updatedTitleIds;
+			} else {
+				return [...prevTitleIds, { title: newTitle, addedId: newId }];
+			}
+		});
+	};
+
 	return (
 		<>
 			{openPreview && (
@@ -216,7 +251,7 @@ const UpdateBlog = () => {
 
 				<div className={styles.WrapperContainer} onClick={(e) => e.stopPropagation()}>
 					<div className={styles.ImageWrapper} style={{ background: bg }}>
-						<div className={styles.Left}>
+						<div className={`${styles.Left}`}>
 							<textarea
 								placeholder="Add your title"
 								style={{ color: color }}
@@ -268,9 +303,23 @@ const UpdateBlog = () => {
 						</div>
 
 						<div className={styles.BodySection}>
-							{contentText.map((data, index) => (
-								<div key={index}>{data.comp}</div>
-							))}
+							<div className={styles.LeftBoxes}>
+								{contentText.map((data, index) => (
+									<div key={index}>{data.comp}</div>
+								))}
+							</div>
+
+							<div className={styles.RightIdCon}>
+								<h3>Scroll title and id's</h3>
+								<div className={styles.TitleIds}>
+									{titleIds?.map((data, index) => (
+										<div className={styles.TitleIdCard}>
+											<p>{data?.title}</p>
+											<p>{data?.addedId}</p>
+										</div>
+									))}
+								</div>
+							</div>
 						</div>
 					</div>
 

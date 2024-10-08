@@ -98,7 +98,19 @@ const AddBlog = () => {
 		const id = generateId();
 		setContentText((prevContentText) => [
 			...prevContentText,
-			{ id, comp: <TextBox key={id} id={id} updateBoxData={updateBoxData} removeBox={removeTextBox} /> },
+			{
+				id,
+				comp: (
+					<TextBox
+						key={id}
+						id={id}
+						updateBoxData={updateBoxData}
+						removeBox={removeTextBox}
+						type={"add"}
+						handleUpdateTitleId={handleUpdateTitleId}
+					/>
+				),
+			},
 		]);
 	};
 
@@ -111,6 +123,7 @@ const AddBlog = () => {
 	};
 
 	const handelSubmit = () => {
+		console.log(titleIds);
 		if (!title) return toast.error("Title is required...");
 		if (!smallText) return toast.error("Small Text is required !!");
 		if (!imageFile) return toast.error("Blog Image required !!");
@@ -142,10 +155,10 @@ const AddBlog = () => {
 		formData.append("content", blogData.map((item) => item.data).join("\n"));
 		formData.append("tags", JSON.stringify(selected));
 		formData.append("language", language);
+		formData.append("titleIds", JSON.stringify(titleIds));
 
 		if (date && time) {
 			const dateTime = `${date}T${time}`;
-			console.log(dateTime);
 			const scheduledDateTime = new Date(dateTime);
 			const currentDateTime = new Date();
 
@@ -194,9 +207,28 @@ const AddBlog = () => {
 	};
 
 	//for date and time  blog scheduling
-
 	const [date, setDate] = useState("");
 	const [time, setTime] = useState("");
+
+	//for title and ids to manage scrolling to particular section
+	const [titleIds, setTitleIds] = useState([]);
+
+	// Function to update titleIds array
+	const handleUpdateTitleId = (newTitle, newId) => {
+		// Check if the id already exists in the array, update or add accordingly
+		setTitleIds((prevTitleIds) => {
+			const existingIndex = prevTitleIds.findIndex((item) => item.addedId === newId);
+
+			// If the ID exists, update the title, otherwise add a new entry
+			if (existingIndex !== -1) {
+				const updatedTitleIds = [...prevTitleIds];
+				updatedTitleIds[existingIndex].title = newTitle;
+				return updatedTitleIds;
+			} else {
+				return [...prevTitleIds, { title: newTitle, addedId: newId }];
+			}
+		});
+	};
 
 	return (
 		<>
@@ -290,10 +322,23 @@ const AddBlog = () => {
 								<button onClick={handelAddTextBox}>Add Text Box</button>
 								<button onClick={handelAddImageBox}>Add Image Box</button>
 							</div>
-							<h2>Fonts For DropDown : serif , ariel , Helvetica , Helvetica-Neue ,   Intercom </h2>
+							<h2>Fonts For DropDown : serif , ariel , Helvetica , Helvetica-Neue , Intercom </h2>
 						</div>
 
-						<div className={styles.BodySection}>{contentText.map((data, index) => data.comp)}</div>
+						<div className={styles.BodySection}>
+							<div className={styles.LeftBoxes}>{contentText.map((data, index) => data.comp)}</div>
+							<div className={styles.RightIdCon}>
+								<h3>Scroll title and id's</h3>
+								<div className={styles.TitleIds}>
+									{titleIds?.map((data, index) => (
+										<div className={styles.TitleIdCard} key={index}>
+											<p>Title : {data?.title}</p>
+											<p>ID: {data?.addedId}</p>
+										</div>
+									))}
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div className={styles.Submit}>

@@ -249,9 +249,9 @@
 				gap: 2rem;
 				margin-bottom: 1rem;
 				background: var(--c4);
-				z-index: 5;
 				position: sticky;
 				top: 0;
+				z-index: 100;
 
 				h2 {
 					color: #fff;
@@ -287,8 +287,66 @@
 			}
 
 			.BodySection {
+				width: 100%;
 				min-height: 10vh;
 				padding: 0 2rem;
+				display: flex;
+				flex-direction: row-reverse;
+				gap: 2rem;
+
+				.LeftBoxes {
+					flex: 1;
+				}
+				.RightIdCon {
+					width: 20rem;
+					min-height: 15rem;
+					height: auto;
+					max-height: 43rem;
+					position: sticky;
+					top: 10rem;
+					padding: 1rem;
+					display: flex;
+					flex-direction: column;
+					gap: 0.5rem;
+					box-shadow: 0px 7px 9px -2px rgba(0, 0, 0, 0.7);
+
+					h3 {
+						font-size: 2rem;
+						color: var(--c1);
+						font-family: var(--f1);
+						font-weight: 400;
+					}
+
+					.TitleIds {
+						flex: 1;
+						overflow-y: scroll;
+						display: flex;
+						flex-direction: column;
+						gap: 0.3rem;
+						&::-webkit-scrollbar {
+							display: none;
+						}
+
+						.TitleIdCard {
+							background-color: var(--c1);
+							box-shadow: 0px 6px 6px -6px rgba(0, 0, 0, 0.7);
+							display: flex;
+							flex-direction: column;
+							border-radius: 0.3rem;
+							padding: 0.3rem 0.6rem;
+
+							p {
+								font-size: 1.5rem;
+								color: var(--c2);
+								font-family: var(--f1);
+								font-weight: 400;
+								&:nth-child(2) {
+									color: var(--c6);
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 
@@ -372,10 +430,11 @@
 			width: 100%;
 			display: flex;
 			align-items: center;
-			justify-content: center;
+			justify-content: flex-end;
+			padding-right: 4rem;
 
 			button {
-				width: 80%;
+				width: 70%;
 				height: 3.5rem;
 				background: var(--c1);
 				transition: all 0.3s ease-in-out;
@@ -402,7 +461,7 @@
 
 	.Remove {
 		position: absolute;
-		top: 1rem;
+		top: 0.2rem;
 		right: 2rem;
 		z-index: 5;
 		background-color: var(--b4);
@@ -419,6 +478,29 @@
 			scale: 0.9;
 		}
 	}
+
+	.AddTag {
+		position: absolute;
+		top: 1rem;
+		right: 6rem;
+		z-index: 5;
+		background-color: var(--b4);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 3px;
+		border-radius: 0.4rem;
+		cursor: pointer;
+		transition: all ease-in-out 0.3s;
+
+		color: var(--c2);
+
+		&:hover {
+			opacity: 0.9;
+			scale: 0.9;
+		}
+	}
+	/* In AddBlog.module.scss or TextBox.scss */
 }
 
 .ImageBox {
@@ -529,3 +611,17 @@
 		}
 	}
 }
+.custom-tag {
+	text-decoration: underline; /* Underline the text */
+	background-color: #f0f8ff; /* Light blue background */
+	padding: 2px 4px; /* Padding around the text */
+	border-radius: 3px; /* Rounded corners */
+}
+
+// span {
+// 	background-color: rgba(255, 0, 0, 0.205);
+// }
+
+// .ql-formats {
+// 	background-color: yellow;
+// }

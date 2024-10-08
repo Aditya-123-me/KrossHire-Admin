@@ -6,9 +6,7 @@ import { formatDate } from "../../components/Functions/Date";
 import styles from "./PreviewBlog.module.scss";
 
 const PreviewBlog = ({ setOpenPreview, title, smallText, selected, blogData, color, bg, imageFile, previewImageFile }) => {
-	console.log(blogData);
-	console.log(imageFile);
-	console.log(previewImageFile);
+
 	return (
 		<div className={styles.PreviewBlog} onClick={() => setOpenPreview(false)}>
 			<div className={styles.Wrapper} onClick={(e) => e.stopPropagation()}>
