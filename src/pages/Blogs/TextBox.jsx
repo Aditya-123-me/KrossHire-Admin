@@ -101,8 +101,6 @@ const TextBox = ({ id, updateBoxData, removeBox, initialData, handleUpdateTitleI
 		quill.focus();
 		const range = quill.getSelection();
 
-		console.log(type);
-
 		if (range && range.length > 0) {
 			const tagId = prompt("Enter Tag ID (e.g., tag1, tag2):");
 

@@ -289,11 +289,11 @@ const UpdateBlog = () => {
 							</button>
 						</div>
 					</div>
-
-					<div className={styles.TagWrapper} style={{ paddingLeft: "2rem" }}>
-						<TagSelector existingTags={selected} onTagsChange={handleTagsChange} />
+					<div className={styles.TagAuthor}>
+						<div className={styles.TagWrapper} style={{ paddingLeft: "2rem" }}>
+							<TagSelector existingTags={selected} onTagsChange={handleTagsChange} />
+						</div>
 					</div>
-
 					<div className={styles.ContentWrapper}>
 						<div className={styles.HeaderSection}>
 							<div className={styles.Buttons}>
@@ -323,7 +323,6 @@ const UpdateBlog = () => {
 							</div>
 						</div>
 					</div>
-
 					<div className={styles.ButtonWrapper}>
 						<button onClick={handleSubmit}>{isLoading ? <Loading color="#fff" /> : "Update Blog"}</button>
 					</div>
