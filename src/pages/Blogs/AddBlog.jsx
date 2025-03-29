@@ -245,6 +245,7 @@ const AddBlog = () => {
 					<div className={styles.ImageWrapper} style={{ background: bg }}>
 						<div className={styles.Left}>
 							<textarea
+								className={styles.MainTitle}
 								placeholder="Add your title"
 								style={{ color: color }}
 								defaultValue={title}
