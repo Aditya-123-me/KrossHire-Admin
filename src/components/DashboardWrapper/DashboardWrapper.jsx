@@ -74,6 +74,14 @@ const DashboardWrapper = () => {
 						<p>Contact/Hire</p>
 					</div>
 
+					<div
+						className={`${styles.items} ${pathname === "/quote" ? styles.activeItem : ""}`}
+						onClick={() => navigate("/quote")}>
+						<MdOutlineSupportAgent />
+						<p>Quote</p>
+					</div>
+
+
 					<div className={`${styles.items} ${pathname === "/query" ? styles.activeItem : ""}`} onClick={() => navigate("/query")}>
 						<MdOutlineSupportAgent />
 						<p>Query</p>

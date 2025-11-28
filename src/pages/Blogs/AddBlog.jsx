@@ -130,6 +130,7 @@ const AddBlog = () => {
 
 		const sanitizedTitle = title.replace(/(\r\n|\n|\r)/gm, " ").trim();
 
+
 		if (activeAuthId === "") return toast.error("Please select author");
 		console.log(blogData);
 

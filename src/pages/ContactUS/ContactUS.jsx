@@ -82,7 +82,11 @@ function ContactUS() {
 					{loading ? (
 						<Loading height="10rem" width="10rem" />
 					) : (
-						applications.map((item, index) => (
+						applications
+						.filter(item => item.skills && item.skills !== "notavailable")
+						.filter(item => item.skills && item.skills !== "ScheduleCall")
+						.filter(item => item.skills && item.skills !== "letsconnect")
+						.map((item, index) => (
 							<div className={styles.ApplicationCard} key={index}>
 								<div className={styles.userId}>{index + 1}</div>
 								<div className={styles.Name}>{item?.name}</div>

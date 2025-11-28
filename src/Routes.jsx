@@ -21,6 +21,7 @@ import Page404 from "./pages/Page404/Page404";
 import Requests from "./pages/RequestsPage/Requests";
 import Tag from "./pages/Tag/Tag";
 import { setAllTags, setTagLoading } from "./redux/slice/tagSlice";
+import Quote from "./pages/Quote/Quote";
 
 function App() {
 	clearCacheData();
@@ -62,6 +63,7 @@ function App() {
 						<Route exact path="/dashboard" element={<Dashboard />} />
 						<Route exact path="/jobs" element={<Jobs />} />
 						<Route exact path="/contact" element={<ContactUS />} />
+						<Route exact path="/quote" element={<Quote/>} />
 						<Route exact path="/query" element={<Query />} />
 						<Route exact path="/requests" element={<Requests />} />
 						<Route exact path="/blogs" element={<Blogs />} />
