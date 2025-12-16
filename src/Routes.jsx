@@ -22,6 +22,12 @@ import Requests from "./pages/RequestsPage/Requests";
 import Tag from "./pages/Tag/Tag";
 import { setAllTags, setTagLoading } from "./redux/slice/tagSlice";
 import Quote from "./pages/Quote/Quote";
+import AddBlog2 from "./pages/BlogsNext/AddBlog2";
+import BlogNext from "./pages/BlogsNext/BlogNext";
+import BlogForm from "./pages/BlogsNext/BlogForm";
+import JobPosting from "./pages/JobPosting/JobPosting";
+import JobAdd from "./pages/JobPosting/JobAdd";
+import JobQuery from "./pages/JobPosting/JobQuery";
 
 function App() {
 	clearCacheData();
@@ -67,10 +73,16 @@ function App() {
 						<Route exact path="/query" element={<Query />} />
 						<Route exact path="/requests" element={<Requests />} />
 						<Route exact path="/blogs" element={<Blogs />} />
+						<Route exact path="/blogNext" element={<BlogNext />} />
 						<Route exact path="/author" element={<Author />} />
 						<Route exact path="/tags" element={<Tag />} />
 						<Route exact path="/add-blog" element={<AddBlog />} />
+						<Route exact path="/add-blog2" element={<AddBlog2 />} />
 						<Route exact path="/update-blog/:id" element={<UpdateBlog />} />
+						<Route exact path="/blog2/update/:id" element={<BlogForm />} />
+						<Route exact path="/nextJobs" element={<JobPosting />} />
+						<Route exact path="/add-job" element={<JobAdd/>} />
+						<Route exact path="/jobs-application" element={<JobQuery/>} />
 					</Route>
 				</Routes>
 			</Suspense>

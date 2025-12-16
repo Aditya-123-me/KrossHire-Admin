@@ -1,0 +1,76 @@
+.container {
+  height: 80vh;          // fixed height so scrolling works
+  overflow-y: auto;      // enable vertical scrolling
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  
+}
+
+.job {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  button {
+    padding: 8px 12px;
+    cursor: pointer;
+    background: rgb(255, 98, 0);
+  }
+}
+
+.jobGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); // 3 cards per row
+  gap: 16px;                              // spacing between cards
+}
+
+.jobCard {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  .deleteBtn{
+    background: rgb(255, 63, 63) !important;
+    font-size: 1rem;
+  }
+}
+
+.centerText {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.errorText {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+}
+
+
+.deletebtn{
+    background: red;
+}
+
+/* Optional: make it responsive */
+@media (max-width: 900px) {
+  .jobGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .jobGrid {
+    grid-template-columns: 1fr;
+  }
+}
