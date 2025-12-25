@@ -28,6 +28,7 @@ import BlogForm from "./pages/BlogsNext/BlogForm";
 import JobPosting from "./pages/JobPosting/JobPosting";
 import JobAdd from "./pages/JobPosting/JobAdd";
 import JobQuery from "./pages/JobPosting/JobQuery";
+import EditBlog2 from "./pages/BlogsNext/EditBlog2";
 
 function App() {
 	clearCacheData();
@@ -78,10 +79,12 @@ function App() {
 						<Route exact path="/tags" element={<Tag />} />
 						<Route exact path="/add-blog" element={<AddBlog />} />
 						<Route exact path="/add-blog2" element={<AddBlog2 />} />
+						<Route path="/blog/edit/:slug" element={<EditBlog2 />} />
 						<Route exact path="/update-blog/:id" element={<UpdateBlog />} />
 						<Route exact path="/blog2/update/:id" element={<BlogForm />} />
 						<Route exact path="/nextJobs" element={<JobPosting />} />
 						<Route exact path="/add-job" element={<JobAdd/>} />
+						<Route exact path="/job/edit/:id" element={<JobAdd/>} />
 						<Route exact path="/jobs-application" element={<JobQuery/>} />
 					</Route>
 				</Routes>

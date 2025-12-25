@@ -106,7 +106,7 @@ function BlogNext() {
                     <FaTrashAlt />
                   </p>
 
-                  <p className={styles.Edit} onClick={() => navigate(`/update-blog2/${data.slug}`)}>
+                  <p className={styles.Edit} onClick={() => navigate(`/blog/edit/${data.slug}`)}>
                     <FaEdit />
                   </p>
                 </div>

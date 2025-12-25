@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../components/Hooks/axios";
 import styles from "./JobPosting.module.scss";
 import { useNavigate } from "react-router-dom";
+import { FaRegEdit } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 
 function JobPosting() {
   const [jobs, setJobs] = useState([]);
@@ -41,12 +43,10 @@ function JobPosting() {
     }
   };
 
-  // EDIT JOB
-  const editJob = (id) => {
-    alert("Redirect to Edit Page: /admin/job/edit/" + id);
-    // OR open modal
-    // OR navigate using next/router
-  };
+  const editJob = (job) => {
+  navigate(`/job/edit/${job._id}`);
+};
+
 
   if (loading) return <p className={styles.centerText}>Loading jobs...</p>;
   if (error) return <p className={styles.errorText}>{error}</p>;
@@ -66,30 +66,36 @@ function JobPosting() {
         <div className={styles.jobGrid}>
           {jobs.map((job) => (
             <div key={job._id} className={styles.jobCard}>
-              <h2 className={styles.jobTitle}>{job.title}</h2>
-              <p className={styles.company}>{job.company}</p>
-              <p className={styles.location}>{job.location}</p>
-
-              {/* ✅ FIXED SALARY RENDERING (NO REMOVALS) */}
-              <p className={styles.salary}>
-                {job.salary?.currency} {job.salary?.amount} / {job.salary?.type}
-              </p>
-
+              <div className={styles.title2}>
+                <h2 className={styles.jobTitle}>{job.title}</h2>
               <div className={styles.actions}>
                 <button
                   className={styles.editBtn}
-                  onClick={() => editJob(job._id)}
+                  onClick={() => editJob(job)}
                 >
-                  Edit
+                  < FaRegEdit/>
                 </button>
 
                 <button
                   className={styles.deleteBtn}
                   onClick={() => deleteJob(job._id)}
                 >
-                  Delete
+                  < MdDeleteOutline/>
                 </button>
               </div>
+              </div>
+              <p className={styles.company}>
+               <strong>Company: </strong>ACROSSTEK™
+              </p>
+              <p className={styles.location}><strong>Location: </strong>{job.location}</p>
+
+              {/* ✅ FIXED SALARY RENDERING (NO REMOVALS) */}
+              <p className={styles.salary}>
+                {/* {job.salary?.currency} {job.salary?.amount} / {job.salary?.type} */}
+                <strong>Pay: </strong>{job.salary}
+              </p>
+
+              
             </div>
           ))}
         </div>

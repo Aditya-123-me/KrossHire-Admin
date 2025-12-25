@@ -1,102 +1,184 @@
-.AdmissionForms {
-  height: calc(100vh - 4.5rem);
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.container {
+  padding: 2rem;
+  min-height: 100vh;
+  background: rgba(255, 255, 255, 0.95);
+  color: #111;
+  font-family: Inter, system-ui, sans-serif;
+}
 
-  h1 {
-    padding: 1rem 0;
-    align-self: flex-start;
-    margin-left: 2rem;
-    font-size: 1.4rem;
-  }
+/* Header */
+.job {
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
 
-  h4 {
-    align-self: flex-start;
-    margin-left: 2rem;
-    color: #999;
-  }
-
-  .paymentHistory {
-    width: 100%;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .subHeading {
-    background: var(--c1);
-    display: flex;
-    padding: 1rem;
-    color: white;
-    font-weight: 600;
-
-    .userId { flex: 0.4; }
-    .Title { flex: 1; }
-    .Description { flex: 1.5; }
-    .Skills { flex: 1; }
-    .Actions { flex: 0.5; }
-
-    > div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-transform: uppercase;
-    }
-  }
-
-  .supportCards {
-    flex: 1;
-    padding: 1rem;
-    overflow-y: auto;
+  .title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #111;
   }
 }
 
-.ApplicationCard {
+/* Search & filter */
+.filterBar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  input {
+    flex: 2;
+    padding: 0.7rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #111;
+  }
+
+  select {
+    // min-width: 180px;
+    width: 14rem !important;
+    padding: 0.7rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    color: #111;
+  }
+}
+
+/* Grid */
+.jobGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.2rem;
+}
+
+/* Card */
+.jobCard {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.2rem;
+
+  .title2 {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #111;
+    }
+
+    span {
+      font-size: 0.75rem;
+      color: #ff6b00;
+    }
+  }
+
+  .company,
+  .location {
+    font-size: 0.9rem;
+    color: #111;
+    margin: 0.3rem 0;
+
+    strong {
+      color: #ff6b00;
+    }
+  }
+
+  .actions {
+    margin-top: 1rem;
+    text-align: right;
+  }
+}
+
+/* Buttons */
+.viewBtn {
+  background: #ff6b00;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.deleteBtn {
+  width: 100%;
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid #ff6b00;
+  color: #ff6b00;
+  padding: 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.close {
+  width: 100%;
+  margin-top: 0.6rem;
+  background: #f3f3f3;
+  border: 1px solid #ccc;
+  padding: 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Modal */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-  border-radius: 1rem;
-  box-shadow: 0 0 5px 3px var(--c1v2);
-    
-  > div {
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 85vh;
+  overflow-y: auto;
+
+  h2 {
+    margin-bottom: 0.3rem;
   }
 
-  .userId { flex: 0.25; }
-  .Title { flex: 1; }
-  .Description { flex: 1.5; }
-  .Skills { flex: 1; }
-  .Actions {
-    flex: 1;
-    gap: 1rem;
+  .modalJob {
+    color: #ff6b00;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.6rem;
+  }
 
-    .delete{
-        background: red;
-        color: white;
-        border-radius: 4px;
-        padding:  0.2rem 0.5rem;
-    }
+  .modalGrid {
+    display: grid;
+    gap: 0.8rem;
+
     p {
-      cursor: pointer;
-      transition: 0.3s;
-      
-      &:hover {
-        color: var(--c1);
+      font-size: 0.9rem;
+      color: #111;
+
+      strong {
+        display: block;
+        font-size: 0.8rem;
+        color: #ff6b00;
       }
     }
-    a{
-        margin-right: 3rem;
-        // margin-left:rem;
+
+    a {
+      color: #ff6b00;
+      font-weight: 600;
+      text-decoration: underline;
     }
   }
+}
 
-  p {
-    font-size: 1rem;
-    white-space: nowrap;
-  }
+/* States */
+.centerText {
+  text-align: center;
+  padding: 3rem;
+  color: #555;
 }
