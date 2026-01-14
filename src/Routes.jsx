@@ -29,6 +29,8 @@ import JobPosting from "./pages/JobPosting/JobPosting";
 import JobAdd from "./pages/JobPosting/JobAdd";
 import JobQuery from "./pages/JobPosting/JobQuery";
 import EditBlog2 from "./pages/BlogsNext/EditBlog2";
+import InquiriesManager from "./pages/Contact-us-nextjs/InquiriesManager";
+import Form from "./pages/Form/Form";
 
 function App() {
 	clearCacheData();
@@ -70,7 +72,8 @@ function App() {
 						<Route exact path="/dashboard" element={<Dashboard />} />
 						<Route exact path="/jobs" element={<Jobs />} />
 						<Route exact path="/contact" element={<ContactUS />} />
-						<Route exact path="/quote" element={<Quote/>} />
+						<Route exact path="/contact-us" element={<InquiriesManager/>} />
+						{/* <Route exact path="/quote" element={<Quote/>} /> */}
 						<Route exact path="/query" element={<Query />} />
 						<Route exact path="/requests" element={<Requests />} />
 						<Route exact path="/blogs" element={<Blogs />} />
@@ -86,6 +89,8 @@ function App() {
 						<Route exact path="/add-job" element={<JobAdd/>} />
 						<Route exact path="/job/edit/:id" element={<JobAdd/>} />
 						<Route exact path="/jobs-application" element={<JobQuery/>} />
+
+						<Route exact path="/popup-form" element={<Form/>} />
 					</Route>
 				</Routes>
 			</Suspense>

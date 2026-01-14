@@ -68,6 +68,12 @@ const DashboardWrapper = () => {
 						<p>Job Applications</p>
 					</div>
 
+					<div
+						className={`${styles.items} ${pathname === "/popup-form" ? styles.activeItem : ""}`}
+						onClick={() => navigate("/popup-form")}>
+						<MdOutlineSupportAgent />
+						<p>Form Data</p>
+					</div>
 
 					<div className={`${styles.items} ${pathname === "/tags" ? styles.activeItem : ""}`} onClick={() => navigate("/tags")}>
 						<FaTags />
@@ -94,13 +100,21 @@ const DashboardWrapper = () => {
 						<MdOutlineSupportAgent />
 						<p>Contact/Hire</p>
 					</div>
-
 					<div
+						className={`${styles.items} ${pathname === "/contact-us" ? styles.activeItem : ""}`}
+						onClick={() => navigate("/contact-us")}>
+						<MdOutlineSupportAgent />
+						<p>Contact/Hire (next)</p>
+					</div>
+
+					{/* <div
 						className={`${styles.items} ${pathname === "/quote" ? styles.activeItem : ""}`}
 						onClick={() => navigate("/quote")}>
 						<MdOutlineSupportAgent />
 						<p>Quote</p>
-					</div>
+					</div> */}
+
+					
 
 
 					<div className={`${styles.items} ${pathname === "/query" ? styles.activeItem : ""}`} onClick={() => navigate("/query")}>

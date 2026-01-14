@@ -21,6 +21,7 @@ function ContactUS() {
 		setLoading(true);
 		axios
 			.get(`contact_hire/allContact_hire?type=${selectedCategory}`)
+			
 			.then(({ data }) => {
 				setApplications(data.data);
 				setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });

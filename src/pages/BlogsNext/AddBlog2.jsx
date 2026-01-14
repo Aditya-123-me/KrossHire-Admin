@@ -5,7 +5,6 @@ import "react-quill/dist/quill.snow.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import FooterBG from "../../assets/images/FooterBG.webp";
 import Loading from "../../components/Hooks/Loading";
 import axios from "../../components/Hooks/axios";
 import styles from "../Blogs/AddBlog.module.scss";
@@ -28,7 +27,6 @@ const AddBlog = () => {
   const { language } = useSelector((state) => state.auth);
   const [selected, setSelected] = useState([]);
   const [openPreview, setOpenPreview] = useState(false);
-
   const [authData, setAuthData] = useState([]);
   const [imageFile, setImageFile] = useState(null);
   const [date, setDate] = useState("");
@@ -37,16 +35,11 @@ const AddBlog = () => {
 
   const generateId = () => "_" + Math.random().toString(36).substr(2, 9);
 
-  // Author Fetch
   useEffect(() => {
     axios
       .get(`/blog/allAuth`)
-      .then(({ data }) => {
-        setAuthData(data.data);
-      })
-      .catch(({ response }) => {
-        console.log("Error => ", response);
-      });
+      .then(({ data }) => setAuthData(data.data))
+      .catch(({ response }) => console.log("Error => ", response));
   }, []);
 
   const updateBoxData = (id, data) => {
@@ -62,38 +55,31 @@ const AddBlog = () => {
     });
   };
 
-  // const removeBox = (id) => {
-
-  //   setContentText((prev) => prev.filter((item) => item.id !== id));
-  //   setBlogData((prev) => prev.filter((item) => item.id !== id));
-  // };
-
   const removeBox = (id) => {
-  setContentText((prev) => prev.filter((item) => item.id !== id));
-  setBlogData((prev) => prev.filter((item) => item.id !== id));
-  // Also remove from titleIds
-  setTitleIds((prev) => prev.filter((item) => item.addedId !== id));
-};
+    setContentText((prev) => prev.filter((item) => item.id !== id));
+    setBlogData((prev) => prev.filter((item) => item.id !== id));
+    setTitleIds((prev) => prev.filter((item) => item.addedId !== id));
+  };
 
-const handelAddTextBox = () => {
-  const id = generateId();
-  setContentText((prev) => [
-    ...prev,
-    {
-      id,
-      comp: (
-        <TextBox
-          key={id}
-          id={id}
-          updateBoxData={updateBoxData}
-          removeBox={removeBox}
-          type={"add"}
-          handleUpdateTitleId={handleUpdateTitleId}  // Add this
-        />
-      ),
-    },
-  ]);
-};
+  const handelAddTextBox = () => {
+    const id = generateId();
+    setContentText((prev) => [
+      ...prev,
+      {
+        id,
+        comp: (
+          <TextBox
+            key={id}
+            id={id}
+            updateBoxData={updateBoxData}
+            removeBox={removeBox}
+            type={"add"}
+            handleUpdateTitleId={handleUpdateTitleId}
+          />
+        ),
+      },
+    ]);
+  };
 
   const handelAddImageBox = () => {
     const id = generateId();
@@ -114,39 +100,44 @@ const handelAddTextBox = () => {
   };
 
   const handleUpdateTitleId = (newTitle, newId) => {
-  setTitleIds((prevTitleIds) => {
-    const existingIndex = prevTitleIds.findIndex((item) => item.addedId === newId);
-    
-    if (existingIndex !== -1) {
-      const updatedTitleIds = [...prevTitleIds];
-      updatedTitleIds[existingIndex].title = newTitle;
-      return updatedTitleIds;
-    } else {
-      return [...prevTitleIds, { title: newTitle, addedId: newId }];
-    }
-  });
-};
+    setTitleIds((prevTitleIds) => {
+      const existingIndex = prevTitleIds.findIndex((item) => item.addedId === newId);
+      if (existingIndex !== -1) {
+        const updatedTitleIds = [...prevTitleIds];
+        updatedTitleIds[existingIndex].title = newTitle;
+        return updatedTitleIds;
+      } else {
+        return [...prevTitleIds, { title: newTitle, addedId: newId }];
+      }
+    });
+  };
 
   const handlePreview = () => {
-    if (!title) return toast.error("Please add Title...");
-    if (!smallText) return toast.error("Please add Small Text...");
+    if (!title) return toast.error("Please add Title");
+    if (!smallText) return toast.error("Please add Small Text");
+    if (!imageFile) return toast.error("Please add a main blog image");
     if (blogData.length === 0) return toast.warn("Add at least one content box");
 
     for (const item of blogData) {
-      if (!item.data) return toast.warn("Unfilled content box detected!");
+      if (!item.data) return toast.warn("Some content boxes are empty or images not uploaded!");
     }
 
     setOpenPreview(true);
   };
 
   const handelSubmit = () => {
+    // Validations
     if (!title) return toast.error("Title is required");
     if (!smallText) return toast.error("Small Text is required");
+    if (!imageFile) return toast.error("Main blog image is required");
     if (!activeAuthId) return toast.error("Select an author");
     if (blogData.length === 0) return toast.warn("Add at least one content box");
 
+    // Check if all content is filled
     for (const item of blogData) {
-      if (!item.data) return toast.warn("Unfilled content box detected!");
+      if (!item.data) {
+        return toast.warn("Please ensure all content boxes are filled and images are uploaded!");
+      }
     }
 
     const sanitizedTitle = title.replace(/(\r\n|\n|\r)/gm, " ").trim();
@@ -156,6 +147,7 @@ const handelAddTextBox = () => {
       return toast.error("Content cannot be empty");
     }
 
+    // Schedule validation
     let scheduleTime = null;
     if (date && time) {
       scheduleTime = new Date(`${date}T${time}`);
@@ -166,93 +158,36 @@ const handelAddTextBox = () => {
 
     setIsLoading(true);
 
-    console.log("📌 Title:", sanitizedTitle);
-    console.log("📌 Small Text:", smallText);
-    console.log("📌 Content:", contentCombined);
-    console.log("📌 ImageFile state:", imageFile);
-    console.log("📌 Selected tags:", selected);
-    console.log("📌 AuthorId:", activeAuthId);
-    console.log("📌 ScheduleTime:", scheduleTime);
-
-    const hasFile = imageFile !== null;
-
-    if (hasFile) {
-      const formData = new FormData();
-      formData.append("title", sanitizedTitle);
-      formData.append("content", contentCombined);
-      formData.append("smallText", smallText);
-      formData.append("bgColor", bg);
-      formData.append("textColor", color);
-      formData.append(
-        "tags",
-        JSON.stringify(selected?.length ? selected : ["General"])
-      );
-      formData.append("language", language || "English");
-      formData.append("authorId", activeAuthId);
-      formData.append("isActive", "true");
-      formData.append("image", imageFile);
-      formData.append("titleIds", JSON.stringify(titleIds));
-      if (scheduleTime) {
-        formData.append("scheduleTime", scheduleTime.toISOString());
-      }
-
-      console.log("📤 Sending FormData with file:");
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ":", pair[1]);
-      }
-
-      axios
-        .post(`/blog2/create`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then(() => {
-          toast.success("Blog uploaded successfully!");
-          navigate("/BlogNext");
-        })
-        .catch((err) => {
-          console.log("❌ Submit Error:", err?.response?.data || err);
-          toast.error(err?.response?.data?.msg || "Upload failed!");
-        })
-        .finally(() => setIsLoading(false));
-    } else {
-      const payload = {
-        title: sanitizedTitle,
-        content: contentCombined,
-        smallText,
-        bgColor: bg,
-        textColor: color,
-        tags: JSON.stringify(selected?.length ? selected : ["General"]),
-        language: language || "English",
-        authorId: activeAuthId,
-        isActive: true,
-        image: "",
-        titleIds: titleIds,
-      };
-
-      if (scheduleTime) {
-        payload.scheduleTime = scheduleTime.toISOString();
-      }
-
-      console.log("📤 Sending JSON payload:", payload);
-
-      axios
-        .post(`/blog2/create`, payload, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then(() => {
-          toast.success("Blog uploaded successfully!");
-          navigate("/blogs");
-        })
-        .catch((err) => {
-          console.log("❌ Submit Error:", err?.response?.data || err);
-          toast.error(err?.response?.data?.msg || "Upload failed!");
-        })
-        .finally(() => setIsLoading(false));
+    const formData = new FormData();
+    formData.append("title", sanitizedTitle);
+    formData.append("content", contentCombined);
+    formData.append("smallText", smallText);
+    formData.append("bgColor", bg);
+    formData.append("textColor", color);
+    formData.append("tags", JSON.stringify(selected?.length ? selected : ["General"]));
+    formData.append("language", language || "English");
+    formData.append("authorId", activeAuthId);
+    formData.append("isActive", "true");
+    formData.append("image", imageFile);
+    formData.append("titleIds", JSON.stringify(titleIds));
+    
+    if (scheduleTime) {
+      formData.append("scheduleTime", scheduleTime.toISOString());
     }
+
+    axios
+      .post(`/blog2/create`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+      .then(() => {
+        toast.success("Blog uploaded successfully!");
+        navigate("/BlogNext");
+      })
+      .catch((err) => {
+        console.log("❌ Submit Error:", err?.response?.data || err);
+        toast.error(err?.response?.data?.msg || "Upload failed!");
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -280,10 +215,7 @@ const handelAddTextBox = () => {
           </p>
         </div>
 
-        <div
-          className={styles.WrapperContainer}
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className={styles.WrapperContainer} onClick={(e) => e.stopPropagation()}>
           <div className={styles.ImageWrapper} style={{ background: bg }}>
             <div className={styles.Left}>
               <textarea
@@ -292,7 +224,7 @@ const handelAddTextBox = () => {
                 style={{ color: color }}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-              ></textarea>
+              />
 
               <textarea
                 placeholder="Add Small text"
@@ -300,65 +232,58 @@ const handelAddTextBox = () => {
                 value={smallText}
                 className={styles.smallText}
                 onChange={(e) => setSmallText(e.target.value)}
-              ></textarea>
+              />
 
               <div className={styles.Section}>
                 <div>
                   <label>Background Color:</label>
-                  <input
-                    type="color"
-                    value={bg}
-                    onChange={(e) => setBg(e.target.value)}
-                  />
+                  <input type="color" value={bg} onChange={(e) => setBg(e.target.value)} />
                 </div>
                 <div>
                   <label>Text Color:</label>
-                  <input
-                    type="color"
-                    value={color}
-                    onChange={(e) => setColor(e.target.value)}
-                  />
+                  <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
                 </div>
               </div>
             </div>
 
             <div className={styles.Right}>
               <img
-                src={imageFile ? URL.createObjectURL(imageFile) : FooterBG}
-                alt=""
+                src={imageFile ? URL.createObjectURL(imageFile) : ""}
+                alt="Main blog"
+                style={{ display: imageFile ? 'block' : 'none' }}
               />
+              {!imageFile && (
+                <div style={{ padding: '2rem', textAlign: 'center', color: color }}>
+                  Click to add main image
+                </div>
+              )}
               <input
                 type="file"
                 ref={inputRef}
+                accept="image/*"
                 onChange={(e) => {
                   const file = e.target.files[0];
-                  console.log("📁 Selected file:", file);
-                  setImageFile(file);
+                  if (file) {
+                    console.log("📁 Selected main image:", file);
+                    setImageFile(file);
+                  }
                 }}
               />
               <button onClick={() => inputRef.current.click()}>
-                <FaCamera />
+                <FaCamera /> {imageFile ? "Change Image" : "Add Image"}
               </button>
             </div>
           </div>
 
           <div className={styles.TagAuthor}>
             <div className={styles.TagWrapper}>
-              <TagSelector
-                onTagsChange={setSelected}
-                existingTags={selected}
-              />
+              <TagSelector onTagsChange={setSelected} existingTags={selected} />
             </div>
 
             <div className={styles.AuthSectionRight}>
               <h3>Select Author</h3>
-              <select
-                value={activeAuthId}
-                onChange={(e) => setActiveAuthId(e.target.value)}
-              >
-                <option value="" disabled>
-                  Select one author
-                </option>
+              <select value={activeAuthId} onChange={(e) => setActiveAuthId(e.target.value)}>
+                <option value="" disabled>Select one author</option>
                 {authData?.map((data, index) => (
                   <option value={data._id} key={index}>
                     {data?.authorName}
@@ -372,21 +297,9 @@ const handelAddTextBox = () => {
             <h3>Schedule Blog (Optional)</h3>
             <div>
               <label htmlFor="date">Select Date:</label>
-              <input
-                type="date"
-                id="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
-              <label htmlFor="time" className={styles.Label1}>
-                Select Time:
-              </label>
-              <input
-                type="time"
-                id="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-              />
+              <input type="date" id="date" value={date} onChange={(e) => setDate(e.target.value)} />
+              <label htmlFor="time" className={styles.Label1}>Select Time:</label>
+              <input type="time" id="time" value={time} onChange={(e) => setTime(e.target.value)} />
             </div>
           </div>
 
@@ -403,17 +316,17 @@ const handelAddTextBox = () => {
                 {contentText.map((data) => data.comp)}
               </div>
 
-               <div className={styles.RightIdCon}>
-    <h3>Scroll title and id's</h3>
-    <div className={styles.TitleIds}>
-      {titleIds?.map((data, index) => (
-        <div className={styles.TitleIdCard} key={index}>
-          <p>Title: {data?.title}</p>
-          <p>ID: {data?.addedId}</p>
-        </div>
-      ))}
-    </div>
-  </div>
+              <div className={styles.RightIdCon}>
+                <h3>Scroll title and id's</h3>
+                <div className={styles.TitleIds}>
+                  {titleIds?.map((data, index) => (
+                    <div className={styles.TitleIdCard} key={index}>
+                      <p>Title: {data?.title}</p>
+                      <p>ID: {data?.addedId}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 

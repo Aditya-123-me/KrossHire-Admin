@@ -1,0 +1,84 @@
+.quotesWrapper {
+  padding: 20px;
+  background: #f6f6f6;
+  min-height: 100vh;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      color: #333;
+    }
+
+    .refreshBtn {
+      background: #ff8c00;
+      color: #fff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+
+      &:hover {
+        background: #e67e00;
+      }
+    }
+  }
+
+  .quotesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .quoteCard {
+    background: #fff;
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    border-left: 4px solid #ff8c00;
+
+    .cardTop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h4 {
+        margin: 0;
+        color: #444;
+      }
+
+      .deleteBtn {
+        background: #e0e0e0;
+        color: #333;
+        border: none;
+        padding: 4px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+
+        &:hover {
+          background: #ff6b6b;
+          color: white;
+        }
+      }
+    }
+
+    p {
+      margin: 6px 0;
+      color: #555;
+    }
+
+    small {
+      color: #888;
+    }
+  }
+
+  .error {
+    color: red;
+    padding: 10px;
+  }
+}
