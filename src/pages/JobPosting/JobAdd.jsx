@@ -3,12 +3,12 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import styles from "./JobAdd.module.scss";
 import axios from "../../components/Hooks/axios";
-import { useParams, useNavigate } from "react-router-dom"; // ✅ ADDED
+import { useParams, useNavigate } from "react-router-dom";
 
 function JobAdd() {
-  const { id } = useParams();                 // ✅ ADDED
-  const navigate = useNavigate();             // ✅ ADDED
-  const isEdit = Boolean(id);                 // ✅ ADDED
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const isEdit = Boolean(id);
 
   const [form, setForm] = useState({
     title: "",
@@ -23,6 +23,11 @@ function JobAdd() {
     skills: "",
     language: "English",
     isTrending: false,
+    salaryDisclosed: true, // ✅ ADDED
+    // ✅ ADDED: Experience fields
+    experienceYears: "",
+    experienceMin: "",
+    experienceMax: "",
   });
 
   const [expect, setExpect] = useState([]);
@@ -38,7 +43,14 @@ function JobAdd() {
   const compensationRef = useRef(null);
   const applyRef = useRef(null);
 
-  // ✅ ADDED: FETCH JOB FOR EDIT
+  const quillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['clean']
+    ]
+  };
+
   useEffect(() => {
     if (!isEdit) return;
 
@@ -60,6 +72,11 @@ function JobAdd() {
           skills: job.skills?.join(", ") || "",
           language: job.language || "English",
           isTrending: job.isTrending || false,
+          salaryDisclosed: job.salaryDisclosed !== false,
+          // ✅ ADDED: Load experience data
+          experienceYears: job.experienceYears || "",
+          experienceMin: job.experienceMin || "",
+          experienceMax: job.experienceMax || "",
         });
 
         setExpect(job.expect || []);
@@ -85,10 +102,11 @@ function JobAdd() {
 
   const addQuillItem = (list, setList, ref) => {
     const editor = ref.current.getEditor();
-    const content = editor.getText().trim();
+    const html = editor.root.innerHTML.trim();
+    const text = editor.getText().trim();
 
-    if (content && content !== "") {
-      setList([...list, content]);
+    if (text && text !== "" && html !== "<p><br></p>") {
+      setList([...list, html]);
       editor.setText("");
     }
   };
@@ -107,13 +125,30 @@ function JobAdd() {
       return;
     }
 
+    if (form.salaryDisclosed) {
+      if (!form.salary) {
+        alert("Please provide salary information or mark it as not disclosed!");
+        setLoading(false);
+        return;
+      }
+    }
+
+    // ✅ ADDED: Validate experience fields
+    if (form.experienceMin && form.experienceMax) {
+      if (Number(form.experienceMin) > Number(form.experienceMax)) {
+        alert("Minimum experience cannot be greater than maximum experience!");
+        setLoading(false);
+        return;
+      }
+    }
+
     const payload = {
-      ...(isEdit && { id }), // ✅ ADDED
+      ...(isEdit && { id }),
       title: form.title,
-      salary: form.salary,
-      salaryMin: Number(form.salaryMin) || 0,
-      salaryMax: Number(form.salaryMax) || 0,
-      currency: form.currency,
+      salary: form.salaryDisclosed ? form.salary : undefined,
+      salaryMin: form.salaryDisclosed ? Number(form.salaryMin) || 0 : undefined,
+      salaryMax: form.salaryDisclosed ? Number(form.salaryMax) || 0 : undefined,
+      currency: form.salaryDisclosed ? form.currency : undefined,
       company: form.company,
       location: form.location,
       employmentType: form.employmentType,
@@ -126,18 +161,23 @@ function JobAdd() {
       apply,
       language: form.language,
       isTrending: form.isTrending,
+      salaryDisclosed: form.salaryDisclosed,
+      // ✅ ADDED: Include experience data
+      experienceYears: form.experienceYears || undefined,
+      experienceMin: form.experienceMin ? Number(form.experienceMin) : undefined,
+      experienceMax: form.experienceMax ? Number(form.experienceMax) : undefined,
     };
 
     try {
       if (isEdit) {
-        await axios.post("/jobfull/update", payload); // ✅ UPDATE
+        await axios.post("/jobfull/update", payload);
         alert("Job updated successfully!");
       } else {
-        await axios.post("/jobfull/create", payload); // ✅ CREATE
+        await axios.post("/jobfull/create", payload);
         alert("Job added successfully!");
       }
 
-      navigate("/nextJobs"); // ✅ ADDED
+      navigate("/nextJobs");
     } catch (error) {
       console.error(error);
       alert(error.response?.data?.msg || "Error saving job!");
@@ -150,7 +190,7 @@ function JobAdd() {
     <div className={styles.page}>
       <div className={styles.container}>
         <div className={styles.header}>
-          <h1>{isEdit ? "Update Job" : "Add New Job"}</h1> {/* ✅ UPDATED */}
+          <h1>{isEdit ? "Update Job" : "Add New Job"}</h1>
           <p>Fill in the details to create a new job posting</p>
         </div>
 
@@ -211,7 +251,6 @@ function JobAdd() {
                   <option value="Permanent">Permanent</option>
                   <option value="C2H">Contract</option>
                   <option value="OnDemand">Freelance/ On Demand</option>
-                  {/* <option value="Internship">Internship</option> */}
                 </select>
               </div>
 
@@ -238,56 +277,148 @@ function JobAdd() {
             </div>
           </section>
 
+          {/* ✅ ADDED: Experience Section */}
+          <section className={styles.section}>
+            <h2>Experience Requirements</h2>
+            
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label>Experience Range (Display)</label>
+                <input 
+                  name="experienceYears" 
+                  placeholder="e.g. 3-5 years or 5+ years" 
+                  value={form.experienceYears} 
+                  onChange={handleChange}
+                />
+                <small>This will be displayed on the job listing (e.g., "3-5 years", "5+ years")</small>
+              </div>
+            </div>
+
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label>Minimum Experience (Years)</label>
+                <input 
+                  type="number" 
+                  name="experienceMin" 
+                  placeholder="e.g. 3" 
+                  min="0"
+                  value={form.experienceMin} 
+                  onChange={handleChange}
+                />
+                <small>Leave empty if no minimum requirement</small>
+              </div>
+
+              <div className={styles.field}>
+                <label>Maximum Experience (Years)</label>
+                <input 
+                  type="number" 
+                  name="experienceMax" 
+                  placeholder="e.g. 5" 
+                  min="0"
+                  value={form.experienceMax} 
+                  onChange={handleChange}
+                />
+                <small>Leave empty for "X+ years" positions</small>
+              </div>
+            </div>
+
+            {form.experienceMin && form.experienceMax && (
+              <div style={{ 
+                padding: '10px', 
+                backgroundColor: '#f0f9ff', 
+                borderRadius: '5px', 
+                marginTop: '10px',
+                border: '1px solid #bfdbfe'
+              }}>
+                <p style={{ margin: 0, color: '#1e40af', fontSize: '14px' }}>
+                  📊 Experience Range: {form.experienceMin}-{form.experienceMax} years
+                </p>
+              </div>
+            )}
+          </section>
+
           {/* Salary Information */}
           <section className={styles.section}>
             <h2>Salary Information</h2>
             
-            <div className={styles.row}>
-              <div className={styles.field}>
-                <label>Salary Range (Display)</label>
-                <input 
-                  name="salary" 
-                  placeholder="e.g. $120,000 - $150,000" 
-                  value={form.salary} 
-                  onChange={handleChange}
-                />
-                <small>This will be displayed on the job listing</small>
-              </div>
+            <div className={styles.checkboxField}>
+              <input 
+                type="checkbox" 
+                id="salaryDisclosed" 
+                name="salaryDisclosed" 
+                checked={form.salaryDisclosed} 
+                onChange={handleChange}
+              />
+              <label htmlFor="salaryDisclosed">Disclose Salary Information</label>
+              <small style={{ display: 'block', marginTop: '5px', color: '#666' }}>
+                Uncheck this if you want to hide salary details and show "Not Disclosed"
+              </small>
             </div>
 
-            <div className={styles.row}>
-              <div className={styles.field}>
-                <label>Minimum Salary</label>
-                <input 
-                  type="number" 
-                  name="salaryMin" 
-                  placeholder="120000" 
-                  value={form.salaryMin} 
-                  onChange={handleChange}
-                />
-              </div>
+            {form.salaryDisclosed && (
+              <>
+                <div className={styles.row}>
+                  <div className={styles.field}>
+                    <label>Salary Range (Display) <span>*</span></label>
+                    <input 
+                      name="salary" 
+                      placeholder="e.g. $120,000 - $150,000" 
+                      value={form.salary} 
+                      onChange={handleChange}
+                      required={form.salaryDisclosed}
+                    />
+                    <small>This will be displayed on the job listing</small>
+                  </div>
+                </div>
 
-              <div className={styles.field}>
-                <label>Maximum Salary</label>
-                <input 
-                  type="number" 
-                  name="salaryMax" 
-                  placeholder="150000" 
-                  value={form.salaryMax} 
-                  onChange={handleChange}
-                />
-              </div>
+                <div className={styles.row}>
+                  <div className={styles.field}>
+                    <label>Minimum Salary</label>
+                    <input 
+                      type="number" 
+                      name="salaryMin" 
+                      placeholder="120000" 
+                      value={form.salaryMin} 
+                      onChange={handleChange}
+                    />
+                  </div>
 
-              <div className={styles.field}>
-                <label>Currency</label>
-                <select name="currency" value={form.currency} onChange={handleChange}>
-                  <option value="USD">USD ($)</option>
-                  <option value="INR">INR (₹)</option>
-                  <option value="EUR">EUR (€)</option>
-                  <option value="GBP">GBP (£)</option>
-                </select>
+                  <div className={styles.field}>
+                    <label>Maximum Salary</label>
+                    <input 
+                      type="number" 
+                      name="salaryMax" 
+                      placeholder="150000" 
+                      value={form.salaryMax} 
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div className={styles.field}>
+                    <label>Currency</label>
+                    <select name="currency" value={form.currency} onChange={handleChange}>
+                      <option value="USD">USD ($)</option>
+                      <option value="INR">INR (₹)</option>
+                      <option value="EUR">EUR (€)</option>
+                      <option value="GBP">GBP (£)</option>
+                    </select>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {!form.salaryDisclosed && (
+              <div style={{ 
+                padding: '15px', 
+                backgroundColor: '#f0f0f0', 
+                borderRadius: '5px', 
+                marginTop: '10px' 
+              }}>
+                <p style={{ margin: 0, color: '#666' }}>
+                  💼 Salary will be shown as "Not Disclosed" on the job listing
+                </p>
               </div>
-            </div>
+            )}
           </section>
 
           {/* Job Description */}
@@ -320,13 +451,13 @@ function JobAdd() {
 
           {/* Expectations */}
           <section className={styles.section}>
-            <h2>Expectations</h2>
+            <h2>What You'll Do</h2>
             <div className={styles.quillSection}>
               <ReactQuill 
                 ref={expectRef} 
                 theme="snow" 
                 placeholder="Enter an expectation (e.g., 5+ years of professional experience...)"
-                modules={{ toolbar: false }}
+                modules={quillModules}
               />
               <button 
                 type="button" 
@@ -341,7 +472,7 @@ function JobAdd() {
               <div className={styles.itemList}>
                 {expect.map((item, i) => (
                   <div key={i} className={styles.listItem}>
-                    <span>{i + 1}. {item}</span>
+                    <span dangerouslySetInnerHTML={{ __html: `${i + 1}. ${item}` }} />
                     <button 
                       type="button" 
                       className={styles.removeBtn}
@@ -357,13 +488,13 @@ function JobAdd() {
 
           {/* Responsibilities */}
           <section className={styles.section}>
-            <h2>Responsibilities</h2>
+            <h2>What We're Looking For</h2>
             <div className={styles.quillSection}>
               <ReactQuill 
                 ref={doRef} 
                 theme="snow" 
                 placeholder="Enter a responsibility (e.g., Design and develop scalable web applications...)"
-                modules={{ toolbar: false }}
+                modules={quillModules}
               />
               <button 
                 type="button" 
@@ -378,7 +509,7 @@ function JobAdd() {
               <div className={styles.itemList}>
                 {doList.map((item, i) => (
                   <div key={i} className={styles.listItem}>
-                    <span>{i + 1}. {item}</span>
+                    <span dangerouslySetInnerHTML={{ __html: `${i + 1}. ${item}` }} />
                     <button 
                       type="button" 
                       className={styles.removeBtn}
@@ -394,13 +525,13 @@ function JobAdd() {
 
           {/* Requirements */}
           <section className={styles.section}>
-            <h2>Requirements (What to Bring)</h2>
+            <h2>Nice to have</h2>
             <div className={styles.quillSection}>
               <ReactQuill 
                 ref={bringRef} 
                 theme="snow" 
                 placeholder="Enter a requirement (e.g., Hands-on experience with React and Node.js...)"
-                modules={{ toolbar: false }}
+                modules={quillModules}
               />
               <button 
                 type="button" 
@@ -415,7 +546,7 @@ function JobAdd() {
               <div className={styles.itemList}>
                 {bring.map((item, i) => (
                   <div key={i} className={styles.listItem}>
-                    <span>{i + 1}. {item}</span>
+                    <span dangerouslySetInnerHTML={{ __html: `${i + 1}. ${item}` }} />
                     <button 
                       type="button" 
                       className={styles.removeBtn}
@@ -431,13 +562,13 @@ function JobAdd() {
 
           {/* Compensation */}
           <section className={styles.section}>
-            <h2>Compensation & Benefits</h2>
+            <h2>Why work with us ?</h2>
             <div className={styles.quillSection}>
               <ReactQuill 
                 ref={compensationRef} 
                 theme="snow" 
                 placeholder="Enter a benefit (e.g., Competitive salary, Health insurance...)"
-                modules={{ toolbar: false }}
+                modules={quillModules}
               />
               <button 
                 type="button" 
@@ -452,7 +583,7 @@ function JobAdd() {
               <div className={styles.itemList}>
                 {compensation.map((item, i) => (
                   <div key={i} className={styles.listItem}>
-                    <span>{i + 1}. {item}</span>
+                    <span dangerouslySetInnerHTML={{ __html: `${i + 1}. ${item}` }} />
                     <button 
                       type="button" 
                       className={styles.removeBtn}
@@ -474,7 +605,7 @@ function JobAdd() {
                 ref={applyRef} 
                 theme="snow" 
                 placeholder="Enter application instruction (e.g., Submit your updated resume...)"
-                modules={{ toolbar: false }}
+                modules={quillModules}
               />
               <button 
                 type="button" 
@@ -489,7 +620,7 @@ function JobAdd() {
               <div className={styles.itemList}>
                 {apply.map((item, i) => (
                   <div key={i} className={styles.listItem}>
-                    <span>{i + 1}. {item}</span>
+                    <span dangerouslySetInnerHTML={{ __html: `${i + 1}. ${item}` }} />
                     <button 
                       type="button" 
                       className={styles.removeBtn}
@@ -521,6 +652,3 @@ function JobAdd() {
 }
 
 export default JobAdd;
-
-
-
