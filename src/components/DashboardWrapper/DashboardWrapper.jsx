@@ -36,10 +36,10 @@ const DashboardWrapper = () => {
 						<p>Dashboard</p>
 					</div>
 
-					<div className={`${styles.items} ${pathname === "/jobs" ? styles.activeItem : ""}`} onClick={() => navigate("/jobs")}>
+					{/* <div className={`${styles.items} ${pathname === "/jobs" ? styles.activeItem : ""}`} onClick={() => navigate("/jobs")}>
 						<MdWork />
 						<p>Jobs</p>
-					</div>
+					</div> */}
 
 					<div className={`${styles.items} ${pathname === "/nextjobs" ? styles.activeItem : ""}`} onClick={() => navigate("/nextjobs")}>
 						<MdWork />
@@ -94,12 +94,13 @@ const DashboardWrapper = () => {
 						<p>Nextjs Blogs</p>
 					</div>
 
-					<div
+					{/* <div
 						className={`${styles.items} ${pathname === "/contact" ? styles.activeItem : ""}`}
 						onClick={() => navigate("/contact")}>
 						<MdOutlineSupportAgent />
 						<p>Contact/Hire</p>
-					</div>
+					</div> */}
+
 					<div
 						className={`${styles.items} ${pathname === "/contact-us" ? styles.activeItem : ""}`}
 						onClick={() => navigate("/contact-us")}>

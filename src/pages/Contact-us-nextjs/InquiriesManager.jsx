@@ -18,10 +18,12 @@ function InquiriesManager() {
   const [loading, setLoading] = useState(true);
   const [viewModal, setViewModal] = useState(null);
 
+  const ITEMS_PER_PAGE = 9;
+
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`contact_hire/allContact_hire?type=${selectedCategory}`)
+      .get(`contact_hire/allContact_hire?type=${selectedCategory}&page=${page}&limit=${ITEMS_PER_PAGE}`)
       .then(({ data }) => {
         setInquiries(data.data);
         setTotal({ totalCount: data.totalCount, totalPages: data.totalPages });
@@ -94,7 +96,7 @@ function InquiriesManager() {
             {filteredInquiries.map((item, index) => (
               <div className={styles.card} key={item._id}>
                 <div className={styles.cardTop}>
-                  <span>#{index + 1}</span>
+                  <span>#{(page - 1) * ITEMS_PER_PAGE + index + 1}</span>
                   <span>{dateFormat(item?.createdAt)}</span>
                 </div>
                 <div className={styles.cardBody}>
@@ -118,20 +120,27 @@ function InquiriesManager() {
         )}
 
         {!loading && filteredInquiries.length > 0 && (
-          
           <div className={styles.pagination}>
-            <button disabled={page === 1} onClick={() => setPage(page - 1)}>
-              {page > 1 && "<"} 
-            </button>
-            <span>Page {page} of {total.totalPages}</span>
-            <button disabled={page === total.totalPages} onClick={() => setPage(page + 1)}>
-              {page < total.totalPages && ">"}
+            <button 
+              disabled={page === 1} 
+              onClick={() => setPage(page - 1)}
+              className={page === 1 ? styles.disabled : ""}
+            >
+              &lt; Previous
             </button>
             
-        <div className={styles.stats}>
-          <span>Total: {total.totalCount}</span>
-          <span>Page {page} of {total.totalPages}</span>
-        </div>
+            <div className={styles.pageInfo}>
+              <span>Page {page} of {total.totalPages}</span>
+              <span className={styles.totalCount}>Total: {total.totalCount} inquiries</span>
+            </div>
+            
+            <button 
+              disabled={page === total.totalPages} 
+              onClick={() => setPage(page + 1)}
+              className={page === total.totalPages ? styles.disabled : ""}
+            >
+              Next &gt;
+            </button>
           </div>
         )}
       </div>
@@ -144,18 +153,20 @@ function InquiriesManager() {
               <button onClick={() => setViewModal(null)}>×</button>
             </div>
             <div className={styles.modalBody}>
-              <p><strong>Name:</strong> {viewModal.name}</p>
-              <p><strong>Email:</strong> {viewModal.email}</p>
-              <p><strong>Phone:</strong> {viewModal.phone}</p>
-              {viewModal.company && <p><strong>Company:</strong> {viewModal.company}</p>}
-              {viewModal.skills && <p><strong>Requirement:</strong> {viewModal.skills}</p>}
+              <p><strong>ID:</strong> {viewModal._id}</p>
+              <p><strong>Name:</strong> {viewModal.name || "N/A"}</p>
+              <p><strong>Email:</strong> {viewModal.email || "N/A"}</p>
+              <p><strong>Phone:</strong> {viewModal.phone || "N/A"}</p>
+              <p><strong>Company:</strong> {viewModal.company || "N/A"}</p>
+              <p><strong>Requirement/Skills:</strong> {viewModal.skills || "N/A"}</p>
+              <p><strong>Type:</strong> {viewModal.type || "N/A"}</p>
               {viewModal.writeSomething && (
                 <div className={styles.message}>
                   <strong>Message:</strong>
                   <p>{viewModal.writeSomething}</p>
                 </div>
               )}
-              <p><strong>Submitted:</strong> {dateFormat(viewModal.createdAt)}</p>
+              <p><strong>Created:</strong> {dateFormat(viewModal.createdAt)}</p>
             </div>
           </div>
         </div>
